@@ -2,15 +2,6 @@ import { Head } from '@inertiajs/react';
 import { ShieldCheck, BadgeCheck, Calendar, User, Briefcase, Hash, FileCheck, Printer } from 'lucide-react';
 
 export default function Verifikasi() {
-    const verificationDate = new Date().toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZone: 'Asia/Jakarta',
-    });
-
     return (
         <>
             <Head title="Verifikasi Dokumen" />
@@ -118,15 +109,7 @@ export default function Verifikasi() {
 
                     {/* Footer */}
                     <div className="border-t border-neutral-100 bg-neutral-50/80 px-6 py-4 dark:border-neutral-700/40 dark:bg-neutral-800/40">
-                        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-                            <div className="text-center sm:text-left">
-                                <p className="text-[11px] font-medium text-neutral-400 dark:text-neutral-500">
-                                    Diverifikasi pada: {verificationDate}
-                                </p>
-                                <p className="text-[11px] font-medium text-neutral-400 dark:text-neutral-500">
-                                    paripengdajambi.test/verifikasi/1571041103019
-                                </p>
-                            </div>
+                        <div className="flex justify-center">
                             <button
                                 type="button"
                                 onClick={() => window.print()}
