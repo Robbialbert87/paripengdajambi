@@ -21,7 +21,7 @@ export default function Dashboard() {
                 <div className="rounded-2xl border border-yellow-100/40 bg-yellow-50/80 p-6 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
                     <div className="flex items-center gap-4">
                         <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                            <AppLogoIcon className="size-8 text-orange-400" />
+                            <AppLogoIcon className="h-10 w-auto mix-blend-multiply dark:mix-blend-screen" />
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
