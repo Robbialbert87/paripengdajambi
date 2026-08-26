@@ -226,26 +226,20 @@ export default function PublicNavbar() {
         return active?.label ?? null;
     });
 
+    // Lock body scroll when mobile menu open
     useEffect(() => {
-        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+        if (mobileOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
         return () => { document.body.style.overflow = ''; };
     }, [mobileOpen]);
 
+    // Close mobile menu on navigation
     useEffect(() => {
         setMobileOpen(false);
     }, [currentUrl]);
-
-    // Click outside mobile menu to close
-    useEffect(() => {
-        if (!mobileOpen) return;
-        function handleClickOutside(e: MouseEvent) {
-            if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
-                setMobileOpen(false);
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [mobileOpen]);
 
     // Reset dropdown when mobile menu closes
     useEffect(() => {
@@ -258,100 +252,117 @@ export default function PublicNavbar() {
     }, [mobileOpen, currentUrl]);
 
     return (
-        <header className="sticky inset-x-0 top-4 z-50 flex w-full flex-wrap text-sm md:flex-nowrap md:justify-start">
-            <nav
-                className="relative mx-2 w-full rounded-[36px] border border-yellow-100/40 bg-yellow-50/60 px-4 py-3 backdrop-blur-md md:flex md:items-center md:justify-between md:px-6 md:py-0 lg:px-8 xl:mx-auto dark:border-neutral-700/40 dark:bg-neutral-800/80 dark:backdrop-blur-md"
-                aria-label="Global"
-            >
-                <div className="flex items-center justify-between">
-                    <Link
-                        className="flex-none rounded-lg ring-zinc-500 outline-hidden focus-visible:ring-3 dark:ring-zinc-200 dark:focus:outline-hidden"
-                        href="/"
-                        aria-label="Brand"
-                    >
-                        <div className="flex items-center gap-2">
-                            <img src="/logo (2).webp" alt="Logo PARI" className="h-13 w-auto mix-blend-multiply dark:mix-blend-screen" />
-                            <div className="leading-tight">
-                                <span className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Persatuan Radiografer Indonesia</span>
-                                <span className="block text-xs font-bold text-neutral-600 dark:text-neutral-400">Pengurus Daerah Provinsi Jambi</span>
+        <>
+            <header className="sticky inset-x-0 top-4 z-50 flex w-full flex-wrap text-sm md:flex-nowrap md:justify-start">
+                <nav
+                    className="relative mx-2 w-full rounded-[36px] border border-yellow-100/40 bg-yellow-50/60 px-4 py-3 backdrop-blur-md md:flex md:items-center md:justify-between md:px-6 md:py-0 lg:px-8 xl:mx-auto dark:border-neutral-700/40 dark:bg-neutral-800/80 dark:backdrop-blur-md"
+                    aria-label="Global"
+                >
+                    <div className="flex items-center justify-between">
+                        <Link
+                            className="flex-none rounded-lg ring-zinc-500 outline-hidden focus-visible:ring-3 dark:ring-zinc-200 dark:focus:outline-hidden"
+                            href="/"
+                            aria-label="Brand"
+                        >
+                            <div className="flex items-center gap-2">
+                                <img src="/logo (2).webp" alt="Logo PARI" className="h-13 w-auto mix-blend-multiply dark:mix-blend-screen" />
+                                <div className="leading-tight">
+                                    <span className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Persatuan Radiografer Indonesia</span>
+                                    <span className="block text-xs font-bold text-neutral-600 dark:text-neutral-400">Pengurus Daerah Provinsi Jambi</span>
+                                </div>
                             </div>
-                        </div>
-                    </Link>
+                        </Link>
 
-                    <button
-                        type="button"
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-neutral-600 transition duration-300 hover:bg-neutral-200 disabled:pointer-events-none disabled:opacity-50 md:hidden dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:outline-hidden"
-                        aria-label="Toggle navigation"
-                    >
-                        {mobileOpen ? (
-                            <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M18 6 6 18"></path>
-                                <path d="m6 6 12 12"></path>
-                            </svg>
-                        ) : (
-                            <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <line x1="3" x2="21" y1="6" y2="6"></line>
-                                <line x1="3" x2="21" y1="12" y2="12"></line>
-                                <line x1="3" x2="21" y1="18" y2="18"></line>
-                            </svg>
-                        )}
-                    </button>
-                </div>
-
-                {/* Desktop menu */}
-                <div className="hidden grow basis-full md:block">
-                    <div className="mt-5 flex flex-col gap-x-0 gap-y-4 md:mt-0 md:flex-row md:items-center md:justify-end md:gap-x-4 md:gap-y-0 md:ps-7 lg:gap-x-7">
-                        {navItems.map((item) =>
-                            item.dropdown ? (
-                                <DropdownMenu
-                                    key={item.label}
-                                    item={item}
-                                    isOpen={openDropdown === item.label}
-                                    currentUrl={currentUrl}
-                                    onToggle={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                                    onOpen={() => setOpenDropdown(item.label)}
-                                    onClose={() => setOpenDropdown(null)}
-                                />
+                        <button
+                            type="button"
+                            onClick={() => setMobileOpen(!mobileOpen)}
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-neutral-600 transition duration-300 hover:bg-neutral-200 disabled:pointer-events-none disabled:opacity-50 md:hidden dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:outline-hidden"
+                            aria-label="Toggle navigation"
+                        >
+                            {mobileOpen ? (
+                                <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M18 6 6 18"></path>
+                                    <path d="m6 6 12 12"></path>
+                                </svg>
                             ) : (
-                                <Link
-                                    key={item.href}
-                                    href={item.href!}
-                                    className={`rounded-lg text-base font-medium ring-zinc-500 outline-hidden hover:text-neutral-500 focus-visible:ring-3 md:py-3 md:text-sm 2xl:text-base dark:ring-zinc-200 dark:hover:text-neutral-500 dark:focus:outline-hidden ${
-                                        currentUrl === item.href
-                                            ? 'text-orange-400 dark:text-orange-300'
-                                            : 'text-neutral-600 dark:text-neutral-400'
-                                    }`}
-                                >
-                                    {item.label}
-                                </Link>
-                            )
-                        )}
-
-                        {auth?.user ? (
-                            <Link
-                                href="/dashboard"
-                                className="inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-4 py-2.5 text-sm font-bold text-neutral-50 ring-zinc-500 transition duration-300 hover:bg-orange-500 focus-visible:ring-3 outline-hidden dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:outline-hidden"
-                            >
-                                Dashboard
-                            </Link>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={() => setLoginOpen(true)}
-                                className="inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-4 py-2.5 text-sm font-bold text-neutral-50 ring-zinc-500 transition duration-300 hover:bg-orange-500 focus-visible:ring-3 outline-hidden dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:outline-hidden"
-                            >
-                                Login
-                            </button>
-                        )}
-
-                        <ThemeToggle className="hidden text-neutral-600 md:inline-block dark:text-neutral-400" />
+                                <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="3" x2="21" y1="6" y2="6"></line>
+                                    <line x1="3" x2="21" y1="12" y2="12"></line>
+                                    <line x1="3" x2="21" y1="18" y2="18"></line>
+                                </svg>
+                            )}
+                        </button>
                     </div>
-                </div>
 
-                {/* Mobile menu — absolute overlay */}
-                {mobileOpen && (
-                    <div ref={mobileMenuRef} className="absolute left-0 right-0 top-full z-50 mx-2 mt-2 max-h-[75vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800">
+                    {/* Desktop menu */}
+                    <div className="hidden grow basis-full md:block">
+                        <div className="mt-5 flex flex-col gap-x-0 gap-y-4 md:mt-0 md:flex-row md:items-center md:justify-end md:gap-x-4 md:gap-y-0 md:ps-7 lg:gap-x-7">
+                            {navItems.map((item) =>
+                                item.dropdown ? (
+                                    <DropdownMenu
+                                        key={item.label}
+                                        item={item}
+                                        isOpen={openDropdown === item.label}
+                                        currentUrl={currentUrl}
+                                        onToggle={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                                        onOpen={() => setOpenDropdown(item.label)}
+                                        onClose={() => setOpenDropdown(null)}
+                                    />
+                                ) : (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href!}
+                                        className={`rounded-lg text-base font-medium ring-zinc-500 outline-hidden hover:text-neutral-500 focus-visible:ring-3 md:py-3 md:text-sm 2xl:text-base dark:ring-zinc-200 dark:hover:text-neutral-500 dark:focus:outline-hidden ${
+                                            currentUrl === item.href
+                                                ? 'text-orange-400 dark:text-orange-300'
+                                                : 'text-neutral-600 dark:text-neutral-400'
+                                        }`}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                )
+                            )}
+
+                            {auth?.user ? (
+                                <Link
+                                    href="/dashboard"
+                                    className="inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-4 py-2.5 text-sm font-bold text-neutral-50 ring-zinc-500 transition duration-300 hover:bg-orange-500 focus-visible:ring-3 outline-hidden dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:outline-hidden"
+                                >
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={() => setLoginOpen(true)}
+                                    className="inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-4 py-2.5 text-sm font-bold text-neutral-50 ring-zinc-500 transition duration-300 hover:bg-orange-500 focus-visible:ring-3 outline-hidden dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:outline-hidden"
+                                >
+                                    Login
+                                </button>
+                            )}
+
+                            <ThemeToggle className="hidden text-neutral-600 md:inline-block dark:text-neutral-400" />
+                        </div>
+                    </div>
+                </nav>
+                <LoginModal open={loginOpen} onOpenChange={setLoginOpen} />
+            </header>
+
+            {/* Mobile menu — rendered OUTSIDE nav as fixed overlay to avoid border-radius/backdrop-blur touch issues */}
+            {mobileOpen && (
+                <>
+                    {/* Backdrop */}
+                    <div
+                        className="fixed inset-0 z-50 bg-black/30 md:hidden"
+                        onClick={() => setMobileOpen(false)}
+                        onTouchEnd={() => setMobileOpen(false)}
+                        style={{ touchAction: 'manipulation' }}
+                    />
+                    {/* Menu panel */}
+                    <div
+                        ref={mobileMenuRef}
+                        className="fixed left-2 right-2 top-[72px] z-50 max-h-[70vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800"
+                        style={{ WebkitOverflowScrolling: 'touch' }}
+                    >
                         {navItems.map((item) =>
                             item.dropdown ? (
                                 <div key={item.label} className="py-1">
@@ -447,9 +458,8 @@ export default function PublicNavbar() {
                             )}
                         </div>
                     </div>
-                )}
-            </nav>
-            <LoginModal open={loginOpen} onOpenChange={setLoginOpen} />
-        </header>
+                </>
+            )}
+        </>
     );
 }
