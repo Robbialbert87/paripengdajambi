@@ -201,7 +201,21 @@ export default function PublicNavbar() {
                         </div>
                     </Link>
 
-                    <div className="mr-5 ml-auto md:hidden">
+                    <div className="flex items-center gap-1 md:hidden">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const html = document.documentElement;
+                                html.classList.toggle('dark');
+                                localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
+                            }}
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-neutral-600 transition duration-300 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
+                            aria-label="Toggle theme"
+                        >
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        </button>
                         <button
                             type="button"
                             onClick={() => setMobileOpen(!mobileOpen)}
@@ -222,24 +236,9 @@ export default function PublicNavbar() {
                             )}
                         </button>
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={() => {
-                            const html = document.documentElement;
-                            html.classList.toggle('dark');
-                            localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
-                        }}
-                        className="inline-block md:hidden"
-                        aria-label="Toggle theme"
-                    >
-                        <svg className="h-5 w-5 text-neutral-600 dark:text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    </button>
                 </div>
 
-                <div className={`${mobileOpen ? 'block' : 'hidden'} grow basis-full transition-all duration-300 md:block`}>
+                <div className="hidden grow basis-full transition-all duration-300 md:block">
                     <div className="mt-5 flex flex-col gap-x-0 gap-y-4 md:mt-0 md:flex-row md:items-center md:justify-end md:gap-x-4 md:gap-y-0 md:ps-7 lg:gap-x-7">
                         {navItems.map((item) =>
                             item.dropdown ? (
