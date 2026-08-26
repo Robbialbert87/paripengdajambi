@@ -1,1 +1,0 @@
-import{n as e,t}from"./jsx-runtime-CS1VbZNB.js";import{t as n}from"./placeholder-page-B_Mrcmsq.js";var r=e(),i=t();function a(){let e=(0,r.c)(1),t;return e[0]===Symbol.for(`react.memo_cache_sentinel`)?(t=(0,i.jsx)(n,{title:`Agenda`}),e[0]=t):t=e[0],t}export{a as default};

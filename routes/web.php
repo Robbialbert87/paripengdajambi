@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TteController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
@@ -43,14 +44,13 @@ Route::prefix('informasi')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
-    Route::get('dashboard/barcode-tte', function () {
-        return inertia('dashboard/barcode-tte', [
-            'appUrl' => config('app.url'),
-            'memberId' => '1571041103019',
-        ]);
-    })->name('dashboard.barcode-tte');
+    Route::get('dashboard/barcode-tte', [TteController::class, 'index'])->name('dashboard.barcode-tte');
+    Route::post('dashboard/barcode-tte', [TteController::class, 'store'])->name('dashboard.barcode-tte.store');
+    Route::put('dashboard/barcode-tte/{tteRecord}', [TteController::class, 'update'])->name('dashboard.barcode-tte.update');
+    Route::delete('dashboard/barcode-tte/{tteRecord}', [TteController::class, 'destroy'])->name('dashboard.barcode-tte.destroy');
+    Route::patch('dashboard/barcode-tte/{tteRecord}/activate', [TteController::class, 'activate'])->name('dashboard.barcode-tte.activate');
 });
 
-Route::inertia('verifikasi/{id}', 'verifikasi')->name('verifikasi');
+Route::get('verifikasi/{nomorAnggota}', [TteController::class, 'verify'])->name('verifikasi');
 
 require __DIR__.'/settings.php';
