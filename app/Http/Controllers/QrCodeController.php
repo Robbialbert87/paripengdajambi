@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use chillerlan\QRCode\QRCode;
-use chillerlan\QRCode\QROptions;
-use chillerlan\QRCode\Data\QRMatrix;
-use chillerlan\QRCode\Output\QROutputInterface;
+use chillerlan\QRCode\{QRCode, QROptions};
+use chillerlan\QRCode\Common\EccLevel;
+use chillerlan\QRCode\Output\QRGdImagePNG;
 use Illuminate\Http\Response;
 
 class QrCodeController extends Controller
@@ -15,26 +14,18 @@ class QrCodeController extends Controller
         $url = config('app.url') . '/verifikasi/' . $id;
 
         $options = new QROptions([
-            'version'          => QRCode::VERSION_AUTO,
-            'outputType'       => QROutputInterface::GDIMAGE_PNG,
-            'eccLevel'         => QRCode::ECC_H,
-            'scale'            => 10,
-            'imageBase64'      => false,
-            'bgColor'          => [255, 255, 255],
+            'outputInterface' => QRGdImagePNG::class,
+            'eccLevel'        => EccLevel::H,
+            'scale'           => 10,
+            'imageBase64'     => false,
+            'bgColor'         => [255, 255, 255],
             'drawLightModules' => true,
-            'moduleValues'     => [
-                QRMatrix::M_DATA_DARK  => [0, 0, 0],
-                QRMatrix::M_FINDER_DARK => [0, 0, 0],
-                QRMatrix::M_ALIGNMENT_DARK => [0, 0, 0],
-                QRMatrix::M_TIMING_DARK => [0, 0, 0],
-            ],
         ]);
 
-        $qr = new QRCode($options);
-        $imageData = $qr->render($url);
+        $imageData = (new QRCode($options))->render($url);
 
         return response($imageData)
             ->header('Content-Type', 'image/png')
-            ->header('Cache-Control', 'public, max-age=86400');
+            ->header('Cache-Control', 'no-cache, must-revalidate');
     }
 }

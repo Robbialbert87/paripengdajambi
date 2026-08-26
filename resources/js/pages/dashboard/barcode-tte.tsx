@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
-import { useRef, useCallback } from 'react';
-import { Download, ExternalLink, Barcode } from 'lucide-react';
+import { useRef, useCallback, useState } from 'react';
+import { Download, ExternalLink, Barcode, RefreshCw } from 'lucide-react';
 
 interface BarcodeTteProps {
     appUrl: string;
@@ -9,9 +9,10 @@ interface BarcodeTteProps {
 
 export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
     const imgRef = useRef<HTMLImageElement>(null);
+    const [cacheKey, setCacheKey] = useState(Date.now());
 
-    const qrCodeUrl = `${appUrl}/qr-code/${memberId}`;
     const verificationUrl = `${appUrl}/verifikasi/${memberId}`;
+    const qrCodeUrl = `${appUrl}/qr-code/${memberId}?t=${cacheKey}`;
 
     const handleDownload = useCallback(() => {
         const img = imgRef.current;
@@ -34,6 +35,10 @@ export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
         link.href = canvas.toDataURL('image/png');
         link.click();
     }, [memberId]);
+
+    const handleRegenerate = useCallback(() => {
+        setCacheKey(Date.now());
+    }, []);
 
     return (
         <>
@@ -98,6 +103,15 @@ export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
                                 >
                                     <Download className="size-4" />
                                     Download PNG
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={handleRegenerate}
+                                    className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 ring-zinc-500 transition duration-300 hover:bg-yellow-100/60 focus-visible:ring-3 outline-hidden dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:outline-hidden dark:ring-zinc-200"
+                                >
+                                    <RefreshCw className="size-4" />
+                                    Generate Ulang
                                 </button>
 
                                 <a
