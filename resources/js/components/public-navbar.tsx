@@ -201,41 +201,25 @@ export default function PublicNavbar() {
                         </div>
                     </Link>
 
-                    <div className="flex items-center gap-1 md:hidden">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                const html = document.documentElement;
-                                html.classList.toggle('dark');
-                                localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
-                            }}
-                            className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-neutral-600 transition duration-300 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
-                            aria-label="Toggle theme"
-                        >
-                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    <button
+                        type="button"
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-neutral-600 transition duration-300 hover:bg-neutral-200 disabled:pointer-events-none disabled:opacity-50 md:hidden dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:outline-hidden"
+                        aria-label="Toggle navigation"
+                    >
+                        {mobileOpen ? (
+                            <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
                             </svg>
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setMobileOpen(!mobileOpen)}
-                            className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-neutral-600 transition duration-300 hover:bg-neutral-200 disabled:pointer-events-none disabled:opacity-50 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:outline-hidden"
-                            aria-label="Toggle navigation"
-                        >
-                            {mobileOpen ? (
-                                <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M18 6 6 18"></path>
-                                    <path d="m6 6 12 12"></path>
-                                </svg>
-                            ) : (
-                                <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="3" x2="21" y1="6" y2="6"></line>
-                                    <line x1="3" x2="21" y1="12" y2="12"></line>
-                                    <line x1="3" x2="21" y1="18" y2="18"></line>
-                                </svg>
-                            )}
-                        </button>
-                    </div>
+                        ) : (
+                            <svg className="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="3" x2="21" y1="6" y2="6"></line>
+                                <line x1="3" x2="21" y1="12" y2="12"></line>
+                                <line x1="3" x2="21" y1="18" y2="18"></line>
+                            </svg>
+                        )}
+                    </button>
                 </div>
 
                 <div className="hidden grow basis-full transition-all duration-300 md:block">
@@ -360,6 +344,20 @@ export default function PublicNavbar() {
                         )}
 
                         <div className="mt-3 border-t border-yellow-100/40 pt-3 dark:border-neutral-700/40">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const html = document.documentElement;
+                                    html.classList.toggle('dark');
+                                    localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
+                                }}
+                                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 hover:bg-yellow-100/60 dark:text-neutral-400 dark:hover:bg-neutral-700"
+                            >
+                                <span>Mode Gelap</span>
+                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                </svg>
+                            </button>
                             {auth?.user ? (
                                 <Link
                                     href="/dashboard"
