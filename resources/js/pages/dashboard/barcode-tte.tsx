@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { useRef, useCallback, useState } from 'react';
 import { Download, ExternalLink, Barcode, RefreshCw } from 'lucide-react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 interface BarcodeTteProps {
     appUrl: string;
@@ -8,27 +9,17 @@ interface BarcodeTteProps {
 }
 
 export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
-    const imgRef = useRef<HTMLImageElement>(null);
-    const [cacheKey, setCacheKey] = useState(Date.now());
+    const canvasRef = useRef<HTMLDivElement>(null);
+    const [key, setKey] = useState(0);
 
     const verificationUrl = `${appUrl}/verifikasi/${memberId}`;
-    const qrCodeUrl = `${appUrl}/qr-code/${memberId}?t=${cacheKey}`;
 
     const handleDownload = useCallback(() => {
-        const img = imgRef.current;
-        if (!img) return;
+        const wrapper = canvasRef.current;
+        if (!wrapper) return;
 
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        const pngSize = 1024;
-        canvas.width = pngSize;
-        canvas.height = pngSize;
-
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, pngSize, pngSize);
-        ctx.drawImage(img, 0, 0, pngSize, pngSize);
+        const canvas = wrapper.querySelector('canvas');
+        if (!canvas) return;
 
         const link = document.createElement('a');
         link.download = `barcode-tte-${memberId}.png`;
@@ -37,7 +28,7 @@ export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
     }, [memberId]);
 
     const handleRegenerate = useCallback(() => {
-        setCacheKey(Date.now());
+        setKey((prev) => prev + 1);
     }, []);
 
     return (
@@ -76,12 +67,18 @@ export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
 
                         {/* QR Code */}
                         <div className="flex flex-col items-center gap-5 px-6 py-8">
-                            <div className="rounded-xl border border-neutral-100 bg-white p-6 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800">
-                                <img
-                                    ref={imgRef}
-                                    src={qrCodeUrl}
-                                    alt="QR Code Barcode TTE"
-                                    className="block w-full h-auto"
+                            <div
+                                ref={canvasRef}
+                                className="rounded-xl border border-neutral-100 bg-white p-6 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800"
+                            >
+                                <QRCodeCanvas
+                                    key={key}
+                                    value={verificationUrl}
+                                    size={320}
+                                    level="H"
+                                    bgColor="#ffffff"
+                                    fgColor="#000000"
+                                    includeMargin={false}
                                 />
                             </div>
 
