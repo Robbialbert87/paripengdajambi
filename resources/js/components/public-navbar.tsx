@@ -77,6 +77,20 @@ function useIsDesktop() {
     return isDesktop;
 }
 
+function useIsDark() {
+    const [isDark, setIsDark] = useState(() =>
+        typeof document !== 'undefined' ? document.documentElement.classList.contains('dark') : false
+    );
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsDark(document.documentElement.classList.contains('dark'));
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
+    return isDark;
+}
+
 function DropdownMenu({
     item,
     isOpen,
@@ -147,7 +161,7 @@ function DropdownMenu({
                 </svg>
             </button>
             {isOpen && item.dropdown && (
-                <div className="absolute top-full left-0 z-50 mt-2 w-56 rounded-xl border border-yellow-100/40 bg-yellow-50/80 p-2 shadow-lg backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/90">
+                <div className="absolute top-full left-0 z-50 mt-2 w-56 rounded-xl border border-yellow-100/40 bg-yellow-50 p-2 shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800">
                     {item.dropdown.map((subItem) => (
                         <Link
                             key={subItem.href}
@@ -155,8 +169,8 @@ function DropdownMenu({
                             onClick={onClose}
                             className={`block rounded-lg px-3 py-2 text-sm ring-zinc-500 outline-hidden transition duration-300 focus-visible:ring-3 dark:ring-zinc-200 ${
                                 currentUrl === subItem.href
-                                    ? 'bg-yellow-100/60 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
-                                    : 'text-neutral-600 hover:bg-yellow-100/60 hover:text-orange-400 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300'
+                                    ? 'bg-yellow-100 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
+                                    : 'text-neutral-600 hover:bg-yellow-100 hover:text-orange-400 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300'
                             }`}
                         >
                             {subItem.label}
@@ -168,17 +182,57 @@ function DropdownMenu({
     );
 }
 
+function ThemeToggle({ className }: { className?: string }) {
+    const isDark = useIsDark();
+
+    const toggle = useCallback(() => {
+        const html = document.documentElement;
+        html.classList.toggle('dark');
+        localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
+    }, []);
+
+    return (
+        <button
+            type="button"
+            onClick={toggle}
+            className={className}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+            {isDark ? (
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <circle cx="12" cy="12" r="4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" />
+                </svg>
+            ) : (
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            )}
+        </button>
+    );
+}
+
 export default function PublicNavbar() {
     const { auth } = usePage().props as { auth?: { user?: { name: string } } };
     const [mobileOpen, setMobileOpen] = useState(false);
     const [loginOpen, setLoginOpen] = useState(false);
     const currentUrl = usePage().url;
+    const isDark = useIsDark();
     const [openDropdown, setOpenDropdown] = useState<string | null>(() => {
         const active = navItems.find(
             (item) => item.dropdown?.some((sub) => sub.href === currentUrl)
         );
         return active?.label ?? null;
     });
+
+    useEffect(() => {
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileOpen]);
+
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [currentUrl]);
 
     return (
         <header className="sticky inset-x-0 top-4 z-50 flex w-full flex-wrap text-sm md:flex-nowrap md:justify-start">
@@ -222,7 +276,8 @@ export default function PublicNavbar() {
                     </button>
                 </div>
 
-                <div className="hidden grow basis-full transition-all duration-300 md:block">
+                {/* Desktop menu */}
+                <div className="hidden grow basis-full md:block">
                     <div className="mt-5 flex flex-col gap-x-0 gap-y-4 md:mt-0 md:flex-row md:items-center md:justify-end md:gap-x-4 md:gap-y-0 md:ps-7 lg:gap-x-7">
                         {navItems.map((item) =>
                             item.dropdown ? (
@@ -267,31 +322,19 @@ export default function PublicNavbar() {
                             </button>
                         )}
 
-                        <button
-                            type="button"
-                            onClick={() => {
-                                const html = document.documentElement;
-                                html.classList.toggle('dark');
-                                localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
-                            }}
-                            className="hidden md:inline-block"
-                            aria-label="Toggle theme"
-                        >
-                            <svg className="h-5 w-5 text-neutral-600 dark:text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                            </svg>
-                        </button>
+                        <ThemeToggle className="hidden text-neutral-600 md:inline-block dark:text-neutral-400" />
                     </div>
                 </div>
 
+                {/* Mobile menu — absolute overlay */}
                 {mobileOpen && (
-                    <div className="mt-4 border-t border-yellow-100/40 pt-4 dark:border-neutral-700/40 md:hidden">
+                    <div className="absolute left-0 right-0 top-full z-50 mx-2 mt-2 max-h-[75vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800">
                         {navItems.map((item) =>
                             item.dropdown ? (
                                 <div key={item.label} className="py-1">
                                     <button
                                         onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                                        className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-yellow-100/60 dark:hover:bg-neutral-700 ${
+                                        className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-yellow-100 dark:hover:bg-neutral-700 ${
                                             item.dropdown?.some((sub) => currentUrl === sub.href)
                                                 ? 'text-orange-400 dark:text-orange-300'
                                                 : 'text-neutral-600 dark:text-neutral-400'
@@ -315,9 +358,9 @@ export default function PublicNavbar() {
                                                     key={subItem.href}
                                                     href={subItem.href}
                                                     onClick={() => setMobileOpen(false)}
-                                                    className={`block rounded-lg px-3 py-2 text-sm hover:bg-yellow-100/60 hover:text-orange-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300 ${
+                                                    className={`block rounded-lg px-3 py-2 text-sm hover:bg-yellow-100 hover:text-orange-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300 ${
                                                         currentUrl === subItem.href
-                                                            ? 'bg-yellow-100/60 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
+                                                            ? 'bg-yellow-100 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
                                                             : 'text-neutral-600 dark:text-neutral-400'
                                                     }`}
                                                 >
@@ -335,7 +378,7 @@ export default function PublicNavbar() {
                                     className={`block rounded-lg px-3 py-2 text-sm font-medium ${
                                         currentUrl === item.href
                                             ? 'text-orange-400 dark:text-orange-300'
-                                            : 'text-neutral-600 hover:bg-yellow-100/60 dark:text-neutral-400 dark:hover:bg-neutral-700'
+                                            : 'text-neutral-600 hover:bg-yellow-100 dark:text-neutral-400 dark:hover:bg-neutral-700'
                                     }`}
                                 >
                                     {item.label}
@@ -343,7 +386,7 @@ export default function PublicNavbar() {
                             )
                         )}
 
-                        <div className="mt-3 border-t border-yellow-100/40 pt-3 dark:border-neutral-700/40">
+                        <div className="mt-3 border-t border-yellow-100 pt-3 dark:border-neutral-700">
                             <button
                                 type="button"
                                 onClick={() => {
@@ -351,18 +394,25 @@ export default function PublicNavbar() {
                                     html.classList.toggle('dark');
                                     localStorage.setItem('hs_theme', html.classList.contains('dark') ? 'dark' : 'default');
                                 }}
-                                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 hover:bg-yellow-100/60 dark:text-neutral-400 dark:hover:bg-neutral-700"
+                                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 hover:bg-yellow-100 dark:text-neutral-400 dark:hover:bg-neutral-700"
                             >
-                                <span>Mode Gelap</span>
-                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
+                                <span>{isDark ? 'Mode Terang' : 'Mode Gelap'}</span>
+                                {isDark ? (
+                                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <circle cx="12" cy="12" r="4" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" />
+                                    </svg>
+                                ) : (
+                                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                )}
                             </button>
                             {auth?.user ? (
                                 <Link
                                     href="/dashboard"
                                     onClick={() => setMobileOpen(false)}
-                                    className="block w-full rounded-lg bg-orange-400 px-4 py-2.5 text-center text-sm font-bold text-neutral-50 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                    className="mt-1 block w-full rounded-lg bg-orange-400 px-4 py-2.5 text-center text-sm font-bold text-neutral-50 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
                                 >
                                     Dashboard
                                 </Link>
@@ -370,7 +420,7 @@ export default function PublicNavbar() {
                                 <button
                                     type="button"
                                     onClick={() => { setLoginOpen(true); setMobileOpen(false); }}
-                                    className="block w-full rounded-lg bg-orange-400 px-4 py-2.5 text-center text-sm font-bold text-neutral-50 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                    className="mt-1 block w-full rounded-lg bg-orange-400 px-4 py-2.5 text-center text-sm font-bold text-neutral-50 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
                                 >
                                     Login
                                 </button>
