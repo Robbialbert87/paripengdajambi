@@ -267,13 +267,13 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
                 {/* QR Preview Modal */}
                 {previewRecord && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setPreviewRecord(null)}>
-                        <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-yellow-100/40 bg-white shadow-2xl dark:border-neutral-700/40 dark:bg-neutral-900" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-center justify-between bg-gradient-to-r from-orange-400 to-orange-500 px-6 py-4 dark:from-orange-500 dark:to-orange-600">
+                        <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-yellow-100/40 bg-white shadow-2xl dark:border-neutral-700/40 dark:bg-neutral-900" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-between bg-gradient-to-r from-orange-400 to-orange-500 px-4 py-3 dark:from-orange-500 dark:to-orange-600">
                                 <div>
-                                    <h2 className="text-sm font-bold tracking-wide text-white">
+                                    <h2 className="text-xs font-bold tracking-wide text-white">
                                         BARCODE TANDA TANGAN ELEKTRONIK
                                     </h2>
-                                    <p className="mt-0.5 text-xs text-white/80">
+                                    <p className="mt-0.5 text-[10px] text-white/80">
                                         PARI Pengda Provinsi Jambi
                                     </p>
                                 </div>
@@ -282,19 +282,19 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
                                     onClick={() => setPreviewRecord(null)}
                                     className="rounded-lg p-1 text-white/70 hover:bg-white/20 hover:text-white"
                                 >
-                                    <X className="size-5" />
+                                    <X className="size-4" />
                                 </button>
                             </div>
 
-                            <div className="flex flex-col items-center gap-5 px-6 py-8">
+                            <div className="flex flex-col items-center gap-4 px-5 py-6">
                                 <div
                                     ref={canvasRef}
-                                    className="rounded-xl border border-neutral-100 bg-white p-6 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800"
+                                    className="rounded-lg border border-neutral-100 bg-white p-4 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800"
                                 >
                                     <QRCodeCanvas
                                         key={key}
                                         value={previewUrl}
-                                        size={320}
+                                        size={200}
                                         level="H"
                                         bgColor="#ffffff"
                                         fgColor="#000000"
@@ -303,48 +303,48 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
                                 </div>
 
                                 <div className="text-center">
-                                    <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                                    <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
                                         Nomor Anggota
                                     </p>
-                                    <p className="mt-0.5 text-lg font-bold text-neutral-800 dark:text-neutral-200">
+                                    <p className="mt-0.5 text-base font-bold text-neutral-800 dark:text-neutral-200">
                                         {previewRecord.nomor_anggota}
                                     </p>
-                                    <p className="mt-1 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                                    <p className="mt-0.5 text-xs font-medium text-neutral-600 dark:text-neutral-400">
                                         {previewRecord.nama_lengkap}
                                     </p>
                                 </div>
 
-                                <div className="flex w-full flex-col gap-3">
+                                <div className="flex w-full flex-col gap-2">
                                     <button
                                         type="button"
                                         onClick={handleDownload}
-                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-transparent bg-orange-400 px-4 py-3 text-sm font-bold text-neutral-50 transition duration-300 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-3 py-2 text-xs font-bold text-neutral-50 transition duration-300 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
                                     >
-                                        <Download className="size-4" />
+                                        <Download className="size-3.5" />
                                         Download PNG
                                     </button>
                                     <button
                                         type="button"
                                         onClick={handleRegenerate}
-                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-yellow-100/40 bg-white/50 px-3 py-2 text-xs font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
                                     >
-                                        <RefreshCw className="size-4" />
+                                        <RefreshCw className="size-3.5" />
                                         Generate Ulang
                                     </button>
                                     <a
                                         href={previewUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-yellow-100/40 bg-white/50 px-3 py-2 text-xs font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
                                     >
-                                        <ExternalLink className="size-4" />
-                                        Lihat Halaman Verifikasi
+                                        <ExternalLink className="size-3.5" />
+                                        Lihat Verifikasi
                                     </a>
                                 </div>
                             </div>
 
-                            <div className="border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
-                                <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+                            <div className="border-t border-neutral-100 bg-neutral-50 px-5 py-2 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
+                                <p className="text-[10px] font-medium text-neutral-500 dark:text-neutral-400">
                                     {previewUrl}
                                 </p>
                             </div>
