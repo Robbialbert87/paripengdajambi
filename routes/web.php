@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QrCodeController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -41,9 +42,16 @@ Route::prefix('informasi')->group(function () {
     Route::inertia('edukasi', 'informasi/edukasi')->name('informasi.edukasi');
 });
 
+Route::get('qr-code/{id}', QrCodeController::class)->name('qr-code');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
-    Route::inertia('dashboard/barcode-tte', 'dashboard/barcode-tte')->name('dashboard.barcode-tte');
+    Route::get('dashboard/barcode-tte', function () {
+        return inertia('dashboard/barcode-tte', [
+            'appUrl' => config('app.url'),
+            'memberId' => '1571041103019',
+        ]);
+    })->name('dashboard.barcode-tte');
 });
 
 Route::inertia('verifikasi/{id}', 'verifikasi')->name('verifikasi');

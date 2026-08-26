@@ -2,11 +2,16 @@ import { Head } from '@inertiajs/react';
 import { useRef, useCallback } from 'react';
 import { Download, ExternalLink, Barcode } from 'lucide-react';
 
-const VERIFICATION_URL = 'http://paripengdajambi.test/verifikasi/1571041103019';
-const MEMBER_ID = '1571041103019';
+interface BarcodeTteProps {
+    appUrl: string;
+    memberId: string;
+}
 
-export default function BarcodeTtePage() {
+export default function BarcodeTtePage({ appUrl, memberId }: BarcodeTteProps) {
     const imgRef = useRef<HTMLImageElement>(null);
+
+    const qrCodeUrl = `${appUrl}/qr-code/${memberId}`;
+    const verificationUrl = `${appUrl}/verifikasi/${memberId}`;
 
     const handleDownload = useCallback(() => {
         const img = imgRef.current;
@@ -25,10 +30,10 @@ export default function BarcodeTtePage() {
         ctx.drawImage(img, 0, 0, pngSize, pngSize);
 
         const link = document.createElement('a');
-        link.download = `barcode-tte-${MEMBER_ID}.png`;
+        link.download = `barcode-tte-${memberId}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
-    }, []);
+    }, [memberId]);
 
     return (
         <>
@@ -69,7 +74,7 @@ export default function BarcodeTtePage() {
                             <div className="rounded-xl border border-neutral-100 bg-white p-6 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800">
                                 <img
                                     ref={imgRef}
-                                    src="/qr-code.png"
+                                    src={qrCodeUrl}
                                     alt="QR Code Barcode TTE"
                                     className="block w-full h-auto"
                                 />
@@ -80,7 +85,7 @@ export default function BarcodeTtePage() {
                                     Nomor Anggota
                                 </p>
                                 <p className="mt-0.5 text-lg font-bold text-neutral-800 dark:text-neutral-200">
-                                    {MEMBER_ID}
+                                    {memberId}
                                 </p>
                             </div>
 
@@ -96,7 +101,7 @@ export default function BarcodeTtePage() {
                                 </button>
 
                                 <a
-                                    href={VERIFICATION_URL}
+                                    href={verificationUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 ring-zinc-500 transition duration-300 hover:bg-yellow-100/60 focus-visible:ring-3 outline-hidden dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:outline-hidden dark:ring-zinc-200"
@@ -110,7 +115,7 @@ export default function BarcodeTtePage() {
                         {/* Footer */}
                         <div className="border-t border-yellow-100/40 bg-yellow-100/20 px-6 py-3 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
                             <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
-                                {VERIFICATION_URL}
+                                {verificationUrl}
                             </p>
                         </div>
                     </div>
