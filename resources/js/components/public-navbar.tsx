@@ -218,6 +218,7 @@ export default function PublicNavbar() {
     const [loginOpen, setLoginOpen] = useState(false);
     const currentUrl = usePage().url;
     const isDark = useIsDark();
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
     const [openDropdown, setOpenDropdown] = useState<string | null>(() => {
         const active = navItems.find(
             (item) => item.dropdown?.some((sub) => sub.href === currentUrl)
@@ -233,6 +234,28 @@ export default function PublicNavbar() {
     useEffect(() => {
         setMobileOpen(false);
     }, [currentUrl]);
+
+    // Click outside mobile menu to close
+    useEffect(() => {
+        if (!mobileOpen) return;
+        function handleClickOutside(e: MouseEvent) {
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
+                setMobileOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [mobileOpen]);
+
+    // Reset dropdown when mobile menu closes
+    useEffect(() => {
+        if (!mobileOpen) {
+            const active = navItems.find(
+                (item) => item.dropdown?.some((sub) => sub.href === currentUrl)
+            );
+            setOpenDropdown(active?.label ?? null);
+        }
+    }, [mobileOpen, currentUrl]);
 
     return (
         <header className="sticky inset-x-0 top-4 z-50 flex w-full flex-wrap text-sm md:flex-nowrap md:justify-start">
@@ -328,7 +351,7 @@ export default function PublicNavbar() {
 
                 {/* Mobile menu — absolute overlay */}
                 {mobileOpen && (
-                    <div className="absolute left-0 right-0 top-full z-50 mx-2 mt-2 max-h-[75vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800">
+                    <div ref={mobileMenuRef} className="absolute left-0 right-0 top-full z-50 mx-2 mt-2 max-h-[75vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800">
                         {navItems.map((item) =>
                             item.dropdown ? (
                                 <div key={item.label} className="py-1">
