@@ -264,10 +264,10 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
                     </div>
                 </div>
 
-                {/* QR Preview - only shows when previewRecord is set */}
+                {/* QR Preview Modal */}
                 {previewRecord && (
-                    <div className="flex justify-center">
-                        <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-yellow-100/40 bg-yellow-50/80 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setPreviewRecord(null)}>
+                        <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-yellow-100/40 bg-white shadow-2xl dark:border-neutral-700/40 dark:bg-neutral-900" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center justify-between bg-gradient-to-r from-orange-400 to-orange-500 px-6 py-4 dark:from-orange-500 dark:to-orange-600">
                                 <div>
                                     <h2 className="text-sm font-bold tracking-wide text-white">
@@ -343,7 +343,7 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
                                 </div>
                             </div>
 
-                            <div className="border-t border-yellow-100/40 bg-yellow-100/20 px-6 py-3 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
+                            <div className="border-t border-neutral-100 bg-neutral-50 px-6 py-3 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
                                 <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
                                     {previewUrl}
                                 </p>
