@@ -359,7 +359,7 @@ export default function PublicNavbar() {
                                         onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
                                         className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-yellow-100 dark:hover:bg-neutral-700 ${
                                             item.dropdown?.some((sub) => currentUrl === sub.href)
-                                                ? 'text-orange-400 dark:text-orange-300'
+                                                ? 'bg-orange-400/10 text-orange-400 dark:bg-orange-400/10 dark:text-orange-300'
                                                 : 'text-neutral-600 dark:text-neutral-400'
                                         }`}
                                     >
@@ -380,7 +380,6 @@ export default function PublicNavbar() {
                                                 <Link
                                                     key={subItem.href}
                                                     href={subItem.href}
-                                                    onClick={() => setMobileOpen(false)}
                                                     className={`block rounded-lg px-3 py-2 text-sm hover:bg-yellow-100 hover:text-orange-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300 ${
                                                         currentUrl === subItem.href
                                                             ? 'bg-yellow-100 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
@@ -397,10 +396,9 @@ export default function PublicNavbar() {
                                 <Link
                                     key={item.href}
                                     href={item.href!}
-                                    onClick={() => setMobileOpen(false)}
                                     className={`block rounded-lg px-3 py-2 text-sm font-medium ${
                                         currentUrl === item.href
-                                            ? 'text-orange-400 dark:text-orange-300'
+                                            ? 'bg-orange-400/10 text-orange-400 dark:bg-orange-400/10 dark:text-orange-300'
                                             : 'text-neutral-600 hover:bg-yellow-100 dark:text-neutral-400 dark:hover:bg-neutral-700'
                                     }`}
                                 >
@@ -434,7 +432,6 @@ export default function PublicNavbar() {
                             {auth?.user ? (
                                 <Link
                                     href="/dashboard"
-                                    onClick={() => setMobileOpen(false)}
                                     className="mt-1 block w-full rounded-lg bg-orange-400 px-4 py-2.5 text-center text-sm font-bold text-neutral-50 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
                                 >
                                     Dashboard
