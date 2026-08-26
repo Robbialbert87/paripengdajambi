@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { ShieldCheck, BadgeCheck, Calendar, User, Briefcase, Hash, FileCheck, Printer } from 'lucide-react';
+import { ShieldCheck, BadgeCheck, Calendar, User, Briefcase, Hash, FileCheck } from 'lucide-react';
 
 export default function Verifikasi() {
     return (
@@ -107,19 +107,7 @@ export default function Verifikasi() {
                         </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="border-t border-neutral-100 bg-neutral-50/80 px-6 py-4 dark:border-neutral-700/40 dark:bg-neutral-800/40">
-                        <div className="flex justify-center">
-                            <button
-                                type="button"
-                                onClick={() => window.print()}
-                                className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-600 transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
-                            >
-                                <Printer className="size-3.5" />
-                                Cetak
-                            </button>
-                        </div>
-                    </div>
+
                 </div>
 
                 {/* Disclaimer */}
