@@ -1,6 +1,6 @@
-import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useRef, useCallback, useState } from 'react';
-import { Download, ExternalLink, Barcode, RefreshCw, Plus, Pencil, Trash2, CheckCircle, XCircle, Clock, X } from 'lucide-react';
+import { Download, ExternalLink, Barcode, RefreshCw, Plus, Pencil, Trash2, CheckCircle, XCircle, Clock, X, Eye } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 
 interface TteRecord {
@@ -177,9 +177,10 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
     const [key, setKey] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [editRecord, setEditRecord] = useState<TteRecord | null>(null);
+    const [previewRecord, setPreviewRecord] = useState<TteRecord | null>(null);
 
-    const verificationUrl = activeRecord
-        ? `${appUrl}/verifikasi/${activeRecord.nomor_anggota}`
+    const previewUrl = previewRecord
+        ? `${appUrl}/verifikasi/${previewRecord.nomor_anggota}`
         : '';
 
     const handleDownload = useCallback(() => {
@@ -188,10 +189,10 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
         const canvas = wrapper.querySelector('canvas');
         if (!canvas) return;
         const link = document.createElement('a');
-        link.download = `barcode-tte-${activeRecord?.nomor_anggota || 'unknown'}.png`;
+        link.download = `barcode-tte-${previewRecord?.nomor_anggota || 'unknown'}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
-    }, [activeRecord]);
+    }, [previewRecord]);
 
     const handleRegenerate = useCallback(() => {
         setKey((prev) => prev + 1);
@@ -263,181 +264,180 @@ export default function BarcodeTtePage({ records, activeRecord, appUrl }: Barcod
                     </div>
                 </div>
 
-                <div className="grid gap-6 xl:grid-cols-3">
-                    {/* QR Code Section */}
-                    <div className="xl:col-span-1">
-                        <div className="sticky top-6 overflow-hidden rounded-2xl border border-yellow-100/40 bg-yellow-50/80 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
-                            <div className="bg-gradient-to-r from-orange-400 to-orange-500 px-6 py-4 text-center dark:from-orange-500 dark:to-orange-600">
-                                <h2 className="text-sm font-bold tracking-wide text-white">
-                                    BARCODE TANDA TANGAN ELEKTRONIK
-                                </h2>
-                                <p className="mt-0.5 text-xs text-white/80">
-                                    PARI Pengda Provinsi Jambi
-                                </p>
+                {/* QR Preview - only shows when previewRecord is set */}
+                {previewRecord && (
+                    <div className="flex justify-center">
+                        <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-yellow-100/40 bg-yellow-50/80 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
+                            <div className="flex items-center justify-between bg-gradient-to-r from-orange-400 to-orange-500 px-6 py-4 dark:from-orange-500 dark:to-orange-600">
+                                <div>
+                                    <h2 className="text-sm font-bold tracking-wide text-white">
+                                        BARCODE TANDA TANGAN ELEKTRONIK
+                                    </h2>
+                                    <p className="mt-0.5 text-xs text-white/80">
+                                        PARI Pengda Provinsi Jambi
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setPreviewRecord(null)}
+                                    className="rounded-lg p-1 text-white/70 hover:bg-white/20 hover:text-white"
+                                >
+                                    <X className="size-5" />
+                                </button>
                             </div>
 
                             <div className="flex flex-col items-center gap-5 px-6 py-8">
-                                {activeRecord ? (
-                                    <>
-                                        <div
-                                            ref={canvasRef}
-                                            className="rounded-xl border border-neutral-100 bg-white p-6 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800"
-                                        >
-                                            <QRCodeCanvas
-                                                key={key}
-                                                value={verificationUrl}
-                                                size={320}
-                                                level="H"
-                                                bgColor="#ffffff"
-                                                fgColor="#000000"
-                                                includeMargin={false}
-                                            />
-                                        </div>
+                                <div
+                                    ref={canvasRef}
+                                    className="rounded-xl border border-neutral-100 bg-white p-6 shadow-sm dark:border-neutral-700/40 dark:bg-neutral-800"
+                                >
+                                    <QRCodeCanvas
+                                        key={key}
+                                        value={previewUrl}
+                                        size={320}
+                                        level="H"
+                                        bgColor="#ffffff"
+                                        fgColor="#000000"
+                                        includeMargin={false}
+                                    />
+                                </div>
 
-                                        <div className="text-center">
-                                            <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                                                Nomor Anggota
-                                            </p>
-                                            <p className="mt-0.5 text-lg font-bold text-neutral-800 dark:text-neutral-200">
-                                                {activeRecord.nomor_anggota}
-                                            </p>
-                                            <p className="mt-1 text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                                                {activeRecord.nama_lengkap}
-                                            </p>
-                                        </div>
-
-                                        <div className="flex w-full flex-col gap-3">
-                                            <button
-                                                type="button"
-                                                onClick={handleDownload}
-                                                className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-transparent bg-orange-400 px-4 py-3 text-sm font-bold text-neutral-50 transition duration-300 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
-                                            >
-                                                <Download className="size-4" />
-                                                Download PNG
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={handleRegenerate}
-                                                className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
-                                            >
-                                                <RefreshCw className="size-4" />
-                                                Generate Ulang
-                                            </button>
-                                            <a
-                                                href={verificationUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
-                                            >
-                                                <ExternalLink className="size-4" />
-                                                Lihat Halaman Verifikasi
-                                            </a>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="py-8 text-center">
-                                        <Barcode className="mx-auto size-12 text-neutral-300 dark:text-neutral-600" />
-                                        <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400">
-                                            Belum ada record aktif.
-                                        </p>
-                                        <p className="mt-1 text-xs text-neutral-400 dark:text-neutral-500">
-                                            Klik "Tambah Record" untuk membuat barcode baru.
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-
-                            {activeRecord && (
-                                <div className="border-t border-yellow-100/40 bg-yellow-100/20 px-6 py-3 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
-                                    <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
-                                        {verificationUrl}
+                                <div className="text-center">
+                                    <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                                        Nomor Anggota
+                                    </p>
+                                    <p className="mt-0.5 text-lg font-bold text-neutral-800 dark:text-neutral-200">
+                                        {previewRecord.nomor_anggota}
+                                    </p>
+                                    <p className="mt-1 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                                        {previewRecord.nama_lengkap}
                                     </p>
                                 </div>
-                            )}
-                        </div>
-                    </div>
 
-                    {/* Records Table */}
-                    <div className="xl:col-span-2">
-                        <div className="overflow-hidden rounded-2xl border border-yellow-100/40 bg-yellow-50/80 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
-                            <div className="border-b border-yellow-100/40 px-6 py-4 dark:border-neutral-700/40">
-                                <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
-                                    Daftar Record TTE
-                                </h2>
-                                <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
-                                    {records.length} record ditemukan
+                                <div className="flex w-full flex-col gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={handleDownload}
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-transparent bg-orange-400 px-4 py-3 text-sm font-bold text-neutral-50 transition duration-300 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                    >
+                                        <Download className="size-4" />
+                                        Download PNG
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleRegenerate}
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                                    >
+                                        <RefreshCw className="size-4" />
+                                        Generate Ulang
+                                    </button>
+                                    <a
+                                        href={previewUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-yellow-100/40 bg-white/50 px-4 py-3 text-sm font-bold text-neutral-700 transition duration-300 hover:bg-yellow-100/60 dark:border-neutral-700/40 dark:bg-neutral-700/30 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                                    >
+                                        <ExternalLink className="size-4" />
+                                        Lihat Halaman Verifikasi
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="border-t border-yellow-100/40 bg-yellow-100/20 px-6 py-3 text-center dark:border-neutral-700/40 dark:bg-neutral-800/40">
+                                <p className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+                                    {previewUrl}
                                 </p>
                             </div>
+                        </div>
+                    </div>
+                )}
 
-                            {records.length === 0 ? (
-                                <div className="px-6 py-12 text-center">
-                                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                                        Belum ada record TTE.
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="divide-y divide-neutral-100 dark:divide-neutral-700/40">
-                                    {records.map((record) => (
-                                        <div
-                                            key={record.id}
-                                            className={`px-6 py-4 transition hover:bg-yellow-100/30 dark:hover:bg-neutral-700/20 ${
-                                                record.is_active ? 'bg-green-50/50 dark:bg-green-900/10' : ''
-                                            }`}
-                                        >
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div className="min-w-0 flex-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <h3 className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
-                                                            {record.nama_lengkap}
-                                                        </h3>
-                                                        {statusBadge(record.status)}
-                                                    </div>
-                                                    <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
-                                                        ID: {record.nomor_anggota}
-                                                    </p>
-                                                    <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
-                                                        {record.jabatan}
-                                                    </p>
-                                                    <p className="mt-1 text-xs font-medium text-neutral-600 dark:text-neutral-300">
-                                                        Masa Berlaku: {record.tahun_mulai} – {record.tahun_selesai}
-                                                    </p>
+                {/* Records Table */}
+                <div>
+                    <div className="overflow-hidden rounded-2xl border border-yellow-100/40 bg-yellow-50/80 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
+                        <div className="border-b border-yellow-100/40 px-6 py-4 dark:border-neutral-700/40">
+                            <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
+                                Daftar Record TTE
+                            </h2>
+                            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+                                {records.length} record ditemukan
+                            </p>
+                        </div>
+
+                        {records.length === 0 ? (
+                            <div className="px-6 py-12 text-center">
+                                <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                                    Belum ada record TTE.
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="divide-y divide-neutral-100 dark:divide-neutral-700/40">
+                                {records.map((record) => (
+                                    <div
+                                        key={record.id}
+                                        className={`px-6 py-4 transition hover:bg-yellow-100/30 dark:hover:bg-neutral-700/20 ${
+                                            record.is_active ? 'bg-green-50/50 dark:bg-green-900/10' : ''
+                                        }`}
+                                    >
+                                        <div className="flex items-start justify-between gap-4">
+                                            <div className="min-w-0 flex-1">
+                                                <div className="flex items-center gap-2">
+                                                    <h3 className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+                                                        {record.nama_lengkap}
+                                                    </h3>
+                                                    {statusBadge(record.status)}
                                                 </div>
-                                                <div className="flex shrink-0 items-center gap-2">
-                                                    {!record.is_active && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleActivate(record.id)}
-                                                            className="rounded-lg border border-green-200 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700 transition hover:bg-green-100 dark:border-green-800/50 dark:bg-green-900/20 dark:text-green-400"
-                                                            title="Set sebagai aktif"
-                                                        >
-                                                            <CheckCircle className="size-3.5" />
-                                                        </button>
-                                                    )}
+                                                <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+                                                    ID: {record.nomor_anggota}
+                                                </p>
+                                                <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+                                                    {record.jabatan}
+                                                </p>
+                                                <p className="mt-1 text-xs font-medium text-neutral-600 dark:text-neutral-300">
+                                                    Masa Berlaku: {record.tahun_mulai} – {record.tahun_selesai}
+                                                </p>
+                                            </div>
+                                            <div className="flex shrink-0 items-center gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setPreviewRecord(record)}
+                                                    className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:bg-blue-100 dark:border-blue-800/50 dark:bg-blue-900/20 dark:text-blue-400"
+                                                    title="Preview Barcode"
+                                                >
+                                                    <Eye className="size-3.5" />
+                                                </button>
+                                                {!record.is_active && (
                                                     <button
                                                         type="button"
-                                                        onClick={() => { setEditRecord(record); setShowForm(true); }}
-                                                        className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
-                                                        title="Edit"
+                                                        onClick={() => handleActivate(record.id)}
+                                                        className="rounded-lg border border-green-200 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700 transition hover:bg-green-100 dark:border-green-800/50 dark:bg-green-900/20 dark:text-green-400"
+                                                        title="Set sebagai aktif"
                                                     >
-                                                        <Pencil className="size-3.5" />
+                                                        <CheckCircle className="size-3.5" />
                                                     </button>
-                                                    {!record.is_active && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleDelete(record.id)}
-                                                            className="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-100 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-400"
-                                                            title="Hapus"
-                                                        >
-                                                            <Trash2 className="size-3.5" />
-                                                        </button>
-                                                    )}
-                                                </div>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => { setEditRecord(record); setShowForm(true); }}
+                                                    className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+                                                    title="Edit"
+                                                >
+                                                    <Pencil className="size-3.5" />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleDelete(record.id)}
+                                                    className="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-100 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-400"
+                                                    title="Hapus"
+                                                >
+                                                    <Trash2 className="size-3.5" />
+                                                </button>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

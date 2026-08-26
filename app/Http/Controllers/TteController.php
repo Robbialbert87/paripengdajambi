@@ -68,10 +68,6 @@ class TteController extends Controller
 
     public function destroy(TteRecord $tteRecord)
     {
-        if ($tteRecord->is_active) {
-            return redirect()->back()->with('error', 'Tidak bisa menghapus record yang sedang aktif.');
-        }
-
         $tteRecord->delete();
 
         return redirect()->back()->with('success', 'Record TTE berhasil dihapus.');
