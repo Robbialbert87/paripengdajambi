@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import LoginModal from '@/components/login-modal';
 
@@ -354,14 +354,12 @@ export default function PublicNavbar() {
                     <div
                         className="fixed inset-0 z-50 bg-black/30 md:hidden"
                         onClick={() => setMobileOpen(false)}
-                        onTouchEnd={() => setMobileOpen(false)}
                         style={{ touchAction: 'manipulation' }}
                     />
                     {/* Menu panel */}
                     <div
                         ref={mobileMenuRef}
                         className="fixed left-2 right-2 top-[72px] z-[60] max-h-[70vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800"
-                        style={{ WebkitOverflowScrolling: 'touch' }}
                     >
                         {navItems.map((item) =>
                             item.dropdown ? (
@@ -388,33 +386,35 @@ export default function PublicNavbar() {
                                     {openDropdown === item.label && (
                                         <div className="ml-4 mt-1 space-y-1">
                                             {item.dropdown.map((subItem) => (
-                                                <Link
+                                                <button
                                                     key={subItem.href}
-                                                    href={subItem.href}
-                                                    className={`block rounded-lg px-3 py-2 text-sm hover:bg-yellow-100 hover:text-orange-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300 ${
+                                                    type="button"
+                                                    onClick={() => { router.visit(subItem.href); setMobileOpen(false); }}
+                                                    className={`w-full text-left rounded-lg px-3 py-2 text-sm hover:bg-yellow-100 hover:text-orange-400 dark:hover:bg-neutral-700 dark:hover:text-orange-300 ${
                                                         currentUrl === subItem.href
                                                             ? 'bg-yellow-100 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
                                                             : 'text-neutral-600 dark:text-neutral-400'
                                                     }`}
                                                 >
                                                     {subItem.label}
-                                                </Link>
+                                                </button>
                                             ))}
                                         </div>
                                     )}
                                 </div>
                             ) : (
-                                <Link
+                                <button
                                     key={item.href}
-                                    href={item.href!}
-                                    className={`block rounded-lg px-3 py-2 text-sm font-medium ${
+                                    type="button"
+                                    onClick={() => { router.visit(item.href!); setMobileOpen(false); }}
+                                    className={`block w-full text-left rounded-lg px-3 py-2 text-sm font-medium ${
                                         currentUrl === item.href
                                             ? 'bg-orange-400/10 text-orange-400 dark:bg-orange-400/10 dark:text-orange-300'
                                             : 'text-neutral-600 hover:bg-yellow-100 dark:text-neutral-400 dark:hover:bg-neutral-700'
                                     }`}
                                 >
                                     {item.label}
-                                </Link>
+                                </button>
                             )
                         )}
 
@@ -441,12 +441,13 @@ export default function PublicNavbar() {
                                 )}
                             </button>
                             {auth?.user ? (
-                                <Link
-                                    href="/dashboard"
+                                <button
+                                    type="button"
+                                    onClick={() => { router.visit('/dashboard'); setMobileOpen(false); }}
                                     className="mt-1 block w-full rounded-lg bg-orange-400 px-4 py-2.5 text-center text-sm font-bold text-neutral-50 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
                                 >
                                     Dashboard
-                                </Link>
+                                </button>
                             ) : (
                                 <button
                                     type="button"
