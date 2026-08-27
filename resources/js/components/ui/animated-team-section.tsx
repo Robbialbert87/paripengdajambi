@@ -2,6 +2,7 @@ import * as React from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface TeamMember {
     name: string;
@@ -41,6 +42,7 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
         const controls = useAnimation();
         const [inViewRef, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
         const spacing = useResponsiveSpacing();
+        const isMobile = useIsMobile();
 
         React.useEffect(() => {
             if (inView) controls.start('visible');
@@ -61,7 +63,7 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
             visible: { transition: { staggerChildren: 0.08 } },
         };
 
-        const itemVariants = {
+        const fanItemVariants = {
             hidden: { opacity: 0, scale: 0.5, x: 0, y: 0, rotate: 0 },
             visible: (i: number) => ({
                 opacity: 1,
@@ -72,6 +74,32 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                 transition: { type: 'spring', stiffness: 120, damping: 12 },
             }),
         };
+
+        const bandItemVariants = {
+            hidden: { opacity: 0, scale: 0.5, y: 20 },
+            visible: {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                transition: { type: 'spring', stiffness: 120, damping: 12 },
+            },
+        };
+
+        const renderCardContent = (member: TeamMember, initialsClass: string, nameClass: string) => (
+            <>
+                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
+                    <span className={cn('font-bold text-white', initialsClass)}>
+                        {member.initials}
+                    </span>
+                </div>
+
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-2 py-2">
+                    <p className={cn('font-semibold leading-tight text-white', nameClass)}>
+                        {member.name}
+                    </p>
+                </div>
+            </>
+        );
 
         return (
             <section ref={ref} className={cn('w-full py-12 lg:py-16 overflow-hidden', className)} {...props}>
@@ -86,51 +114,66 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                         </p>
                     )}
 
-                    {/* Fan Layout Container */}
-                    <motion.div
-                        ref={inViewRef}
-                        className="relative mt-12 flex items-center justify-center sm:mt-16"
-                        style={{ minHeight: '220px' }}
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate={controls}
-                    >
-                        {members.map((member, index) => {
-                            const centerIndex = (members.length - 1) / 2;
-                            const dist = Math.abs(index - centerIndex);
-                            const maxDist = centerIndex;
-                            const zIndex = members.length - dist;
+                    {isMobile ? (
+                        /* ── Mobile: Swipeable Band ──────────────────── */
+                        <motion.div
+                            ref={inViewRef}
+                            className="relative mt-8 w-full"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate={controls}
+                        >
+                            <div className="ml-auto mr-auto flex w-full gap-4 overflow-x-auto scroll-smooth px-8 pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+                                {members.map((member) => (
+                                    <motion.div
+                                        key={member.name}
+                                        variants={bandItemVariants}
+                                        className="relative w-44 shrink-0 snap-center overflow-hidden rounded-xl shadow-lg border-2 border-yellow-100/60 dark:border-neutral-600/60"
+                                    >
+                                        <div className="h-44">
+                                            {renderCardContent(member, 'text-2xl', 'text-xs')}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                            <p className="mt-1 text-[11px] text-neutral-400 dark:text-neutral-500">
+                                Geser untuk melihat semua
+                            </p>
+                        </motion.div>
+                    ) : (
+                        /* ── Desktop/Tablet: Fan Layout ──────────────── */
+                        <motion.div
+                            ref={inViewRef}
+                            className="relative mt-12 flex items-center justify-center sm:mt-16"
+                            style={{ minHeight: '220px' }}
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate={controls}
+                        >
+                            {members.map((member, index) => {
+                                const centerIndex = (members.length - 1) / 2;
+                                const dist = Math.abs(index - centerIndex);
+                                const zIndex = members.length - dist;
 
-                            return (
-                                <motion.div
-                                    key={member.name}
-                                    className="absolute w-20 h-20 sm:w-28 sm:h-28 lg:w-36 lg:h-36 rounded-xl overflow-hidden shadow-lg border-2 border-yellow-100/60 dark:border-neutral-600/60"
-                                    custom={index}
-                                    variants={itemVariants}
-                                    style={{ zIndex }}
-                                    whileHover={{
-                                        scale: 1.15,
-                                        zIndex: 99,
-                                        transition: { type: 'spring', stiffness: 300, damping: 20 },
-                                    }}
-                                >
-                                    {/* Avatar with initials */}
-                                    <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center dark:from-orange-500 dark:to-orange-600">
-                                        <span className="text-white font-bold text-base sm:text-xl lg:text-2xl">
-                                            {member.initials}
-                                        </span>
-                                    </div>
-
-                                    {/* Name label */}
-                                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-1 py-1.5 sm:px-2 sm:py-2">
-                                        <p className="text-[8px] font-semibold leading-tight text-white sm:text-[10px] lg:text-xs">
-                                            {member.name}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
-                    </motion.div>
+                                return (
+                                    <motion.div
+                                        key={member.name}
+                                        className="absolute h-20 w-20 overflow-hidden rounded-xl shadow-lg border-2 border-yellow-100/60 dark:border-neutral-600/60 sm:h-28 sm:w-28 lg:h-36 lg:w-36"
+                                        custom={index}
+                                        variants={fanItemVariants}
+                                        style={{ zIndex }}
+                                        whileHover={{
+                                            scale: 1.15,
+                                            zIndex: 99,
+                                            transition: { type: 'spring', stiffness: 300, damping: 20 },
+                                        }}
+                                    >
+                                        {renderCardContent(member, 'text-base sm:text-xl lg:text-2xl', 'text-[8px] sm:text-[10px] lg:text-xs')}
+                                    </motion.div>
+                                );
+                            })}
+                        </motion.div>
+                    )}
                 </div>
             </section>
         );
