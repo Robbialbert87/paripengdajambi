@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import { AnimatedTeamSection } from '@/components/ui/animated-team-section';
+import { DepartmentSection } from '@/components/ui/department-section';
 import {
     ClipboardList,
     Scale,
@@ -183,72 +184,6 @@ function ChairmanCard() {
     );
 }
 
-function MemberRow({ person, index }: { person: Person; index: number }) {
-    return (
-        <div className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-yellow-50/80 dark:hover:bg-neutral-700/30">
-            <Avatar person={person} size="sm" />
-            <p className="min-w-0 text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                {person.name}
-            </p>
-        </div>
-    );
-}
-
-function DepartmentCard({ dept, index }: { dept: Department; index: number }) {
-    const Icon = dept.icon;
-    return (
-        <div
-            className="group flex flex-col rounded-xl border border-yellow-100/40 bg-yellow-50/60 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800/80"
-            style={{ animationDelay: `${index * 80}ms` }}
-        >
-            {/* Header */}
-            <div className="flex items-center gap-3 border-b border-yellow-100/40 px-4 py-3 dark:border-neutral-700/40">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30">
-                    <Icon className="size-4 text-orange-500 dark:text-orange-400" />
-                </div>
-                <h4 className="text-sm font-bold leading-tight text-neutral-800 dark:text-neutral-200">
-                    {dept.name}
-                </h4>
-            </div>
-
-            {/* Body */}
-            <div className="flex-1 p-4">
-                {/* Ketua */}
-                {dept.chairman && (
-                    <div className="mb-3">
-                        <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-orange-400">
-                            Ketua
-                        </p>
-                        <div className="flex items-center gap-2.5 rounded-lg bg-orange-50/60 px-3 py-2 dark:bg-orange-900/10">
-                            <Avatar person={dept.chairman} size="sm" />
-                            <p className="min-w-0 text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                                {dept.chairman.name}
-                            </p>
-                        </div>
-                    </div>
-                )}
-
-                {/* Divider */}
-                {dept.chairman && (
-                    <div className="my-2 border-t border-dashed border-neutral-200 dark:border-neutral-700" />
-                )}
-
-                {/* Anggota */}
-                <div>
-                    <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-                        Anggota
-                    </p>
-                    <div className="space-y-0.5">
-                        {dept.members.map((member, i) => (
-                            <MemberRow key={member.name} person={member} index={i} />
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
 function ContactSection() {
     return (
         <div className="rounded-2xl border border-yellow-100/40 bg-yellow-50/60 p-6 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
@@ -374,11 +309,7 @@ export default function StrukturOrganisasi() {
                             Bidang-Bidang
                         </h2>
                     </div>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {departments.map((dept, i) => (
-                            <DepartmentCard key={dept.name} dept={dept} index={i} />
-                        ))}
-                    </div>
+                    <DepartmentSection departments={departments} />
                 </motion.div>
 
                 {/* ── Contact Person ─────────────────────────────── */}

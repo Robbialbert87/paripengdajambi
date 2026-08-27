@@ -223,12 +223,7 @@ export default function PublicNavbar() {
     const isDark = useIsDark();
     const isDesktop = useIsDesktop();
     const mobileMenuRef = useRef<HTMLDivElement>(null);
-    const [openDropdown, setOpenDropdown] = useState<string | null>(() => {
-        const active = navItems.find(
-            (item) => item.dropdown?.some((sub) => sub.href === currentUrl)
-        );
-        return active?.label ?? null;
-    });
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
     // Lock body scroll when mobile menu open
     useEffect(() => {
