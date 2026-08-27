@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
 import { type LucideIcon } from 'lucide-react';
 
 /* ─── Types ────────────────────────────────────────────────────────────────── */
@@ -41,7 +42,9 @@ function getShortName(name: string): string {
 /* ─── Card Component ───────────────────────────────────────────────────────── */
 
 function DepartmentCard({ dept }: { dept: DepartmentData }) {
+    const [isExpanded, setIsExpanded] = useState(false);
     const Icon = dept.icon;
+    const hasMembers = dept.members.length > 0;
 
     return (
         <motion.div
@@ -49,17 +52,38 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.85 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="group flex flex-col overflow-hidden rounded-xl border border-yellow-100/40 bg-yellow-50/60 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800/80"
+            transition={{
+                layout: { type: 'spring', stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+                scale: { duration: 0.2 },
+            }}
+            className="group flex flex-col overflow-hidden rounded-xl border border-yellow-100/40 bg-yellow-50/60 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800/80"
         >
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-yellow-100/40 px-4 py-3 dark:border-neutral-700/40">
                 <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30">
                     <Icon className="size-4 text-orange-500 dark:text-orange-400" />
                 </div>
-                <h4 className="text-sm font-bold leading-tight text-neutral-800 dark:text-neutral-200">
+                <h4 className="flex-1 text-sm font-bold leading-tight text-neutral-800 dark:text-neutral-200">
                     {dept.name}
                 </h4>
+                {hasMembers && (
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsExpanded(!isExpanded);
+                        }}
+                        className="flex size-7 items-center justify-center rounded-full transition-colors hover:bg-orange-100 dark:hover:bg-orange-900/30"
+                        aria-label={isExpanded ? 'Sembunyikan anggota' : 'Tampilkan anggota'}
+                    >
+                        <motion.div
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        >
+                            <ChevronDown className="size-4 text-orange-500" />
+                        </motion.div>
+                    </button>
+                )}
             </div>
 
             {/* Body */}
@@ -79,11 +103,56 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
                 ) : (
                     <div className="flex flex-col items-center py-4">
                         <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                            3 Anggota terdaftar
+                            {dept.members.length} Anggota terdaftar
                         </p>
                     </div>
                 )}
             </div>
+
+            {/* Expandable Members Section */}
+            <AnimatePresence initial={false}>
+                {isExpanded && hasMembers && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{
+                            height: { type: 'spring', stiffness: 400, damping: 35 },
+                            opacity: { duration: 0.2, delay: 0.05 },
+                        }}
+                        className="overflow-hidden"
+                    >
+                        <div className="border-t border-dashed border-orange-200 px-6 pb-5 pt-4 dark:border-orange-800/40">
+                            <p className="mb-2.5 text-[10px] font-bold uppercase tracking-wider text-orange-400">
+                                Anggota ({dept.members.length})
+                            </p>
+                            <div className="space-y-1.5">
+                                {dept.members.map((member, i) => (
+                                    <motion.div
+                                        key={member.name}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            delay: i * 0.05,
+                                            type: 'spring',
+                                            stiffness: 300,
+                                            damping: 25,
+                                        }}
+                                        className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-orange-50/60 dark:hover:bg-orange-900/10"
+                                    >
+                                        <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-orange-100 text-[9px] font-bold text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+                                            {member.initials}
+                                        </div>
+                                        <p className="min-w-0 text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                                            {member.name}
+                                        </p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }
