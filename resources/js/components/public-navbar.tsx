@@ -360,6 +360,9 @@ export default function PublicNavbar() {
                     <div
                         ref={mobileMenuRef}
                         className="fixed left-2 right-2 top-[72px] z-[60] max-h-[70vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800"
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {navItems.map((item) =>
                             item.dropdown ? (
