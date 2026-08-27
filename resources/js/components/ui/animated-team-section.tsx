@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { X } from 'lucide-react';
 
 interface TeamMember {
     name: string;
@@ -43,10 +44,13 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
         const [inViewRef, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
         const spacing = useResponsiveSpacing();
         const isMobile = useIsMobile();
+        const [selected, setSelected] = React.useState<string | null>(null);
 
         React.useEffect(() => {
             if (inView) controls.start('visible');
         }, [controls, inView]);
+
+        const selectedMember = members.find((m) => m.name === selected) ?? null;
 
         const getCardState = (index: number, total: number) => {
             const centerIndex = (total - 1) / 2;
@@ -75,6 +79,8 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
             }),
         };
 
+        const isSelected = (name: string) => selected === name;
+
         return (
             <section ref={ref} className={cn('w-full py-12 lg:py-16 overflow-hidden', className)} {...props}>
                 <div className="container mx-auto flex flex-col items-center text-center px-4">
@@ -85,6 +91,11 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                     {description && (
                         <p className="mt-2 max-w-2xl text-sm text-neutral-600 dark:text-neutral-400">
                             {description}
+                        </p>
+                    )}
+                    {isMobile && (
+                        <p className="mt-2 text-[11px] text-neutral-400 dark:text-neutral-500">
+                            Sentuh card untuk melihat nama lengkap
                         </p>
                     )}
 
@@ -100,26 +111,42 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                         {members.map((member, index) => {
                             const centerIndex = (members.length - 1) / 2;
                             const dist = Math.abs(index - centerIndex);
-                            const zIndex = members.length - dist;
+                            const zIndex = isSelected(member.name) ? 99 : members.length - dist;
 
                             return (
                                 <motion.div
                                     key={member.name}
-                                    className="absolute h-16 w-16 overflow-hidden rounded-xl shadow-lg border-2 border-yellow-100/60 dark:border-neutral-600/60 sm:h-24 sm:w-24 lg:h-36 lg:w-36"
+                                    className={cn(
+                                        'absolute h-16 w-16 overflow-hidden rounded-xl shadow-lg border-2 sm:h-24 sm:w-24 lg:h-36 lg:w-36 transition-colors duration-200',
+                                        isSelected(member.name)
+                                            ? 'border-orange-400 dark:border-orange-400'
+                                            : 'border-yellow-100/60 dark:border-neutral-600/60',
+                                    )}
                                     custom={index}
                                     variants={fanItemVariants}
+                                    whileHover={{ scale: 1.15, zIndex: 99 }}
+                                    whileTap={{ scale: 0.9, zIndex: 99 }}
+                                    animate={
+                                        isSelected(member.name)
+                                            ? { scale: 1.12, zIndex: 99 }
+                                            : { scale: 1 }
+                                    }
                                     style={{ zIndex }}
-                                    whileHover={{
-                                        scale: 1.15,
-                                        zIndex: 99,
-                                        transition: { type: 'spring', stiffness: 300, damping: 20 },
-                                    }}
+                                    onClick={() =>
+                                        setSelected(isSelected(member.name) ? null : member.name)
+                                    }
+                                    role="button"
+                                    aria-pressed={isSelected(member.name)}
                                 >
                                     {/* Avatar with initials */}
-                                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
+                                    <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
                                         <span className="font-bold text-white text-sm sm:text-lg lg:text-2xl">
                                             {member.initials}
                                         </span>
+                                        {/* Selected ring overlay */}
+                                        {isSelected(member.name) && (
+                                            <div className="pointer-events-none absolute inset-0 rounded-[10px] ring-2 ring-inset ring-orange-400 dark:ring-orange-400" />
+                                        )}
                                     </div>
 
                                     {/* Name label */}
@@ -132,6 +159,36 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                             );
                         })}
                     </motion.div>
+
+                    {/* Selected member banner */}
+                    <AnimatePresence mode="wait">
+                        {selectedMember && (
+                            <motion.div
+                                key={selectedMember.name}
+                                initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                                className="mt-6 flex items-center gap-3 rounded-xl border border-orange-200/60 bg-orange-50/70 px-5 py-3 shadow-md backdrop-blur-sm dark:border-orange-800/40 dark:bg-orange-900/20"
+                            >
+                                <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 font-bold text-white dark:from-orange-500 dark:to-orange-600 sm:size-12">
+                                    <span className="text-sm">{selectedMember.initials}</span>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+                                        {selectedMember.name}
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setSelected(null)}
+                                    className="ml-2 flex size-7 shrink-0 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-orange-100 hover:text-orange-500 dark:hover:bg-orange-900/30"
+                                    aria-label="Tutup"
+                                >
+                                    <X className="size-4" />
+                                </button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </section>
         );
