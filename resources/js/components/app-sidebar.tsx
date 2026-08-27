@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Barcode, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Barcode, FolderGit2, LayoutGrid, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -26,6 +26,11 @@ const mainNavItems: NavItem[] = [
         title: 'Barcode TTE',
         href: '/dashboard/barcode-tte',
         icon: Barcode,
+    },
+    {
+        title: 'Struktur Organisasi',
+        href: '/dashboard/struktur-organisasi',
+        icon: Users,
     },
 ];
 

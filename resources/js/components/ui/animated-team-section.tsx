@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence, type Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -8,6 +8,7 @@ import { X } from 'lucide-react';
 interface TeamMember {
     name: string;
     initials: string;
+    foto?: string | null;
 }
 
 export interface AnimatedTeamSectionProps {
@@ -67,7 +68,7 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
             visible: { transition: { staggerChildren: 0.08 } },
         };
 
-        const fanItemVariants = {
+        const fanItemVariants: Variants = {
             hidden: { opacity: 0, scale: 0.5, x: 0, y: 0, rotate: 0 },
             visible: (i: number) => ({
                 opacity: 1,
@@ -139,10 +140,19 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                                     aria-pressed={isSelected(member.name)}
                                 >
                                     {/* Avatar with initials */}
-                                    <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
-                                        <span className="font-bold text-white text-sm sm:text-lg lg:text-2xl">
-                                            {member.initials}
-                                        </span>
+                                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-orange-400 to-orange-500 dark:from-orange-500 dark:to-orange-600">
+                                        {member.foto ? (
+                                            <img
+                                                src={member.foto}
+                                                alt={member.name}
+                                                loading="lazy"
+                                                className="absolute inset-0 h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <span className="font-bold text-white text-sm sm:text-lg lg:text-2xl">
+                                                {member.initials}
+                                            </span>
+                                        )}
                                         {/* Selected ring overlay */}
                                         {isSelected(member.name) && (
                                             <div className="pointer-events-none absolute inset-0 rounded-[10px] ring-2 ring-inset ring-orange-400 dark:ring-orange-400" />
@@ -171,9 +181,17 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                                 className="mt-6 flex items-center gap-3 rounded-xl border border-orange-200/60 bg-orange-50/70 px-5 py-3 shadow-md backdrop-blur-sm dark:border-orange-800/40 dark:bg-orange-900/20"
                             >
-                                <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 font-bold text-white dark:from-orange-500 dark:to-orange-600 sm:size-12">
-                                    <span className="text-sm">{selectedMember.initials}</span>
-                                </div>
+                                <div className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-400 to-orange-500 font-bold text-white dark:from-orange-500 dark:to-orange-600 sm:size-12">
+                                        {selectedMember.foto ? (
+                                            <img
+                                                src={selectedMember.foto}
+                                                alt={selectedMember.name}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <span className="text-sm">{selectedMember.initials}</span>
+                                        )}
+                                    </div>
                                 <div className="text-left">
                                     <p className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
                                         {selectedMember.name}

@@ -3,129 +3,34 @@ import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import { AnimatedTeamSection } from '@/components/ui/animated-team-section';
 import { DepartmentSection } from '@/components/ui/department-section';
-import {
-    ClipboardList,
-    Scale,
-    GraduationCap,
-    Monitor,
-    Wallet,
-    BookOpen,
-    Users,
-    Mail,
-    Phone,
-    Instagram,
-    type LucideIcon,
-} from 'lucide-react';
+import { Mail, Phone, Instagram, Users, type LucideIcon } from 'lucide-react';
+import { strukturIconMap, type StrukturIconKey } from '@/lib/struktur-icons';
 
 /* ─── Types ────────────────────────────────────────────────────────────────── */
 
 interface Person {
     name: string;
     initials: string;
+    foto?: string | null;
 }
 
 interface Department {
-    name: string;
-    icon: LucideIcon;
-    chairman?: Person;
+    icon_key: StrukturIconKey;
+    chairman?: Person | null;
     members: Person[];
 }
 
-/* ─── Data ─────────────────────────────────────────────────────────────────── */
+interface ContactPerson {
+    name: string;
+    phone: string;
+}
 
-const advisors: Person[] = [
-    { name: 'Haryono, S.Si', initials: 'HY' },
-    { name: 'M. Untung Sukemi S, SKM, SST', initials: 'MU' },
-    { name: 'Pahmi, BSc', initials: 'PM' },
-    { name: 'Nurdin, AMR', initials: 'ND' },
-    { name: 'Mochamad Imron, S.Si, M.Tr. ID', initials: 'MI' },
-    { name: 'Nurhasan, Str. Kes (Rad)', initials: 'NH' },
-    { name: 'Landrayani, AMR', initials: 'LR' },
-];
-
-const chairman: Person = {
-    name: 'Alen Rizaldi, AMR., S.KM',
-    initials: 'AR',
-};
-
-const departments: Department[] = [
-    {
-        name: 'Bid. Sekretariat',
-        icon: ClipboardList,
-        chairman: { name: 'Wali Ikhwan, A.Md. Rad', initials: 'WI' },
-        members: [
-            { name: 'Resti Muharrami, A.Md. Rad', initials: 'RM' },
-            { name: 'Sandini, Amd. Rad', initials: 'SN' },
-            { name: 'Marlengga, AMR', initials: 'ML' },
-        ],
-    },
-    {
-        name: 'Bid. Advokasi Hukum dan Organisasi',
-        icon: Scale,
-        chairman: { name: 'Barenton, Am.Rad', initials: 'BR' },
-        members: [
-            { name: 'Amri Ramadhani, Am.Rad', initials: 'AR' },
-            { name: 'Endi Ikhwanda, Am.Rad', initials: 'EI' },
-            { name: 'Rina Faridah, Amd. Rad', initials: 'RF' },
-        ],
-    },
-    {
-        name: 'Bid. Kaderisasi dan Pengembangan Profesi',
-        icon: GraduationCap,
-        chairman: { name: 'Aris Yeni Susanti, Amd. Rad', initials: 'AS' },
-        members: [
-            { name: 'Ekapurna Widyastuti A.A, AMR', initials: 'EW' },
-            { name: 'Fernandes, S.Tr.Rad', initials: 'FN' },
-            { name: 'Fathul Abrar Ilyas, S.Tr.Kes', initials: 'FA' },
-        ],
-    },
-    {
-        name: 'Bid. IT dan Humas',
-        icon: Monitor,
-        chairman: { name: 'Muhammad Iqbal, AM.Rad', initials: 'MI' },
-        members: [
-            { name: 'Erika Ayu Ningsih, Amd.Rad', initials: 'EN' },
-            { name: 'Azizah Aswar, A.Md.Kes(Rad)', initials: 'AA' },
-            { name: 'Fauzan Pratama, Amd.Rad', initials: 'FP' },
-        ],
-    },
-    {
-        name: 'Bid. Bendahara',
-        icon: Wallet,
-        members: [
-            { name: 'Christine WA, AMR', initials: 'CW' },
-            { name: 'Yuniarti, AMR', initials: 'YN' },
-            { name: 'Tesa Meilani, AMR', initials: 'TM' },
-        ],
-    },
-    {
-        name: 'Bid. Diklat dan Pelatihan',
-        icon: BookOpen,
-        chairman: { name: 'Diah Wulansari, Amd.Rad', initials: 'DW' },
-        members: [
-            { name: 'Hamidah, A.md Rad', initials: 'HM' },
-            { name: 'Swangga Bagus Winarta, Am.Rad', initials: 'SW' },
-            { name: 'Angga Agustiar, A.Md.Rad, SKM', initials: 'AA' },
-        ],
-    },
-    {
-        name: 'Bid. Kesra dan Pengabdian Masyarakat',
-        icon: Users,
-        chairman: { name: 'M. Edo Kurniawan, S.SiT', initials: 'ME' },
-        members: [
-            { name: 'M. Dodo Hernando, AMR', initials: 'DH' },
-            { name: 'Elga Emertha, AM.Rad', initials: 'EE' },
-            { name: 'Cindy Khairidea Sari, A.Md.Kes Rad', initials: 'CK' },
-        ],
-    },
-];
-
-const contactPerson = [
-    { name: 'Ikhwan', phone: '08537443 8754' },
-    { name: 'Sandini', phone: '08123485 0713' },
-    { name: 'Resti', phone: '08570964 5434' },
-    { name: 'Marlengga', phone: '08526611 8568' },
-];
+interface StrukturOrganisasiProps {
+    advisors: Person[];
+    chairman: Person | null;
+    departments: (Department & { name: string })[];
+    contacts: ContactPerson[];
+}
 
 /* ─── Helper Components ────────────────────────────────────────────────────── */
 
@@ -137,9 +42,18 @@ function Avatar({ person, size = 'md' }: { person: Person; size?: 'sm' | 'md' | 
     };
     return (
         <div
-            className={`flex ${sizeClasses[size]} shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 font-bold text-white shadow-md dark:from-orange-500 dark:to-orange-600`}
+            className={`flex ${sizeClasses[size]} shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-400 to-orange-500 font-bold text-white shadow-md dark:from-orange-500 dark:to-orange-600`}
         >
-            {person.initials}
+            {person.foto ? (
+                <img
+                    src={person.foto}
+                    alt={person.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                />
+            ) : (
+                person.initials
+            )}
         </div>
     );
 }
@@ -162,7 +76,7 @@ function HorizontalConnector() {
 
 /* ─── Card Components ──────────────────────────────────────────────────────── */
 
-function ChairmanCard() {
+function ChairmanCard({ chairman }: { chairman: Person }) {
     return (
         <div className="mx-auto max-w-sm">
             <div className="group relative overflow-hidden rounded-2xl border-2 border-teal-300/50 bg-gradient-to-br from-yellow-50 to-white p-6 text-center shadow-lg shadow-teal-400/10 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl dark:border-teal-600/40 dark:from-neutral-800 dark:to-neutral-900 dark:shadow-teal-500/10">
@@ -184,7 +98,7 @@ function ChairmanCard() {
     );
 }
 
-function ContactSection() {
+function ContactSection({ contacts }: { contacts: ContactPerson[] }) {
     return (
         <div className="rounded-2xl border border-yellow-100/40 bg-yellow-50/60 p-6 backdrop-blur-md dark:border-neutral-700/40 dark:bg-neutral-800/80">
             <h3 className="mb-4 text-lg font-bold text-neutral-800 dark:text-neutral-200">
@@ -193,9 +107,9 @@ function ContactSection() {
 
             {/* CP List */}
             <div className="mb-4 grid gap-2 sm:grid-cols-2">
-                {contactPerson.map((cp) => (
+                {contacts.map((cp, i) => (
                     <div
-                        key={cp.name}
+                        key={`${cp.name}-${i}`}
                         className="flex items-center gap-3 rounded-lg bg-white/60 px-3 py-2 dark:bg-neutral-700/30"
                     >
                         <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
@@ -240,8 +154,21 @@ function ContactSection() {
 
 /* ─── Main Page ────────────────────────────────────────────────────────────── */
 
-export default function StrukturOrganisasi() {
+export default function StrukturOrganisasi({
+    advisors,
+    chairman,
+    departments,
+    contacts,
+}: StrukturOrganisasiProps) {
     const { ref: sectionRef, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
+
+    const preparedDepartments: { name: string; icon: LucideIcon; chairman?: Person | null; members: Person[] }[] =
+        departments.map((dept) => ({
+            name: dept.name,
+            icon: strukturIconMap[dept.icon_key] ?? Users,
+            chairman: dept.chairman ?? null,
+            members: dept.members,
+        }));
 
     return (
         <>
@@ -265,11 +192,7 @@ export default function StrukturOrganisasi() {
                 </motion.div>
 
                 {/* ── Pembina & Penasihat (Fan Layout) ──────────── */}
-                <AnimatedTeamSection
-                    title="Pembina & Penasihat"
-                    description=""
-                    members={advisors.map((a) => ({ name: a.name, initials: a.initials }))}
-                />
+                <AnimatedTeamSection title="Pembina & Penasihat" description="" members={advisors} />
 
                 {/* ── Connector ──────────────────────────────────── */}
                 <motion.div
@@ -281,13 +204,15 @@ export default function StrukturOrganisasi() {
                 </motion.div>
 
                 {/* ── Ketua Umum ─────────────────────────────────── */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                    <ChairmanCard />
-                </motion.div>
+                {chairman && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={inView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                        <ChairmanCard chairman={chairman} />
+                    </motion.div>
+                )}
 
                 {/* ── Connector ──────────────────────────────────── */}
                 <motion.div
@@ -309,7 +234,7 @@ export default function StrukturOrganisasi() {
                             Bidang-Bidang
                         </h2>
                     </div>
-                    <DepartmentSection departments={departments} />
+                    <DepartmentSection departments={preparedDepartments} />
                 </motion.div>
 
                 {/* ── Contact Person ─────────────────────────────── */}
@@ -319,7 +244,7 @@ export default function StrukturOrganisasi() {
                     transition={{ duration: 0.6, delay: 0.7 }}
                     className="mt-8"
                 >
-                    <ContactSection />
+                    <ContactSection contacts={contacts} />
                 </motion.div>
 
                 {/* ── Footer Note ────────────────────────────────── */}

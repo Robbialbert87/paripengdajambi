@@ -10,12 +10,13 @@ import { type LucideIcon } from 'lucide-react';
 interface DepartmentMember {
     name: string;
     initials: string;
+    foto?: string | null;
 }
 
 interface DepartmentData {
     name: string;
     icon: LucideIcon;
-    chairman?: DepartmentMember;
+    chairman?: DepartmentMember | null;
     members: DepartmentMember[];
 }
 
@@ -82,8 +83,17 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
                 {dept.chairman ? (
                     <>
                         {/* Avatar */}
-                        <div className="mb-3 flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-md dark:from-orange-500 dark:to-orange-600">
-                            <span className="text-2xl font-bold text-white">{dept.chairman.initials}</span>
+                        <div className="mb-3 flex size-20 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-md dark:from-orange-500 dark:to-orange-600">
+                            {dept.chairman.foto ? (
+                                <img
+                                    src={dept.chairman.foto}
+                                    alt={dept.chairman.name}
+                                    loading="lazy"
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <span className="text-2xl font-bold text-white">{dept.chairman.initials}</span>
+                            )}
                         </div>
                         {/* Name */}
                         <p className="text-center text-sm font-bold text-neutral-800 dark:text-neutral-200">
@@ -132,10 +142,19 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
                                         className="flex w-[calc(50%-4px)] flex-col items-center gap-1.5 rounded-lg p-2.5 transition-all duration-200 hover:scale-105 hover:bg-orange-50/60 sm:flex-1 sm:w-auto dark:hover:bg-orange-900/10"
                                         title={member.name}
                                     >
-                                        <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-md dark:from-orange-500 dark:to-orange-600 sm:size-14">
-                                            <span className="text-xs font-bold text-white sm:text-sm">
-                                                {member.initials}
-                                            </span>
+                                        <div className="flex size-12 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-md dark:from-orange-500 dark:to-orange-600 sm:size-14">
+                                            {member.foto ? (
+                                                <img
+                                                    src={member.foto}
+                                                    alt={member.name}
+                                                    loading="lazy"
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            ) : (
+                                                <span className="text-xs font-bold text-white sm:text-sm">
+                                                    {member.initials}
+                                                </span>
+                                            )}
                                         </div>
                                         <p className="max-w-[90px] truncate text-center text-[10px] font-medium leading-tight text-neutral-600 dark:text-neutral-400 sm:text-[11px]">
                                             {member.name}

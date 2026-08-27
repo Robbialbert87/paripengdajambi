@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StrukturOrganisasiController;
 use App\Http\Controllers\TteController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +12,7 @@ Route::prefix('profil')->group(function () {
     Route::inertia('tentang', 'profil/tentang')->name('profil.tentang');
     Route::inertia('visi-misi', 'profil/visi-misi')->name('profil.visi-misi');
     Route::inertia('sejarah', 'profil/sejarah')->name('profil.sejarah');
-    Route::inertia('struktur-organisasi', 'profil/struktur-organisasi')->name('profil.struktur-organisasi');
+    Route::get('struktur-organisasi', [StrukturOrganisasiController::class, 'show'])->name('profil.struktur-organisasi');
     Route::inertia('pengurus', 'profil/pengurus')->name('profil.pengurus');
     Route::inertia('program-kerja', 'profil/program-kerja')->name('profil.program-kerja');
 });
@@ -49,6 +50,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('dashboard/barcode-tte/{tteRecord}', [TteController::class, 'update'])->name('dashboard.barcode-tte.update');
     Route::delete('dashboard/barcode-tte/{tteRecord}', [TteController::class, 'destroy'])->name('dashboard.barcode-tte.destroy');
     Route::patch('dashboard/barcode-tte/{tteRecord}/activate', [TteController::class, 'activate'])->name('dashboard.barcode-tte.activate');
+
+    Route::prefix('dashboard/struktur-organisasi')->group(function () {
+        Route::get('/', [StrukturOrganisasiController::class, 'index'])->name('dashboard.struktur-organisasi');
+        Route::post('/bidang', [StrukturOrganisasiController::class, 'storeBidang'])->name('dashboard.struktur-organisasi.bidang.store');
+        Route::put('/bidang/{bidang}', [StrukturOrganisasiController::class, 'updateBidang'])->name('dashboard.struktur-organisasi.bidang.update');
+        Route::delete('/bidang/{bidang}', [StrukturOrganisasiController::class, 'destroyBidang'])->name('dashboard.struktur-organisasi.bidang.destroy');
+        Route::post('/anggota', [StrukturOrganisasiController::class, 'storeAnggota'])->name('dashboard.struktur-organisasi.anggota.store');
+        Route::put('/anggota/{anggota}', [StrukturOrganisasiController::class, 'updateAnggota'])->name('dashboard.struktur-organisasi.anggota.update');
+        Route::delete('/anggota/{anggota}', [StrukturOrganisasiController::class, 'destroyAnggota'])->name('dashboard.struktur-organisasi.anggota.destroy');
+        Route::post('/kontak', [StrukturOrganisasiController::class, 'storeKontak'])->name('dashboard.struktur-organisasi.kontak.store');
+        Route::put('/kontak/{kontak}', [StrukturOrganisasiController::class, 'updateKontak'])->name('dashboard.struktur-organisasi.kontak.update');
+        Route::delete('/kontak/{kontak}', [StrukturOrganisasiController::class, 'destroyKontak'])->name('dashboard.struktur-organisasi.kontak.destroy');
+    });
 });
 
 Route::get('verifikasi/{nomorAnggota}', [TteController::class, 'verify'])->name('verifikasi');
