@@ -221,6 +221,7 @@ export default function PublicNavbar() {
     const [loginOpen, setLoginOpen] = useState(false);
     const currentUrl = usePage().url;
     const isDark = useIsDark();
+    const isDesktop = useIsDesktop();
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const [openDropdown, setOpenDropdown] = useState<string | null>(() => {
         const active = navItems.find(
@@ -246,13 +247,14 @@ export default function PublicNavbar() {
 
     // Reset dropdown when mobile menu closes
     useEffect(() => {
+        if (isDesktop) return;
         if (!mobileOpen) {
             const active = navItems.find(
                 (item) => item.dropdown?.some((sub) => sub.href === currentUrl)
             );
             setOpenDropdown(active?.label ?? null);
         }
-    }, [mobileOpen, currentUrl]);
+    }, [mobileOpen, currentUrl, isDesktop]);
 
     return (
         <>
