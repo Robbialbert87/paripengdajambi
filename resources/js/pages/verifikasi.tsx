@@ -16,6 +16,10 @@ interface VerifikasiProps {
 }
 
 export default function Verifikasi({ record }: VerifikasiProps) {
+    const pageTitle = record
+        ? `Verifikasi TTE - ${record.nama_lengkap}`
+        : 'Verifikasi Tanda Tangan Elektronik';
+
     const renderStatus = () => {
         if (!record) {
             return (
@@ -59,7 +63,7 @@ export default function Verifikasi({ record }: VerifikasiProps) {
 
     return (
         <>
-            <Head title="Verifikasi Dokumen" />
+            <Head title={pageTitle} />
             <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
                 <div className="overflow-hidden rounded-3xl border border-yellow-100/60 bg-white shadow-xl shadow-yellow-400/5 dark:border-neutral-700/40 dark:bg-neutral-900 dark:shadow-black/20">
 

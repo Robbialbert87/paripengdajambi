@@ -27,6 +27,16 @@
 
         <link rel="icon" href="/logo (2).webp" type="image/webp">
 
+        <meta property="og:site_name" content="{{ config('app.name', 'Pari Pengda Jambi') }}">
+        <meta property="og:title" content="{{ config('app.name', 'Pari Pengda Jambi') }}">
+        <meta property="og:description" content="PARI Perhimpunan Radiografer Indonesia - Pengurus Daerah Provinsi Jambi">
+        <meta property="og:image" content="{{ config('app.url') }}/logo (2).webp">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="{{ config('app.name', 'Pari Pengda Jambi') }}">
+        <meta name="twitter:description" content="PARI Perhimpunan Radiografer Indonesia - Pengurus Daerah Provinsi Jambi">
+        <meta name="twitter:image" content="{{ config('app.url') }}/logo (2).webp">
+
         @fonts
 
         @viteReactRefresh
