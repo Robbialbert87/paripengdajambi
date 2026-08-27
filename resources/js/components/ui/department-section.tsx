@@ -113,28 +113,31 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
                         }}
                         className="overflow-hidden"
                     >
-                        <div className="border-t border-dashed border-orange-200 px-6 pb-5 pt-4 dark:border-orange-800/40">
-                            <p className="mb-2.5 text-[10px] font-bold uppercase tracking-wider text-orange-400">
+                        <div className="border-t border-dashed border-orange-200 px-4 pb-5 pt-4 dark:border-orange-800/40">
+                            <p className="mb-3 text-center text-[10px] font-bold uppercase tracking-wider text-orange-400">
                                 Anggota ({dept.members.length})
                             </p>
-                            <div className="space-y-1.5">
+                            <div className="flex flex-wrap justify-center gap-2">
                                 {dept.members.map((member, i) => (
                                     <motion.div
                                         key={member.name}
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
+                                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
                                         transition={{
-                                            delay: i * 0.05,
+                                            delay: i * 0.08,
                                             type: 'spring',
-                                            stiffness: 300,
-                                            damping: 25,
+                                            stiffness: 250,
+                                            damping: 22,
                                         }}
-                                        className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-orange-50/60 dark:hover:bg-orange-900/10"
+                                        className="flex w-[calc(50%-4px)] flex-col items-center gap-1.5 rounded-lg p-2.5 transition-all duration-200 hover:scale-105 hover:bg-orange-50/60 sm:flex-1 sm:w-auto dark:hover:bg-orange-900/10"
+                                        title={member.name}
                                     >
-                                        <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-orange-100 text-[9px] font-bold text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
-                                            {member.initials}
+                                        <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-md dark:from-orange-500 dark:to-orange-600 sm:size-14">
+                                            <span className="text-xs font-bold text-white sm:text-sm">
+                                                {member.initials}
+                                            </span>
                                         </div>
-                                        <p className="min-w-0 text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                                        <p className="max-w-[90px] truncate text-center text-[10px] font-medium leading-tight text-neutral-600 dark:text-neutral-400 sm:text-[11px]">
                                             {member.name}
                                         </p>
                                     </motion.div>
