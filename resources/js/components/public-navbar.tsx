@@ -109,6 +109,7 @@ function DropdownMenu({
     const isActive = item.dropdown?.some((sub) => currentUrl === sub.href) ?? false;
     const ref = useRef<HTMLDivElement>(null);
     const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const justNavigated = useRef(false);
     const isDesktop = useIsDesktop();
 
     useEffect(() => {
@@ -125,12 +126,14 @@ function DropdownMenu({
 
     const handleMouseEnter = useCallback(() => {
         if (!isDesktop) return;
+        if (justNavigated.current) return;
         if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
         onOpen();
     }, [isDesktop, onOpen]);
 
     const handleMouseLeave = useCallback(() => {
         if (!isDesktop) return;
+        justNavigated.current = false;
         hoverTimeout.current = setTimeout(() => onClose(), 100);
     }, [isDesktop, onClose]);
 
@@ -166,7 +169,7 @@ function DropdownMenu({
                         <Link
                             key={subItem.href}
                             href={subItem.href}
-                            onClick={onClose}
+                            onClick={() => { justNavigated.current = true; onClose(); }}
                             className={`block rounded-lg px-3 py-2 text-sm ring-zinc-500 outline-hidden transition duration-300 focus-visible:ring-3 dark:ring-zinc-200 ${
                                 currentUrl === subItem.href
                                     ? 'bg-yellow-100 text-orange-400 dark:bg-neutral-700 dark:text-orange-300'
