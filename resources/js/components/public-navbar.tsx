@@ -360,7 +360,7 @@ export default function PublicNavbar() {
                     {/* Menu panel */}
                     <div
                         ref={mobileMenuRef}
-                        className="fixed left-2 right-2 top-[72px] z-50 max-h-[70vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800"
+                        className="fixed left-2 right-2 top-[72px] z-[60] max-h-[70vh] overflow-y-auto rounded-2xl border border-yellow-100/40 bg-yellow-50 p-4 shadow-lg md:hidden dark:border-neutral-700/40 dark:bg-neutral-800"
                         style={{ WebkitOverflowScrolling: 'touch' }}
                     >
                         {navItems.map((item) =>
