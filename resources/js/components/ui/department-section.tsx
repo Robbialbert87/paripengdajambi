@@ -47,16 +47,7 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
     const hasMembers = dept.members.length > 0;
 
     return (
-        <motion.div
-            layout
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{
-                layout: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-                scale: { duration: 0.2 },
-            }}
+        <div
             className="group flex flex-col overflow-hidden rounded-xl border border-yellow-100/40 bg-yellow-50/60 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800/80"
         >
             {/* Header */}
@@ -153,7 +144,7 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </motion.div>
+        </div>
     );
 }
 
@@ -198,13 +189,26 @@ export const DepartmentSection = ({ departments, className }: DepartmentSectionP
             </div>
 
             {/* Cards Grid */}
-            <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <AnimatePresence mode="popLayout">
-                    {filtered.map((dept) => (
-                        <DepartmentCard key={dept.name} dept={dept} />
+                    {filtered.map((dept, i) => (
+                        <motion.div
+                            key={dept.name}
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            transition={{
+                                type: 'spring',
+                                stiffness: 250,
+                                damping: 22,
+                                delay: i * 0.06,
+                            }}
+                            style={{ position: 'relative' }}
+                        >
+                            <DepartmentCard dept={dept} />
+                        </motion.div>
                     ))}
                 </AnimatePresence>
-            </motion.div>
+            </div>
         </section>
     );
 };
