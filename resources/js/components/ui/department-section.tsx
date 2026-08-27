@@ -189,7 +189,7 @@ export const DepartmentSection = ({ departments, className }: DepartmentSectionP
             </div>
 
             {/* Cards Grid */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="flex flex-wrap justify-center gap-4">
                 <AnimatePresence mode="popLayout">
                     {filtered.map((dept, i) => (
                         <motion.div
@@ -203,6 +203,7 @@ export const DepartmentSection = ({ departments, className }: DepartmentSectionP
                                 delay: i * 0.06,
                             }}
                             style={{ position: 'relative' }}
+                            className="w-full sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
                         >
                             <DepartmentCard dept={dept} />
                         </motion.div>
