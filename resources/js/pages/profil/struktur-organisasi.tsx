@@ -1,5 +1,7 @@
 import { Head } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
+import { AnimatedTeamSection } from '@/components/ui/animated-team-section';
 import {
     ClipboardList,
     Scale,
@@ -124,31 +126,6 @@ const contactPerson = [
     { name: 'Marlengga', phone: '08526611 8568' },
 ];
 
-/* ─── Hooks ────────────────────────────────────────────────────────────────── */
-
-function useInView(threshold = 0.1) {
-    const ref = useRef<HTMLDivElement>(null);
-    const [visible, setVisible] = useState(false);
-
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setVisible(true);
-                    observer.disconnect();
-                }
-            },
-            { threshold },
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, [threshold]);
-
-    return { ref, visible };
-}
-
 /* ─── Helper Components ────────────────────────────────────────────────────── */
 
 function Avatar({ person, size = 'md' }: { person: Person; size?: 'sm' | 'md' | 'lg' }) {
@@ -183,20 +160,6 @@ function HorizontalConnector() {
 }
 
 /* ─── Card Components ──────────────────────────────────────────────────────── */
-
-function AdvisorCard({ person, index }: { person: Person; index: number }) {
-    return (
-        <div
-            className="group flex flex-col items-center gap-2 rounded-xl border border-yellow-100/40 bg-yellow-50/60 px-3 py-4 text-center backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800/80"
-            style={{ animationDelay: `${index * 60}ms` }}
-        >
-            <Avatar person={person} size="md" />
-            <p className="text-xs font-semibold leading-tight text-neutral-700 dark:text-neutral-300">
-                {person.name}
-            </p>
-        </div>
-    );
-}
 
 function ChairmanCard() {
     return (
@@ -343,7 +306,7 @@ function ContactSection() {
 /* ─── Main Page ────────────────────────────────────────────────────────────── */
 
 export default function StrukturOrganisasi() {
-    const { ref: sectionRef, visible } = useInView(0.05);
+    const { ref: sectionRef, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
 
     return (
         <>
@@ -351,10 +314,11 @@ export default function StrukturOrganisasi() {
 
             <div ref={sectionRef} className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
                 {/* ── Header ──────────────────────────────────────── */}
-                <div
-                    className={`mb-8 text-center transition-all duration-700 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6 }}
+                    className="mb-8 text-center"
                 >
                     <h1 className="text-3xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 sm:text-4xl">
                         Struktur Organisasi
@@ -363,58 +327,47 @@ export default function StrukturOrganisasi() {
                     <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                         Susunan kepengurusan Persatuan Radiografer Indonesia Pengurus Daerah Jambi.
                     </p>
-                </div>
+                </motion.div>
 
-                {/* ── Pembina & Penasihat ────────────────────────── */}
-                <div
-                    className={`transition-all duration-700 delay-100 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
-                >
-                    <div className="mb-4 text-center">
-                        <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
-                            Pembina & Penasihat
-                        </h2>
-                    </div>
-                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-7">
-                        {advisors.map((advisor, i) => (
-                            <AdvisorCard key={advisor.name} person={advisor} index={i} />
-                        ))}
-                    </div>
-                </div>
+                {/* ── Pembina & Penasihat (Fan Layout) ──────────── */}
+                <AnimatedTeamSection
+                    title="Pembina & Penasihat"
+                    description=""
+                    members={advisors.map((a) => ({ name: a.name, initials: a.initials }))}
+                />
 
                 {/* ── Connector ──────────────────────────────────── */}
-                <div
-                    className={`transition-all duration-700 delay-200 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                 >
                     <ConnectorLine />
-                </div>
+                </motion.div>
 
                 {/* ── Ketua Umum ─────────────────────────────────── */}
-                <div
-                    className={`transition-all duration-700 delay-300 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                 >
                     <ChairmanCard />
-                </div>
+                </motion.div>
 
                 {/* ── Connector ──────────────────────────────────── */}
-                <div
-                    className={`transition-all duration-700 delay-300 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={inView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.6, delay: 0.5 }}
                 >
                     <HorizontalConnector />
-                </div>
+                </motion.div>
 
                 {/* ── Bidang-Bidang ──────────────────────────────── */}
-                <div
-                    className={`transition-all duration-700 delay-400 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.6 }}
                 >
                     <div className="mb-4 text-center">
                         <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
@@ -426,16 +379,17 @@ export default function StrukturOrganisasi() {
                             <DepartmentCard key={dept.name} dept={dept} index={i} />
                         ))}
                     </div>
-                </div>
+                </motion.div>
 
                 {/* ── Contact Person ─────────────────────────────── */}
-                <div
-                    className={`mt-8 transition-all duration-700 delay-500 ${
-                        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-                    }`}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                    className="mt-8"
                 >
                     <ContactSection />
-                </div>
+                </motion.div>
 
                 {/* ── Footer Note ────────────────────────────────── */}
                 <div className="mt-6 text-center">
