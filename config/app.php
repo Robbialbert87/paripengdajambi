@@ -107,6 +107,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Admin Password
+    |--------------------------------------------------------------------------
+    |
+    | Used only as a placeholder when creating the initial admin account.
+    | In production, leave unset and set the password via the reset
+    | password feature instead.
+    |
+    */
+
+    'admin_default_password' => env('ADMIN_DEFAULT_PASSWORD', ''),
+
+    /*
+    |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
     |
