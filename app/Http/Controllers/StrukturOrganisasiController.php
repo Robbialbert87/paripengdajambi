@@ -304,7 +304,7 @@ class StrukturOrganisasiController extends Controller
 
     private function storeFoto(UploadedFile $file): string
     {
-        $data = file_get_contents($file->getRealPath());
+        $data = $file->get();
 
         if ($data === false) {
             abort(422, 'Gambar tidak dapat dibaca.');

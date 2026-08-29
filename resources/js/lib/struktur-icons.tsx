@@ -5,9 +5,10 @@ import {
     Monitor,
     Scale,
     Users,
-    Wallet,
-    type LucideIcon,
+    Wallet
+    
 } from 'lucide-react';
+import type {LucideIcon} from 'lucide-react';
 
 export type StrukturIconKey =
     | 'clipboard-list'
@@ -28,7 +29,9 @@ export const strukturIconMap: Record<StrukturIconKey, LucideIcon> = {
     users: Users,
 };
 
-export const strukturIconKeys = Object.keys(strukturIconMap) as StrukturIconKey[];
+export const strukturIconKeys = Object.keys(
+    strukturIconMap,
+) as StrukturIconKey[];
 
 export const strukturIconLabels: Record<StrukturIconKey, string> = {
     'clipboard-list': 'Sekretariat',

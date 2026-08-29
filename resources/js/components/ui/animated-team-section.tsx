@@ -121,7 +121,7 @@ const AnimatedTeamSection = React.forwardRef<HTMLDivElement, AnimatedTeamSection
                                         'absolute h-16 w-16 overflow-hidden rounded-xl shadow-lg border-2 sm:h-24 sm:w-24 lg:h-36 lg:w-36 transition-colors duration-200',
                                         isSelected(member.name)
                                             ? 'border-orange-400 dark:border-orange-400'
-                                            : 'border-yellow-100/60 dark:border-neutral-600/60',
+                                            : 'border-neutral-300/60 dark:border-neutral-600/60',
                                     )}
                                     custom={index}
                                     variants={fanItemVariants}

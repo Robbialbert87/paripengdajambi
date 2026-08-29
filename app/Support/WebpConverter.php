@@ -10,7 +10,7 @@ class WebpConverter
 {
     public const SIZE = 512;
 
-    public static function convert(string $imageData): string
+    public static function convert(string $imageData, string $directory = 'struktur'): string
     {
         $source = @imagecreatefromstring($imageData);
 
@@ -42,8 +42,10 @@ class WebpConverter
 
         imagedestroy($source);
 
-        $path = 'struktur/'.Str::uuid()->toString().'.webp';
-        $dir = storage_path('app/public/struktur');
+        $directory = trim($directory, '/');
+
+        $path = $directory.'/'.Str::uuid()->toString().'.webp';
+        $dir = storage_path('app/public/'.$directory);
 
         if (! is_dir($dir) && ! mkdir($dir, 0755, true) && ! is_dir($dir)) {
             imagedestroy($square);

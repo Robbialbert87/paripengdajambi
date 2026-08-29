@@ -49,10 +49,10 @@ function DepartmentCard({ dept }: { dept: DepartmentData }) {
 
     return (
         <div
-            className="group flex flex-col overflow-hidden rounded-xl border border-yellow-100/40 bg-yellow-50/60 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700/40 dark:bg-neutral-800/80"
+            className="group flex flex-col overflow-hidden rounded-xl border border-neutral-300/60 bg-neutral-100 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/[.075]"
         >
             {/* Header */}
-            <div className="flex items-center gap-3 border-b border-yellow-100/40 px-4 py-3 dark:border-neutral-700/40">
+            <div className="flex items-center gap-3 border-b border-neutral-300/60 px-4 py-3 dark:border-white/10">
                 <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30">
                     <Icon className="size-4 text-orange-500 dark:text-orange-400" />
                 </div>
@@ -189,7 +189,7 @@ export const DepartmentSection = ({ departments, className }: DepartmentSectionP
                         'rounded-full px-4 py-2 text-xs font-semibold transition-colors',
                         activeFilter === 'Semua Bidang'
                             ? 'bg-orange-400 text-white shadow-md'
-                            : 'bg-yellow-50/60 text-neutral-600 hover:bg-yellow-100 dark:bg-neutral-800/60 dark:text-neutral-400 dark:hover:bg-neutral-700',
+                            : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-white/[.075] dark:text-neutral-400 dark:hover:bg-neutral-700',
                     )}
                 >
                     Semua Bidang
@@ -202,7 +202,7 @@ export const DepartmentSection = ({ departments, className }: DepartmentSectionP
                             'rounded-full px-4 py-2 text-xs font-semibold transition-colors',
                             activeFilter === dept.name
                                 ? 'bg-orange-400 text-white shadow-md'
-                                : 'bg-yellow-50/60 text-neutral-600 hover:bg-yellow-100 dark:bg-neutral-800/60 dark:text-neutral-400 dark:hover:bg-neutral-700',
+                                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-white/[.075] dark:text-neutral-400 dark:hover:bg-neutral-700',
                         )}
                     >
                         {getShortName(dept.name)}

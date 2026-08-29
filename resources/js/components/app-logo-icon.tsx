@@ -1,11 +1,7 @@
 import type { ImgHTMLAttributes } from 'react';
 
-export default function AppLogoIcon(props: ImgHTMLAttributes<HTMLImageElement>) {
-    return (
-        <img
-            src="/logo (2).webp"
-            alt="Logo PARI"
-            {...props}
-        />
-    );
+export default function AppLogoIcon(
+    props: ImgHTMLAttributes<HTMLImageElement>,
+) {
+    return <img src="/logo (2).webp" alt="Logo PARI" {...props} />;
 }
