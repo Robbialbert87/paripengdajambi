@@ -4,7 +4,10 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Models\Role;
 use App\Models\User;
+use App\Support\MemberAccountActivator;
+use App\Support\PermissionCatalog;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
@@ -24,10 +27,20 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $memberRole = Role::where('slug', 'member')->firstOrCreate(
+            ['slug' => 'member'],
+            ['name' => 'Member', 'permissions' => PermissionCatalog::defaults('member')],
+        );
+
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
+            'role_id' => $memberRole->id,
         ]);
+
+        MemberAccountActivator::linkMember($user);
+
+        return $user;
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Role;
+use App\Models\User;
+use App\Support\PermissionCatalog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -47,4 +50,29 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function userWithRole(string $slug): User
+{
+    $role = Role::where('slug', $slug)->firstOrCreate(
+        ['slug' => $slug],
+        ['name' => ucfirst($slug), 'permissions' => PermissionCatalog::defaults($slug)],
+    );
+
+    return User::factory()->create(['role_id' => $role->id]);
+}
+
+function beAdmin(): void
+{
+    test()->actingAs(userWithRole('admin'));
+}
+
+function bePengurus(): void
+{
+    test()->actingAs(userWithRole('pengurus'));
+}
+
+function beMember(): void
+{
+    test()->actingAs(userWithRole('member'));
 }
