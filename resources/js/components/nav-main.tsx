@@ -18,11 +18,11 @@ function NavLink({ item }: { item: NavItem }) {
                 <SidebarMenuButton
                     disabled
                     tooltip={{ children: item.title }}
-                    className="cursor-default"
+                    className="h-auto gap-3 rounded-[5px] px-[17px] py-2.5 leading-none [&>svg]:size-[18px]"
                 >
                     {item.icon && <item.icon />}
                     <span className="flex-1">{item.title}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-wide text-neutral-400 dark:text-neutral-500">
+                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-neutral-400 uppercase dark:bg-neutral-800 dark:text-neutral-500">
                         Segera Hadir
                     </span>
                 </SidebarMenuButton>
@@ -36,10 +36,16 @@ function NavLink({ item }: { item: NavItem }) {
                 asChild
                 isActive={isCurrentUrl(item.href)}
                 tooltip={{ children: item.title }}
+                className="h-auto gap-3 rounded-[5px] px-[17px] py-2.5 text-[15px] leading-none hover:font-medium data-[active=true]:text-sidebar-accent-foreground [&>svg]:size-[18px]"
             >
                 <Link href={item.href} prefetch>
                     {item.icon && <item.icon />}
-                    <span>{item.title}</span>
+                    <span className="flex-1">{item.title}</span>
+                    {item.badge !== undefined && (
+                        <span className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-[#1bb394] px-1.5 py-0.5 text-[10px] font-bold text-white tabular-nums group-data-[collapsible=icon]:hidden">
+                            {item.badge}
+                        </span>
+                    )}
                 </Link>
             </SidebarMenuButton>
         </SidebarMenuItem>
@@ -63,12 +69,9 @@ export function NavMain({
                 </SidebarGroup>
             )}
 
-            {groups.map((group, index) => (
-                <SidebarGroup
-                    key={group.title}
-                    className={`px-2 py-0 ${index > 0 ? 'mt-4' : ''}`}
-                >
-                    <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-wider text-orange-400/90">
+            {groups.map((group) => (
+                <SidebarGroup key={group.title} className="px-2 py-0">
+                    <SidebarGroupLabel className="h-9 px-5 text-[11px] font-semibold tracking-[0.05em] text-sidebar-foreground/60 uppercase">
                         {group.title}
                     </SidebarGroupLabel>
                     <SidebarMenu>

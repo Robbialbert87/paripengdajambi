@@ -5,10 +5,9 @@ import {
     Monitor,
     Scale,
     Users,
-    Wallet
-    
+    Wallet,
 } from 'lucide-react';
-import type {LucideIcon} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 export type StrukturIconKey =
     | 'clipboard-list'

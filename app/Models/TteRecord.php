@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\TteRecordFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TteRecord extends Model
 {
+    /** @use HasFactory<TteRecordFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -24,12 +27,20 @@ class TteRecord extends Model
         'tahun_selesai' => 'integer',
     ];
 
-    public function scopeActive($query)
+    /**
+     * @param  Builder<TteRecord>  $query
+     * @return Builder<TteRecord>
+     */
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
-    public function scopeLatest($query)
+    /**
+     * @param  Builder<TteRecord>  $query
+     * @return Builder<TteRecord>
+     */
+    public function scopeLatest(Builder $query): Builder
     {
         return $query->orderByDesc('tahun_mulai');
     }
@@ -37,6 +48,7 @@ class TteRecord extends Model
     public function isActiveAndValid(): bool
     {
         $currentYear = (int) date('Y');
+
         return $this->is_active && $currentYear >= $this->tahun_mulai && $currentYear <= $this->tahun_selesai;
     }
 
@@ -53,6 +65,7 @@ class TteRecord extends Model
         if ($this->isExpired()) {
             return 'expired';
         }
+
         return 'inactive';
     }
 }

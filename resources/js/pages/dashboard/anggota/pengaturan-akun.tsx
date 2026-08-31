@@ -4,7 +4,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { changePassword } from '@/routes/dashboard';
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 export default function PengaturanAkun() {
     const { auth } = usePage().props as {
@@ -35,8 +35,8 @@ export default function PengaturanAkun() {
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex items-center gap-4">
-                        <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                            <KeyRound className="size-7 text-orange-400" />
+                        <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                            <KeyRound className="size-7 text-indigo-500" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -109,7 +109,7 @@ export default function PengaturanAkun() {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing && <Spinner />}
                             Simpan Password

@@ -50,8 +50,8 @@ export default function KartuAnggota() {
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex items-center gap-4">
-                        <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                            <IdCard className="size-7 text-orange-400" />
+                        <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                            <IdCard className="size-7 text-indigo-500" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -66,7 +66,7 @@ export default function KartuAnggota() {
 
                 {member ? (
                     <div className="mx-auto w-full max-w-md">
-                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-400 via-orange-500 to-amber-500 p-6 text-neutral-50 shadow-xl shadow-orange-400/20">
+                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-amber-500 p-6 text-neutral-50 shadow-xl shadow-indigo-500/20">
                             <div className="absolute -top-10 -right-10 size-40 rounded-full bg-white/10" />
                             <div className="absolute -bottom-16 -left-8 size-48 rounded-full bg-white/10" />
 
@@ -84,13 +84,13 @@ export default function KartuAnggota() {
                                         )}
                                     </div>
                                     <div>
-                                        <p className="text-xs uppercase tracking-wider text-orange-100">
+                                        <p className="text-xs tracking-wider text-indigo-200 uppercase">
                                             PARIPENDA
                                         </p>
                                         <h2 className="text-lg font-bold">
                                             {member.full_name}
                                         </h2>
-                                        <p className="text-xs text-orange-100">
+                                        <p className="text-xs text-indigo-200">
                                             {member.email}
                                         </p>
                                     </div>
@@ -105,7 +105,7 @@ export default function KartuAnggota() {
 
                             <div className="relative mt-8 grid gap-3">
                                 <div>
-                                    <p className="text-xs uppercase tracking-wider text-orange-100">
+                                    <p className="text-xs tracking-wider text-indigo-200 uppercase">
                                         Nomor Anggota
                                     </p>
                                     <p className="font-mono text-xl font-bold tracking-wider">
@@ -114,7 +114,7 @@ export default function KartuAnggota() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <p className="text-xs uppercase tracking-wider text-orange-100">
+                                        <p className="text-xs tracking-wider text-indigo-200 uppercase">
                                             NIR
                                         </p>
                                         <p className="font-mono text-sm font-semibold">
@@ -134,14 +134,14 @@ export default function KartuAnggota() {
 
                         <div className="mt-6 grid gap-3 rounded-2xl border border-neutral-300/60 bg-neutral-100 p-5 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                             <div className="flex items-center gap-3 text-sm text-neutral-700 dark:text-neutral-300">
-                                <BadgeCheck className="size-4 shrink-0 text-orange-400" />
+                                <BadgeCheck className="size-4 shrink-0 text-indigo-500" />
                                 <span className="font-semibold">Status:</span>
                                 <Badge className="border-transparent bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
                                     {statusLabel(member.membership_status)}
                                 </Badge>
                             </div>
                             <div className="flex items-center gap-3 text-sm text-neutral-700 dark:text-neutral-300">
-                                <BadgeCheck className="size-4 shrink-0 text-orange-400" />
+                                <BadgeCheck className="size-4 shrink-0 text-indigo-500" />
                                 <span className="font-semibold">
                                     Terverifikasi:
                                 </span>
@@ -149,19 +149,19 @@ export default function KartuAnggota() {
                             </div>
                             {member.nik && (
                                 <div className="flex items-center gap-3 text-sm text-neutral-700 dark:text-neutral-300">
-                                    <BadgeCheck className="size-4 shrink-0 text-orange-400" />
+                                    <BadgeCheck className="size-4 shrink-0 text-indigo-500" />
                                     <span className="font-semibold">NIK:</span>
                                     {member.nik}
                                 </div>
                             )}
                             <div className="flex items-center gap-3 text-sm text-neutral-700 dark:text-neutral-300">
-                                <Phone className="size-4 shrink-0 text-orange-400" />
+                                <Phone className="size-4 shrink-0 text-indigo-500" />
                                 <span className="font-semibold">Telepon:</span>
                                 {member.phone}
                             </div>
                             {member.email && (
                                 <div className="flex items-center gap-3 text-sm text-neutral-700 dark:text-neutral-300">
-                                    <MapPin className="size-4 shrink-0 text-orange-400" />
+                                    <MapPin className="size-4 shrink-0 text-indigo-500" />
                                     <span className="font-semibold">
                                         Email:
                                     </span>
@@ -172,7 +172,7 @@ export default function KartuAnggota() {
                     </div>
                 ) : (
                     <div className="mx-auto w-full max-w-md rounded-2xl border border-dashed border-neutral-300/70 bg-neutral-100 p-8 text-center dark:border-white/10 dark:bg-white/[.075]">
-                        <IdCard className="mx-auto size-10 text-orange-400" />
+                        <IdCard className="mx-auto size-10 text-indigo-500" />
                         <h2 className="mt-3 text-lg font-bold text-neutral-800 dark:text-neutral-200">
                             Belum Ada Data Anggota
                         </h2>

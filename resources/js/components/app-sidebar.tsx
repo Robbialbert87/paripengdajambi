@@ -16,7 +16,6 @@ import {
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
 import {
     Sidebar,
     SidebarContent,
@@ -27,7 +26,12 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { direktoriAnggota, kartuAnggota, roleManagement, verifikasi } from '@/routes/dashboard';
+import {
+    direktoriAnggota,
+    kartuAnggota,
+    roleManagement,
+    verifikasi,
+} from '@/routes/dashboard';
 import instansi from '@/routes/dashboard/master/instansi';
 import kabupatenKota from '@/routes/dashboard/master/kabupaten-kota';
 import type { NavGroup, NavItem } from '@/types';
@@ -177,12 +181,13 @@ const navGroups: NavGroupWithAccess[] = [
 const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
-    const { auth } = usePage().props as {
+    const { auth, pendingVerifications } = usePage().props as {
         auth: {
             user: {
                 role?: { slug: string; permissions?: string[] } | null;
             };
         };
+        pendingVerifications?: number;
     };
 
     const roleSlug = auth.user?.role?.slug ?? '';
@@ -201,15 +206,29 @@ export function AppSidebar() {
         )
         .map<NavGroup>(({ title, items }) => ({
             title,
-            items: items.filter((item) => can(item.permission)),
+            items: items
+                .filter((item) => can(item.permission))
+                .map((item) =>
+                    item.permission === Permission.verifikasi &&
+                    pendingVerifications
+                        ? { ...item, badge: pendingVerifications }
+                        : item,
+                ),
         }));
 
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+        <Sidebar
+            collapsible="icon"
+            className="shadow-[0_3px_4px_0_rgba(0,0,0,0.03)]"
+        >
+            <SidebarHeader className="p-0">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton
+                            size="lg"
+                            asChild
+                            className="h-[70px] justify-start px-4"
+                        >
                             <Link href={dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
@@ -218,7 +237,7 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="gap-1">
                 <NavMain dashboardItem={dashboardItem} groups={visibleGroups} />
             </SidebarContent>
 
@@ -226,7 +245,6 @@ export function AppSidebar() {
                 {footerNavItems.length > 0 && (
                     <NavFooter items={footerNavItems} className="mt-auto" />
                 )}
-                <NavUser />
             </SidebarFooter>
         </Sidebar>
     );

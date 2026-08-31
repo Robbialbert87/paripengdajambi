@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\TteRecord;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TteController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         $records = TteRecord::latest('tahun_mulai')->get();
         $activeRecord = TteRecord::active()->first();
@@ -36,7 +38,7 @@ class TteController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
@@ -51,11 +53,11 @@ class TteController extends Controller
         return redirect()->back()->with('success', 'Record TTE berhasil ditambahkan.');
     }
 
-    public function update(Request $request, TteRecord $tteRecord)
+    public function update(Request $request, TteRecord $tteRecord): RedirectResponse
     {
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
-            'nomor_anggota' => 'required|string|max:255|unique:tte_records,nomor_anggota,' . $tteRecord->id,
+            'nomor_anggota' => 'required|string|max:255|unique:tte_records,nomor_anggota,'.$tteRecord->id,
             'jabatan' => 'required|string|max:255',
             'tahun_mulai' => 'required|integer|min:2000|max:2100',
             'tahun_selesai' => 'required|integer|min:2000|max:2100|gte:tahun_mulai',
@@ -66,14 +68,14 @@ class TteController extends Controller
         return redirect()->back()->with('success', 'Record TTE berhasil diperbarui.');
     }
 
-    public function destroy(TteRecord $tteRecord)
+    public function destroy(TteRecord $tteRecord): RedirectResponse
     {
         $tteRecord->delete();
 
         return redirect()->back()->with('success', 'Record TTE berhasil dihapus.');
     }
 
-    public function activate(TteRecord $tteRecord)
+    public function activate(TteRecord $tteRecord): RedirectResponse
     {
         TteRecord::query()->update(['is_active' => false]);
         $tteRecord->update(['is_active' => true]);
@@ -81,7 +83,7 @@ class TteController extends Controller
         return redirect()->back()->with('success', 'Record TTE berhasil diaktifkan.');
     }
 
-    public function verify($nomorAnggota)
+    public function verify(string $nomorAnggota): Response
     {
         $record = TteRecord::where('nomor_anggota', $nomorAnggota)->latest('tahun_mulai')->first();
 

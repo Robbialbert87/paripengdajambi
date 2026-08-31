@@ -74,8 +74,8 @@ function FormModal({
     };
 
     if (!open) {
-return null;
-}
+        return null;
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -104,7 +104,7 @@ return null;
                                 onChange={(e) =>
                                     setData('nama_lengkap', e.target.value)
                                 }
-                                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
                                 placeholder="Masukkan nama lengkap"
                             />
                             {errors.nama_lengkap && (
@@ -124,7 +124,7 @@ return null;
                                 onChange={(e) =>
                                     setData('nomor_anggota', e.target.value)
                                 }
-                                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
                                 placeholder="Contoh: 1571041103019"
                             />
                             {errors.nomor_anggota && (
@@ -144,7 +144,7 @@ return null;
                                 onChange={(e) =>
                                     setData('jabatan', e.target.value)
                                 }
-                                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                                className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
                                 placeholder="Contoh: Ketua PARI Pengda Provinsi Jambi"
                             />
                             {errors.jabatan && (
@@ -168,7 +168,7 @@ return null;
                                             Number(e.target.value),
                                         )
                                     }
-                                    className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                                    className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
                                     min={2000}
                                     max={2100}
                                 />
@@ -191,7 +191,7 @@ return null;
                                             Number(e.target.value),
                                         )
                                     }
-                                    className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                                    className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
                                     min={2000}
                                     max={2100}
                                 />
@@ -215,7 +215,7 @@ return null;
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing
                                 ? 'Menyimpan...'
@@ -230,10 +230,7 @@ return null;
     );
 }
 
-export default function BarcodeTtePage({
-    records,
-    appUrl,
-}: BarcodeTteProps) {
+export default function BarcodeTtePage({ records, appUrl }: BarcodeTteProps) {
     const canvasRef = useRef<HTMLDivElement>(null);
     const [key, setKey] = useState(0);
     const [showForm, setShowForm] = useState(false);
@@ -248,14 +245,14 @@ export default function BarcodeTtePage({
         const wrapper = canvasRef.current;
 
         if (!wrapper) {
-return;
-}
+            return;
+        }
 
         const canvas = wrapper.querySelector('canvas');
 
         if (!canvas) {
-return;
-}
+            return;
+        }
 
         const link = document.createElement('a');
         link.download = `barcode-tte-${previewRecord?.nomor_anggota || 'unknown'}.png`;
@@ -312,8 +309,8 @@ return;
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <Barcode className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <Barcode className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -331,7 +328,7 @@ return;
                                 setEditRecord(null);
                                 setShowForm(true);
                             }}
-                            className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             <Plus className="size-4" />
                             Tambah Record
@@ -349,7 +346,7 @@ return;
                             className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-300/60 bg-white shadow-2xl dark:border-white/10 dark:bg-neutral-900"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="flex items-center justify-between bg-gradient-to-r from-orange-400 to-orange-500 px-4 py-3 dark:from-orange-500 dark:to-orange-600">
+                            <div className="flex items-center justify-between bg-gradient-to-r from-indigo-500 to-indigo-600 px-4 py-3 dark:from-indigo-600 dark:to-indigo-700">
                                 <div>
                                     <h2 className="text-xs font-bold tracking-wide text-white">
                                         BARCODE TANDA TANGAN ELEKTRONIK
@@ -399,7 +396,7 @@ return;
                                     <button
                                         type="button"
                                         onClick={handleDownload}
-                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-3 py-2 text-xs font-bold text-neutral-50 transition duration-300 hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                        className="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-transparent bg-indigo-500 px-3 py-2 text-xs font-bold text-neutral-50 transition duration-300 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                                     >
                                         <Download className="size-3.5" />
                                         Download PNG

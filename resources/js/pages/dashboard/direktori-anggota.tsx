@@ -45,7 +45,7 @@ interface DirektoriAnggotaProps {
 }
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 const statusOptions = [
     { value: 'active', label: 'Aktif' },
@@ -112,8 +112,7 @@ function RoleSelect({ member }: { member: MemberItem }) {
                 onFinish: () => setBusy(false),
                 onError: (errors) =>
                     alert(
-                        Object.values(errors)[0] ??
-                            'Gagal mengubah hak akses.',
+                        Object.values(errors)[0] ?? 'Gagal mengubah hak akses.',
                     ),
             },
         );
@@ -124,7 +123,11 @@ function RoleSelect({ member }: { member: MemberItem }) {
             value={member.account?.role_slug ?? ''}
             disabled={busy}
             onChange={(e) => assign(e.target.value || undefined)}
-            className={cn(inputClass, 'w-auto min-w-28 py-1.5 text-xs', busy && 'opacity-50')}
+            className={cn(
+                inputClass,
+                'w-auto min-w-28 py-1.5 text-xs',
+                busy && 'opacity-50',
+            )}
         >
             <option value="">{busy ? 'Menyimpan...' : '—'}</option>
             {roleOptions.map((option) => (
@@ -229,7 +232,7 @@ function FormModal({
 
                 <form onSubmit={handleSubmit} className="space-y-4 px-6 py-4">
                     <div className="flex flex-col items-center gap-3">
-                        <div className="flex size-20 items-center justify-center overflow-hidden rounded-full bg-orange-400/10 text-lg font-bold text-orange-400 dark:bg-orange-400/20">
+                        <div className="flex size-20 items-center justify-center overflow-hidden rounded-full bg-indigo-500/10 text-lg font-bold text-indigo-500 dark:bg-indigo-500/20">
                             {photoPreview ? (
                                 <img
                                     src={photoPreview}
@@ -240,7 +243,7 @@ function FormModal({
                                 initials
                             )}
                         </div>
-                        <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2 text-xs font-bold text-orange-600 transition hover:bg-orange-100 dark:border-orange-800/50 dark:bg-orange-900/20 dark:text-orange-400">
+                        <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-indigo-300 bg-indigo-100 px-4 py-2 text-xs font-bold text-indigo-700 transition hover:bg-indigo-200 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:text-indigo-500">
                             <ImagePlus className="size-4" />
                             Ganti Foto
                             <input
@@ -468,7 +471,7 @@ function FormModal({
                                             e.target.checked,
                                         )
                                     }
-                                    className="size-4 rounded border-neutral-300 text-orange-400 focus:ring-orange-400/20 dark:border-neutral-700"
+                                    className="size-4 rounded border-neutral-300 text-indigo-500 focus:ring-indigo-500/20 dark:border-neutral-700"
                                 />
                                 Tampil di Direktori Publik
                             </label>
@@ -486,7 +489,7 @@ function FormModal({
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                         </button>
@@ -537,7 +540,7 @@ export default function DirektoriAnggota({
 
                 return (
                     <span className="inline-flex items-center gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-                        <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-orange-400/10 text-xs text-orange-400 dark:bg-orange-400/20">
+                        <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-indigo-500/10 text-xs text-indigo-500 dark:bg-indigo-500/20">
                             {row.original.photo ? (
                                 <img
                                     src={`/storage/${row.original.photo}`}
@@ -655,8 +658,8 @@ export default function DirektoriAnggota({
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <UsersRound className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <UsersRound className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -669,7 +672,7 @@ export default function DirektoriAnggota({
                             </div>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-                            <IdCard className="size-4 text-orange-400" />
+                            <IdCard className="size-4 text-indigo-500" />
                             {members.length} anggota terdaftar
                         </div>
                     </div>

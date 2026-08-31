@@ -17,7 +17,13 @@ interface RoleManagementProps {
     features: Record<string, string>;
 }
 
-function RoleCard({ role, features }: { role: RoleItem; features: Record<string, string> }) {
+function RoleCard({
+    role,
+    features,
+}: {
+    role: RoleItem;
+    features: Record<string, string>;
+}) {
     const [selected, setSelected] = useState<string[]>(role.permissions);
     const [saving, setSaving] = useState(false);
 
@@ -54,11 +60,11 @@ function RoleCard({ role, features }: { role: RoleItem; features: Record<string,
         <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
             <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-xl bg-orange-400/10 dark:bg-orange-400/20">
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20">
                         {isSuperAdmin ? (
-                            <ShieldCheck className="size-5 text-orange-400" />
+                            <ShieldCheck className="size-5 text-indigo-500" />
                         ) : (
-                            <Sparkles className="size-5 text-orange-400" />
+                            <Sparkles className="size-5 text-indigo-500" />
                         )}
                     </div>
                     <div>
@@ -71,7 +77,7 @@ function RoleCard({ role, features }: { role: RoleItem; features: Record<string,
                     </div>
                 </div>
                 {isSuperAdmin && (
-                    <Badge className="border-transparent bg-orange-400/10 text-orange-600 dark:bg-orange-400/20 dark:text-orange-400">
+                    <Badge className="border-transparent bg-indigo-500/10 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-500">
                         Superuser
                     </Badge>
                 )}
@@ -103,7 +109,7 @@ function RoleCard({ role, features }: { role: RoleItem; features: Record<string,
                         .filter((group) => group.items.length > 0)
                         .map((group) => (
                             <div key={group.title}>
-                                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                                <p className="mb-2 text-xs font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                                     {group.title}
                                 </p>
                                 <div className="space-y-2">
@@ -114,9 +120,11 @@ function RoleCard({ role, features }: { role: RoleItem; features: Record<string,
                                         >
                                             <input
                                                 type="checkbox"
-                                                checked={selected.includes(slug)}
+                                                checked={selected.includes(
+                                                    slug,
+                                                )}
                                                 onChange={() => toggle(slug)}
-                                                className="size-4 rounded border-neutral-300 text-orange-400 focus:ring-orange-400/20 dark:border-neutral-600"
+                                                className="size-4 rounded border-neutral-300 text-indigo-500 focus:ring-indigo-500/20 dark:border-neutral-600"
                                             />
                                             <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                                                 {label}
@@ -139,7 +147,7 @@ function RoleCard({ role, features }: { role: RoleItem; features: Record<string,
                     type="button"
                     onClick={save}
                     disabled={saving}
-                    className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                    className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                 >
                     {saving ? 'Menyimpan...' : 'Simpan Hak Akses'}
                 </button>
@@ -148,7 +156,10 @@ function RoleCard({ role, features }: { role: RoleItem; features: Record<string,
     );
 }
 
-export default function RoleManagement({ roles, features }: RoleManagementProps) {
+export default function RoleManagement({
+    roles,
+    features,
+}: RoleManagementProps) {
     return (
         <>
             <Head title="Role & Hak Akses" />
@@ -156,8 +167,8 @@ export default function RoleManagement({ roles, features }: RoleManagementProps)
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <Lock className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <Lock className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -170,17 +181,19 @@ export default function RoleManagement({ roles, features }: RoleManagementProps)
                             </div>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-                            <ShieldCheck className="size-4 text-orange-400" />
+                            <ShieldCheck className="size-4 text-indigo-500" />
                             {roles.length} role aktif
                         </div>
                     </div>
                 </div>
 
                 {roles.length === 0 ? (
-                    <div className={cn(
-                        'rounded-2xl border border-dashed border-neutral-300/70 bg-neutral-100 p-10 text-center dark:border-white/10 dark:bg-white/[.075]',
-                    )}>
-                        <Lock className="mx-auto size-10 text-orange-400" />
+                    <div
+                        className={cn(
+                            'rounded-2xl border border-dashed border-neutral-300/70 bg-neutral-100 p-10 text-center dark:border-white/10 dark:bg-white/[.075]',
+                        )}
+                    >
+                        <Lock className="mx-auto size-10 text-indigo-500" />
                         <p className="mt-3 font-semibold text-neutral-700 dark:text-neutral-300">
                             Belum ada role terdaftar.
                         </p>
@@ -188,7 +201,11 @@ export default function RoleManagement({ roles, features }: RoleManagementProps)
                 ) : (
                     <div className="grid gap-6">
                         {roles.map((role) => (
-                            <RoleCard key={role.id} role={role} features={features} />
+                            <RoleCard
+                                key={role.id}
+                                role={role}
+                                features={features}
+                            />
                         ))}
                     </div>
                 )}

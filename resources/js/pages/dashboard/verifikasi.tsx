@@ -55,7 +55,7 @@ export default function Verifikasi({
 
                 return (
                     <span className="inline-flex items-center gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-orange-400/10 text-xs text-orange-400 dark:bg-orange-400/20">
+                        <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-xs text-indigo-500 dark:bg-indigo-500/20">
                             {initials}
                         </span>
                         <span>{row.original.full_name ?? 'Tanpa nama'}</span>
@@ -137,8 +137,8 @@ export default function Verifikasi({
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex items-center gap-4">
-                        <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                            <ClipboardCheck className="size-7 text-orange-400" />
+                        <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                            <ClipboardCheck className="size-7 text-indigo-500" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -158,7 +158,7 @@ export default function Verifikasi({
                         href={verifikasi.url()}
                         className={`rounded-full px-4 py-1.5 text-xs font-bold transition ${
                             currentStatus === ''
-                                ? 'bg-orange-400 text-white'
+                                ? 'bg-indigo-500 text-white'
                                 : 'border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
                         }`}
                     >
@@ -173,7 +173,7 @@ export default function Verifikasi({
                             })}
                             className={`rounded-full px-4 py-1.5 text-xs font-bold transition ${
                                 currentStatus === status
-                                    ? 'bg-orange-400 text-white'
+                                    ? 'bg-indigo-500 text-white'
                                     : 'border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
                             }`}
                         >

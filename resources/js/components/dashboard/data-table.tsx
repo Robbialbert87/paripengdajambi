@@ -208,10 +208,10 @@ export function DataTable<TData, TValue>({
                                                         {canSort ? (
                                                             header.column.getIsSorted() ===
                                                             'asc' ? (
-                                                                <ArrowUp className="size-3.5 text-orange-400" />
+                                                                <ArrowUp className="size-3.5 text-indigo-500" />
                                                             ) : header.column.getIsSorted() ===
                                                               'desc' ? (
-                                                                <ArrowDown className="size-3.5 text-orange-400" />
+                                                                <ArrowDown className="size-3.5 text-indigo-500" />
                                                             ) : (
                                                                 <ArrowUpDown className="size-3.5 text-neutral-400 transition group-hover:text-neutral-600 dark:group-hover:text-neutral-300" />
                                                             )
@@ -259,7 +259,7 @@ export function DataTable<TData, TValue>({
                             onChange={(event) =>
                                 table.setPageSize(Number(event.target.value))
                             }
-                            className="h-8 rounded-lg border border-neutral-200 bg-white px-2 text-xs text-neutral-700 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+                            className="h-8 rounded-lg border border-neutral-200 bg-white px-2 text-xs text-neutral-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
                         >
                             {[10, 25, 50, 100].map((size) => (
                                 <option key={size} value={size}>

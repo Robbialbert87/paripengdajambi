@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\MemberRegistration;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -45,6 +46,9 @@ class HandleInertiaRequests extends Middleware
                     'member.latestRegistration.kabupatenKota',
                 ]),
             ],
+            'pendingVerifications' => $request->user()
+                ? MemberRegistration::whereIn('status', ['submitted', 'under_review'])->count()
+                : 0,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

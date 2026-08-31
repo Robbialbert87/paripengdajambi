@@ -143,24 +143,24 @@ function DropdownMenu({
 
     const handleMouseEnter = useCallback(() => {
         if (!isDesktop) {
-return;
-}
+            return;
+        }
 
         if (justNavigated.current) {
-return;
-}
+            return;
+        }
 
         if (hoverTimeout.current) {
-clearTimeout(hoverTimeout.current);
-}
+            clearTimeout(hoverTimeout.current);
+        }
 
         onOpen();
     }, [isDesktop, onOpen]);
 
     const handleMouseLeave = useCallback(() => {
         if (!isDesktop) {
-return;
-}
+            return;
+        }
 
         justNavigated.current = false;
         hoverTimeout.current = setTimeout(() => onClose(), 100);
@@ -226,11 +226,9 @@ function ThemeToggle({ className }: { className?: string }) {
 
     const toggle = useCallback(() => {
         const html = document.documentElement;
-        html.classList.toggle('dark');
-        localStorage.setItem(
-            'hs_theme',
-            html.classList.contains('dark') ? 'dark' : 'default',
-        );
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('hs_theme', isDark ? 'dark' : 'default');
+        localStorage.setItem('appearance', isDark ? 'dark' : 'light');
     }, []);
 
     return (

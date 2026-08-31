@@ -16,7 +16,7 @@ interface KabupatenKotaProps {
 }
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 function FormModal({
     open,
@@ -103,7 +103,7 @@ function FormModal({
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing
                                 ? 'Menyimpan...'
@@ -136,7 +136,7 @@ export default function KabupatenKotaPage({
             header: 'Nama',
             cell: ({ row }) => (
                 <span className="inline-flex items-center gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-orange-400/10 text-orange-400 dark:bg-orange-400/20">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-500 dark:bg-indigo-500/20">
                         <MapPin className="size-4" />
                     </span>
                     <span>{row.original.name}</span>
@@ -149,7 +149,7 @@ export default function KabupatenKotaPage({
             cell: ({ row }) => (
                 <Badge
                     variant="secondary"
-                    className="border-transparent bg-orange-400/10 text-orange-500 dark:bg-orange-400/20 dark:text-orange-400"
+                    className="border-transparent bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-500"
                 >
                     {row.original.instansi_count} instansi
                 </Badge>
@@ -193,8 +193,8 @@ export default function KabupatenKotaPage({
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <MapPin className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <MapPin className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -223,7 +223,7 @@ export default function KabupatenKotaPage({
                                     setEditItem(null);
                                     setShowForm(true);
                                 }}
-                                className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                             >
                                 <Plus className="size-4" />
                                 Tambah Wilayah

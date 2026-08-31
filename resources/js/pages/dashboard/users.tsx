@@ -28,7 +28,7 @@ interface UsersProps {
 }
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 function roleLabel(role: UserItem['role']): string {
     return role?.name ?? '—';
@@ -36,15 +36,18 @@ function roleLabel(role: UserItem['role']): string {
 
 function RoleBadge({ role }: { role: UserItem['role'] }) {
     const styles: Record<string, string> = {
-        admin: 'border-transparent bg-orange-400/10 text-orange-600 dark:bg-orange-400/20 dark:text-orange-400',
+        admin: 'border-transparent bg-indigo-500/10 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-500',
         pengurus:
             'border-transparent bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
-        member:
-            'border-transparent bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400',
+        member: 'border-transparent bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400',
     };
 
     return (
-        <Badge className={role ? (styles[role.slug] ?? styles.member) : styles.member}>
+        <Badge
+            className={
+                role ? (styles[role.slug] ?? styles.member) : styles.member
+            }
+        >
             {roleLabel(role)}
         </Badge>
     );
@@ -159,7 +162,9 @@ function CreateModal({ open, onClose, roles }: CreateModalProps) {
                         <input
                             type="password"
                             value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
+                            onChange={(e) =>
+                                setData('password', e.target.value)
+                            }
                             className={inputClass}
                         />
                         {errors.password && (
@@ -203,7 +208,7 @@ function CreateModal({ open, onClose, roles }: CreateModalProps) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing ? 'Menyimpan...' : 'Tambah Pengguna'}
                         </button>
@@ -272,7 +277,7 @@ function EditModal({ open, onClose, item, roles, isSelf }: EditModalProps) {
 
                 <form onSubmit={handleSubmit} className="space-y-4 px-6 py-4">
                     <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-neutral-100 px-4 py-3 dark:border-white/10 dark:bg-white/[.075]">
-                        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 text-sm font-bold text-orange-400 dark:bg-orange-400/20">
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 text-sm font-bold text-indigo-500 dark:bg-indigo-500/20">
                             {initials}
                         </span>
                         <div className="min-w-0">
@@ -329,7 +334,7 @@ function EditModal({ open, onClose, item, roles, isSelf }: EditModalProps) {
                             onChange={(e) =>
                                 setData('is_active', e.target.checked)
                             }
-                            className="size-4 rounded border-neutral-300 text-orange-400 focus:ring-orange-400/20 disabled:opacity-60 dark:border-neutral-700"
+                            className="size-4 rounded border-neutral-300 text-indigo-500 focus:ring-indigo-500/20 disabled:opacity-60 dark:border-neutral-700"
                         />
                         <label
                             htmlFor="is-active"
@@ -344,7 +349,9 @@ function EditModal({ open, onClose, item, roles, isSelf }: EditModalProps) {
                         </label>
                     </div>
                     {errors.is_active && (
-                        <p className="text-xs text-red-500">{errors.is_active}</p>
+                        <p className="text-xs text-red-500">
+                            {errors.is_active}
+                        </p>
                     )}
 
                     <div className="flex gap-3 pt-1">
@@ -358,7 +365,7 @@ function EditModal({ open, onClose, item, roles, isSelf }: EditModalProps) {
                         <button
                             type="submit"
                             disabled={processing || isSelf}
-                            className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                         </button>
@@ -392,7 +399,7 @@ export default function Users({ users, roles }: UsersProps) {
 
                 return (
                     <span className="inline-flex items-center gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-orange-400/10 text-xs text-orange-400 dark:bg-orange-400/20">
+                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 text-xs text-indigo-500 dark:bg-indigo-500/20">
                             {initials}
                         </span>
                         <span>{row.original.name}</span>
@@ -460,20 +467,21 @@ export default function Users({ users, roles }: UsersProps) {
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <UserCog className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <UserCog className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
                                     Manajemen User & Role
                                 </h1>
                                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                                    Kelola akun pengguna, peran, dan status akses
+                                    Kelola akun pengguna, peran, dan status
+                                    akses
                                 </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-                            <UsersRound className="size-4 text-orange-400" />
+                            <UsersRound className="size-4 text-indigo-500" />
                             {users.length} pengguna terdaftar
                         </div>
                     </div>
@@ -490,7 +498,7 @@ export default function Users({ users, roles }: UsersProps) {
                         <button
                             type="button"
                             onClick={() => setCreateOpen(true)}
-                            className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             <Plus className="size-4" />
                             Tambah Pengguna

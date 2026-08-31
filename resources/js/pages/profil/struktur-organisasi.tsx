@@ -1,12 +1,12 @@
 import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Instagram, Users  } from 'lucide-react';
-import type {LucideIcon} from 'lucide-react';
+import { Mail, Phone, Instagram, Users } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { AnimatedTeamSection } from '@/components/ui/animated-team-section';
 import { DepartmentSection } from '@/components/ui/department-section';
-import { strukturIconMap  } from '@/lib/struktur-icons';
-import type {StrukturIconKey} from '@/lib/struktur-icons';
+import { strukturIconMap } from '@/lib/struktur-icons';
+import type { StrukturIconKey } from '@/lib/struktur-icons';
 
 /* ─── Types ────────────────────────────────────────────────────────────────── */
 

@@ -1,7 +1,7 @@
 import { router } from '@inertiajs/react';
 import { FileSpreadsheet, Loader2, Upload, X } from 'lucide-react';
-import { useState  } from 'react';
-import type {ReactNode} from 'react';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 interface ImportCsvModalProps {
     open: boolean;
@@ -54,7 +54,7 @@ export default function ImportCsvModal({
             <div className="w-full max-w-lg rounded-2xl border border-neutral-300/60 bg-white shadow-2xl dark:border-white/10 dark:bg-neutral-900">
                 <div className="flex items-center justify-between border-b border-neutral-100 px-6 py-4 dark:border-white/10">
                     <h3 className="flex items-center gap-2 text-lg font-bold text-neutral-800 dark:text-neutral-200">
-                        <FileSpreadsheet className="size-5 text-orange-400" />
+                        <FileSpreadsheet className="size-5 text-indigo-500" />
                         {title}
                     </h3>
                     <button
@@ -84,7 +84,7 @@ export default function ImportCsvModal({
                             onChange={(e) =>
                                 setFile(e.target.files?.[0] ?? null)
                             }
-                            className="block w-full cursor-pointer rounded-xl border border-dashed border-neutral-300 bg-white/60 p-4 text-xs text-neutral-500 file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-orange-400 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white hover:file:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900/40 dark:text-neutral-400"
+                            className="block w-full cursor-pointer rounded-xl border border-dashed border-neutral-300 bg-white/60 p-4 text-xs text-neutral-500 file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-indigo-500 file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white hover:file:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900/40 dark:text-neutral-400"
                         />
                         {file && (
                             <p className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">
@@ -105,7 +105,7 @@ export default function ImportCsvModal({
                         <button
                             type="submit"
                             disabled={!file || uploading}
-                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {uploading ? (
                                 <>

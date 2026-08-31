@@ -43,7 +43,7 @@ interface InstansiProps {
 }
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 function FormModal({
     open,
@@ -224,7 +224,7 @@ function FormModal({
                             onChange={(e) =>
                                 setData('is_active', e.target.checked)
                             }
-                            className="size-4 rounded border-neutral-300 text-orange-400 focus:ring-orange-400/20 dark:border-neutral-700"
+                            className="size-4 rounded border-neutral-300 text-indigo-500 focus:ring-indigo-500/20 dark:border-neutral-700"
                         />
                         Aktif (tampil pada form pendaftaran)
                     </label>
@@ -240,7 +240,7 @@ function FormModal({
                         <button
                             type="submit"
                             disabled={processing}
-                            className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                            className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                         >
                             {processing
                                 ? 'Menyimpan...'
@@ -276,7 +276,7 @@ export default function InstansiPage({
             header: 'Nama',
             cell: ({ row }) => (
                 <span className="inline-flex items-center gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-orange-400/10 text-orange-400 dark:bg-orange-400/20">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-500 dark:bg-indigo-500/20">
                         <Building2 className="size-4" />
                     </span>
                     <span>{row.original.nama}</span>
@@ -289,7 +289,7 @@ export default function InstansiPage({
             cell: ({ row }) => (
                 <Badge
                     variant="outline"
-                    className="border-orange-200/70 bg-orange-400/5 text-orange-600 dark:border-orange-400/30 dark:bg-orange-400/10 dark:text-orange-400"
+                    className="border-indigo-300/70 bg-indigo-500/5 text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-500"
                 >
                     {row.original.jenis_label}
                 </Badge>
@@ -368,8 +368,8 @@ export default function InstansiPage({
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <Building2 className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <Building2 className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -415,7 +415,7 @@ export default function InstansiPage({
                                     setEditItem(null);
                                     setShowForm(true);
                                 }}
-                                className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                             >
                                 <Plus className="size-4" />
                                 Tambah Instansi
@@ -451,7 +451,8 @@ export default function InstansiPage({
                             belum ada otomatis ditambahkan ke Master Kabupaten /
                             Kota
                             <br />
-                            <strong>is_active:</strong> 1 atau 0 (kosong = aktif)
+                            <strong>is_active:</strong> 1 atau 0 (kosong =
+                            aktif)
                             <br />
                             Gunakan separator ';'. Baris yang sudah ada (nama +
                             wilayah sama) akan diperbarui.

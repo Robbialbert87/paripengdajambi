@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DirektoriController;
 use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\KabupatenKotaController;
@@ -55,7 +56,7 @@ Route::prefix('informasi')->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'password.changed'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('dashboard/change-password', [ChangePasswordController::class, 'show'])->name('dashboard.change-password');
     Route::post('dashboard/change-password', [ChangePasswordController::class, 'update'])->name('dashboard.change-password.update');

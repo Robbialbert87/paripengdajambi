@@ -12,12 +12,8 @@ import {
     X,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-    strukturIconMap,
-    strukturIconLabels
-    
-} from '@/lib/struktur-icons';
-import type {StrukturIconKey} from '@/lib/struktur-icons';
+import { strukturIconMap, strukturIconLabels } from '@/lib/struktur-icons';
+import type { StrukturIconKey } from '@/lib/struktur-icons';
 import { cn } from '@/lib/utils';
 
 /* ─── Types & Constants ────────────────────────────────────────────────────── */
@@ -74,7 +70,7 @@ const KATEGORI_OPTIONS = [
 /* ─── Shared UI ────────────────────────────────────────────────────────────── */
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 function ActionButton({
     title,
@@ -112,7 +108,7 @@ function PersonAvatar({
     return (
         <div
             className={cn(
-                'flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-400 to-orange-500 font-bold text-white shadow-md dark:from-orange-500 dark:to-orange-600',
+                'flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 font-bold text-white shadow-md dark:from-indigo-600 dark:to-indigo-700',
                 size,
             )}
         >
@@ -132,7 +128,7 @@ function PersonAvatar({
 
 function KategoriBadge({ kategori }: { kategori: string }) {
     return (
-        <span className="inline-flex rounded-full bg-orange-100 px-2.5 py-0.5 text-[10px] font-bold text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+        <span className="inline-flex rounded-full bg-indigo-200 px-2.5 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/30 dark:text-indigo-500">
             {KATEGORI_LABELS[kategori] ?? kategori}
         </span>
     );
@@ -152,13 +148,19 @@ function PhotoUpload({
     onRemove: () => void;
 }) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const previewSrc = useMemo(() => (foto ? URL.createObjectURL(foto) : null), [foto]);
+    const previewSrc = useMemo(
+        () => (foto ? URL.createObjectURL(foto) : null),
+        [foto],
+    );
 
-    useEffect(() => () => {
-        if (previewSrc) {
-            URL.revokeObjectURL(previewSrc);
-        }
-    }, [previewSrc]);
+    useEffect(
+        () => () => {
+            if (previewSrc) {
+                URL.revokeObjectURL(previewSrc);
+            }
+        },
+        [previewSrc],
+    );
 
     const src = previewSrc ?? (hapusFoto ? null : fotoUrl);
 
@@ -168,7 +170,7 @@ function PhotoUpload({
                 Foto (opsional)
             </label>
             <div className="flex items-center gap-4">
-                <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/40 dark:to-orange-900/30">
+                <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-200 to-indigo-100 dark:from-indigo-950/40 dark:to-indigo-950/30">
                     {src ? (
                         <img
                             src={src}
@@ -176,14 +178,14 @@ function PhotoUpload({
                             className="h-full w-full object-cover"
                         />
                     ) : (
-                        <Camera className="size-6 text-orange-400" />
+                        <Camera className="size-6 text-indigo-500" />
                     )}
                 </div>
                 <div className="flex flex-col gap-2">
                     <button
                         type="button"
                         onClick={() => inputRef.current?.click()}
-                        className="inline-flex items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-3 py-1.5 text-xs font-semibold text-orange-600 transition hover:bg-orange-100 dark:border-orange-800/50 dark:bg-orange-900/20 dark:text-orange-400"
+                        className="inline-flex items-center gap-2 rounded-lg border border-indigo-300 bg-indigo-100 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-200 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:text-indigo-500"
                     >
                         <Upload className="size-3.5" />
                         Pilih Gambar
@@ -207,8 +209,8 @@ function PhotoUpload({
                             const file = e.target.files?.[0];
 
                             if (file) {
-onSelect(file);
-}
+                                onSelect(file);
+                            }
                         }}
                     />
                     <p className="text-[10px] text-neutral-400 dark:text-neutral-500">
@@ -314,8 +316,8 @@ function AnggotaModal({
     };
 
     if (!open) {
-return null;
-}
+        return null;
+    }
 
     return (
         <ModalShell
@@ -449,7 +451,7 @@ return null;
                     <button
                         type="submit"
                         disabled={processing}
-                        className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                        className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                     >
                         {processing
                             ? 'Menyimpan...'
@@ -504,8 +506,8 @@ function BidangModal({
     };
 
     if (!open) {
-return null;
-}
+        return null;
+    }
 
     return (
         <ModalShell
@@ -536,9 +538,9 @@ return null;
                         Ikon
                     </label>
                     <div className="flex items-center gap-3">
-                        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30">
+                        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-indigo-200 dark:bg-indigo-950/30">
                             {SelectedIcon && (
-                                <SelectedIcon className="size-5 text-orange-500 dark:text-orange-400" />
+                                <SelectedIcon className="size-5 text-indigo-600 dark:text-indigo-500" />
                             )}
                         </div>
                         <select
@@ -593,7 +595,7 @@ return null;
                     <button
                         type="submit"
                         disabled={processing}
-                        className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                        className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                     >
                         {processing
                             ? 'Menyimpan...'
@@ -643,8 +645,8 @@ function KontakModal({
     };
 
     if (!open) {
-return null;
-}
+        return null;
+    }
 
     return (
         <ModalShell
@@ -699,7 +701,7 @@ return null;
                     <button
                         type="submit"
                         disabled={processing}
-                        className="flex-1 rounded-xl bg-orange-400 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-orange-500 disabled:opacity-50 dark:bg-orange-500 dark:hover:bg-orange-600"
+                        className="flex-1 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-600 disabled:opacity-50 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                     >
                         {processing
                             ? 'Menyimpan...'
@@ -816,8 +818,8 @@ export default function StrukturOrganisasi({
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <Users className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <Users className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -841,8 +843,8 @@ export default function StrukturOrganisasi({
                                 className={cn(
                                     'rounded-full px-4 py-2 text-xs font-semibold transition-colors',
                                     tab === t.key
-                                        ? 'bg-orange-400 text-white shadow-md'
-                                        : 'bg-white/60 text-neutral-600 hover:bg-orange-100 dark:bg-neutral-700/40 dark:text-neutral-400 dark:hover:bg-neutral-700',
+                                        ? 'bg-indigo-500 text-white shadow-md'
+                                        : 'bg-white/60 text-neutral-600 hover:bg-indigo-200 dark:bg-neutral-700/40 dark:text-neutral-400 dark:hover:bg-neutral-700',
                                 )}
                             >
                                 {t.label}
@@ -858,7 +860,7 @@ export default function StrukturOrganisasi({
                         <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                             <div className="flex items-center justify-between border-b border-neutral-300/60 px-6 py-4 dark:border-white/10">
                                 <div className="flex items-center gap-2">
-                                    <Building2 className="size-4 text-orange-400" />
+                                    <Building2 className="size-4 text-indigo-500" />
                                     <h2 className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
                                         Ketua Umum
                                     </h2>
@@ -916,7 +918,7 @@ export default function StrukturOrganisasi({
                                                 null,
                                             )
                                         }
-                                        className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                        className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                                     >
                                         <Plus className="size-4" />
                                         Tambah Ketua Umum
@@ -941,7 +943,7 @@ export default function StrukturOrganisasi({
                                             null,
                                         )
                                     }
-                                    className="inline-flex items-center gap-2 rounded-lg bg-orange-400 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                                 >
                                     <Plus className="size-3.5" />
                                     Tambah
@@ -997,7 +999,7 @@ export default function StrukturOrganisasi({
                                 onClick={() =>
                                     setBidangModal({ open: true, bidang: null })
                                 }
-                                className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                             >
                                 <Plus className="size-4" />
                                 Tambah Bidang
@@ -1025,9 +1027,9 @@ export default function StrukturOrganisasi({
                                     {/* Bidang header */}
                                     <div className="flex items-center justify-between border-b border-neutral-300/60 px-6 py-4 dark:border-white/10">
                                         <div className="flex items-center gap-3">
-                                            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30">
+                                            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-indigo-200 dark:bg-indigo-950/30">
                                                 {Icon && (
-                                                    <Icon className="size-4 text-orange-500 dark:text-orange-400" />
+                                                    <Icon className="size-4 text-indigo-600 dark:text-indigo-500" />
                                                 )}
                                             </div>
                                             <div>
@@ -1050,9 +1052,9 @@ export default function StrukturOrganisasi({
                                     </div>
 
                                     {/* Ketua */}
-                                    <div className="border-b border-dashed border-orange-200 px-6 py-4 dark:border-orange-800/40">
+                                    <div className="border-b border-dashed border-indigo-300 px-6 py-4 dark:border-indigo-900/40">
                                         <div className="mb-3 flex items-center justify-between">
-                                            <p className="text-[10px] font-bold tracking-wider text-orange-400 uppercase">
+                                            <p className="text-[10px] font-bold tracking-wider text-indigo-500 uppercase">
                                                 Ketua Bidang
                                             </p>
                                             {!bidang.ketua && (
@@ -1065,7 +1067,7 @@ export default function StrukturOrganisasi({
                                                             null,
                                                         )
                                                     }
-                                                    className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 bg-orange-50 px-3 py-1.5 text-xs font-semibold text-orange-600 transition hover:bg-orange-100 dark:border-orange-800/50 dark:bg-orange-900/20 dark:text-orange-400"
+                                                    className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-300 bg-indigo-100 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-200 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:text-indigo-500"
                                                 >
                                                     <Plus className="size-3.5" />
                                                     Tambah Ketua
@@ -1108,7 +1110,7 @@ export default function StrukturOrganisasi({
                                     {/* Anggota */}
                                     <div className="px-6 py-4">
                                         <div className="mb-3 flex items-center justify-between">
-                                            <p className="text-[10px] font-bold tracking-wider text-orange-400 uppercase">
+                                            <p className="text-[10px] font-bold tracking-wider text-indigo-500 uppercase">
                                                 Anggota ({bidang.anggota.length}
                                                 )
                                             </p>
@@ -1121,7 +1123,7 @@ export default function StrukturOrganisasi({
                                                         null,
                                                     )
                                                 }
-                                                className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 bg-orange-50 px-3 py-1.5 text-xs font-semibold text-orange-600 transition hover:bg-orange-100 dark:border-orange-800/50 dark:bg-orange-900/20 dark:text-orange-400"
+                                                className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-300 bg-indigo-100 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-200 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:text-indigo-500"
                                             >
                                                 <Plus className="size-3.5" />
                                                 Tambah Anggota
@@ -1182,7 +1184,7 @@ export default function StrukturOrganisasi({
                                 onClick={() =>
                                     setKontakModal({ open: true, kontak: null })
                                 }
-                                className="inline-flex items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-500 dark:bg-orange-500 dark:hover:bg-orange-600"
+                                className="inline-flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700"
                             >
                                 <Plus className="size-4" />
                                 Tambah Kontak

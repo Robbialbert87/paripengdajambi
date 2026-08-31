@@ -85,7 +85,7 @@ function Info({ label, value }: { label: string; value: ReactNode }) {
 }
 
 const inputClass =
-    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
+    'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
 export default function VerifikasiDetail({
     registration,
@@ -142,7 +142,7 @@ export default function VerifikasiDetail({
                 <div>
                     <Link
                         href={verifikasi.url()}
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 transition hover:text-orange-400 dark:text-neutral-400"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 transition hover:text-indigo-500 dark:text-neutral-400"
                     >
                         <ArrowLeft className="size-4" />
                         Kembali ke daftar verifikasi
@@ -152,8 +152,8 @@ export default function VerifikasiDetail({
                 <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-6 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-14 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                <ClipboardCheck className="size-7 text-orange-400" />
+                            <div className="flex size-14 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                <ClipboardCheck className="size-7 text-indigo-500" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">
@@ -261,7 +261,7 @@ export default function VerifikasiDetail({
                         </h2>
                         <div className="mt-4 grid gap-4 sm:grid-cols-2">
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 text-orange-400 dark:bg-orange-400/20">
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 text-indigo-500 dark:bg-indigo-500/20">
                                     {registration.photo ? (
                                         <img
                                             src={`/storage/${registration.photo}`}
@@ -282,8 +282,8 @@ export default function VerifikasiDetail({
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <ClipboardCheck className="size-5 text-orange-400" />
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <ClipboardCheck className="size-5 text-indigo-500" />
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate font-mono text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -295,8 +295,8 @@ export default function VerifikasiDetail({
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <ClipboardCheck className="size-5 text-orange-400" />
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <ClipboardCheck className="size-5 text-indigo-500" />
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate font-mono text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -308,8 +308,8 @@ export default function VerifikasiDetail({
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <Mail className="size-5 text-orange-400" />
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <Mail className="size-5 text-indigo-500" />
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -321,8 +321,8 @@ export default function VerifikasiDetail({
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <Phone className="size-5 text-orange-400" />
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <Phone className="size-5 text-indigo-500" />
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -334,8 +334,8 @@ export default function VerifikasiDetail({
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <Building2 className="size-5 text-orange-400" />
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <Building2 className="size-5 text-indigo-500" />
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -347,8 +347,8 @@ export default function VerifikasiDetail({
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <MapPin className="size-5 text-orange-400" />
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <MapPin className="size-5 text-indigo-500" />
                                 </div>
                                 <div className="min-w-0">
                                     <p className="truncate text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -369,8 +369,8 @@ export default function VerifikasiDetail({
                         <ol className="mt-4 space-y-4">
                             {registration.logs.map((log, index) => (
                                 <li key={index} className="relative flex gap-3">
-                                    <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                        <Clock className="size-3 text-orange-400" />
+                                    <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                        <Clock className="size-3 text-indigo-500" />
                                     </span>
                                     <div className="min-w-0">
                                         <p className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
@@ -389,8 +389,8 @@ export default function VerifikasiDetail({
                                 </li>
                             ))}
                             <li className="relative flex gap-3">
-                                <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-orange-400/10 dark:bg-orange-400/20">
-                                    <Clock className="size-3 text-orange-400" />
+                                <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 dark:bg-indigo-500/20">
+                                    <Clock className="size-3 text-indigo-500" />
                                 </span>
                                 <div className="min-w-0">
                                     <p className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
@@ -412,36 +412,75 @@ export default function VerifikasiDetail({
                     </h2>
                     <div className="mt-4 grid gap-6 lg:grid-cols-3">
                         <div className="space-y-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                            <h3 className="text-xs font-bold text-orange-500">
+                            <h3 className="text-xs font-bold text-indigo-600">
                                 Data Pribadi
                             </h3>
-                            <Info label="Jenis Kelamin" value={registration.gender_label} />
-                            <Info label="Golongan Darah" value={registration.blood_type} />
-                            <Info label="Agama" value={registration.religion_label} />
-                            <Info label="Tanggal Lahir" value={registration.birth_date} />
-                            <Info label="Alamat Tempat Tinggal" value={registration.home_address} />
+                            <Info
+                                label="Jenis Kelamin"
+                                value={registration.gender_label}
+                            />
+                            <Info
+                                label="Golongan Darah"
+                                value={registration.blood_type}
+                            />
+                            <Info
+                                label="Agama"
+                                value={registration.religion_label}
+                            />
+                            <Info
+                                label="Tanggal Lahir"
+                                value={registration.birth_date}
+                            />
+                            <Info
+                                label="Alamat Tempat Tinggal"
+                                value={registration.home_address}
+                            />
                         </div>
                         <div className="space-y-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                            <h3 className="text-xs font-bold text-orange-500">
+                            <h3 className="text-xs font-bold text-indigo-600">
                                 Data Pekerjaan
                             </h3>
-                            <Info label="Status Kepegawaian" value={registration.employment_status_label} />
-                            <Info label="Instansi / Tempat Kerja" value={registration.instansi} />
-                            <Info label="Wilayah" value={registration.kabupaten_kota} />
-                            <Info label="Nomor STR" value={registration.str_number} />
-                            <Info label="Status STR" value={registration.str_status_label} />
-                            <Info label="Masa Berlaku STR" value={registration.str_expiry_date} />
+                            <Info
+                                label="Status Kepegawaian"
+                                value={registration.employment_status_label}
+                            />
+                            <Info
+                                label="Instansi / Tempat Kerja"
+                                value={registration.instansi}
+                            />
+                            <Info
+                                label="Wilayah"
+                                value={registration.kabupaten_kota}
+                            />
+                            <Info
+                                label="Nomor STR"
+                                value={registration.str_number}
+                            />
+                            <Info
+                                label="Status STR"
+                                value={registration.str_status_label}
+                            />
+                            <Info
+                                label="Masa Berlaku STR"
+                                value={registration.str_expiry_date}
+                            />
                         </div>
                         <div className="space-y-3 rounded-xl border border-neutral-300/60 bg-white/60 p-4 dark:border-white/10 dark:bg-neutral-900/40">
-                            <h3 className="text-xs font-bold text-orange-500">
+                            <h3 className="text-xs font-bold text-indigo-600">
                                 Data Pendidikan
                             </h3>
                             <Info
                                 label="Institusi Pendidikan"
                                 value={registration.education_institution}
                             />
-                            <Info label="Jenjang" value={registration.education_level_label} />
-                            <Info label="Nomor Ijazah" value={registration.diploma_number} />
+                            <Info
+                                label="Jenjang"
+                                value={registration.education_level_label}
+                            />
+                            <Info
+                                label="Nomor Ijazah"
+                                value={registration.diploma_number}
+                            />
                             <Info
                                 label="Tahun Lulus"
                                 value={
@@ -450,7 +489,10 @@ export default function VerifikasiDetail({
                                         : null
                                 }
                             />
-                            <Info label="Bidang Keprofesian" value={registration.field_label} />
+                            <Info
+                                label="Bidang Keprofesian"
+                                value={registration.field_label}
+                            />
                             <Info
                                 label="Pendidikan Lanjutan"
                                 value={
@@ -461,7 +503,9 @@ export default function VerifikasiDetail({
                                                 `S2 ${registration.s2_program}${registration.s2_institution ? ` — ${registration.s2_institution}` : ''}`}
                                             {registration.s2_program &&
                                                 registration.s3_program && (
-                                                    <span className="mx-1">·</span>
+                                                    <span className="mx-1">
+                                                        ·
+                                                    </span>
                                                 )}
                                             {registration.s3_program &&
                                                 `S3 ${registration.s3_program}${registration.s3_institution ? ` — ${registration.s3_institution}` : ''}`}
@@ -477,7 +521,7 @@ export default function VerifikasiDetail({
                                         href={`/storage/${registration.diploma_file}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-orange-500 underline-offset-2 hover:underline"
+                                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 underline-offset-2 hover:underline"
                                     >
                                         <FileText className="size-3.5" />
                                         Unduh scan ijazah
