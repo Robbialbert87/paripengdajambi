@@ -986,6 +986,11 @@ export default function Registrasi({
                                             </label>
                                             <input
                                                 type="hidden"
+                                                name="education_institution"
+                                                value={educationInstitution}
+                                            />
+                                            <input
+                                                type="hidden"
                                                 name="education_college_id"
                                                 value={
                                                     educationChoice !== 'other'

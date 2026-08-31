@@ -59,7 +59,11 @@ class MemberRegistrationController extends Controller
                 Rule::requiredIf(fn () => $request->input('str_status') === 'sementara'),
             ],
             'education_college_id' => ['nullable', 'exists:education_colleges,id'],
-            'education_institution' => ['required', 'string', 'max:255'],
+            'education_institution' => [
+                'string',
+                'max:255',
+                Rule::requiredIf(fn () => ! $request->filled('education_college_id')),
+            ],
             'education_level' => ['required', Rule::in(MemberRegistration::EDUCATION_LEVELS)],
             'diploma_number' => ['required', 'string', 'max:255'],
             'graduation_year' => ['required', 'integer', 'min:1960', 'max:'.now()->year],
