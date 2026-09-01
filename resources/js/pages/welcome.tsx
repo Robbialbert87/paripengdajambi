@@ -6,45 +6,59 @@ export default function Welcome() {
             <Head title="Selamat Datang" />
 
             {/* Hero Section */}
-            <section className="mx-auto grid max-w-[85rem] gap-4 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:gap-8 lg:px-8 2xl:max-w-full">
-                <div className="order-1 md:order-1">
-                    <h1 className="block text-3xl font-bold tracking-tight text-balance text-neutral-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-neutral-200">
-                        Selamat Datang di Website{' '}
-                        <span className="text-orange-400">PARI Pengda</span>{' '}
+            <section className="relative left-1/2 -mt-[88px] -ml-[50vw] flex min-h-[calc(100vh)] w-screen items-center overflow-hidden">
+                <div className="absolute inset-0 bg-black" aria-hidden="true">
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className="h-full w-full object-cover"
+                    >
+                        <source src="/hero/hero.mp4" type="video/mp4" />
+                    </video>
+                </div>
+                <div
+                    className="absolute inset-0 bg-black/50"
+                    aria-hidden="true"
+                />
+
+                <div className="relative z-10 mx-auto w-full max-w-[85rem] px-4 pt-32 pb-14 sm:px-6 lg:px-8 2xl:max-w-full">
+                    <h1 className="block text-3xl font-bold tracking-tight text-balance text-white sm:text-4xl lg:text-6xl lg:leading-tight">
+                        Selamat Datang di Website
+                        <br />
+                        <span className="text-orange-400">
+                            PARI Pengda
+                        </span>{' '}
                         Provinsi Jambi
                     </h1>
-                    <p className="mt-3 text-lg leading-relaxed text-pretty text-neutral-700 lg:w-4/5 dark:text-neutral-400">
+                    <p className="mt-3 text-lg leading-relaxed text-pretty text-neutral-200 lg:w-4/5">
                         Pusat Berita, Informasi, Edukasi dan Pelayanan
                         Administrasi Radiografer Provinsi Jambi.
                     </p>
-                </div>
-                <div className="order-2 flex w-full items-center justify-center md:order-2">
-                    <img
-                        src="/hero.webp"
-                        alt="PARI - Persatuan Ahli Refrigerasi Indonesia"
-                        className="h-64 w-auto object-contain sm:h-80 md:h-96"
-                    />
-                </div>
-                <div className="order-3 grid w-full gap-3 sm:inline-flex md:order-3">
-                    <Link
-                        href="/keanggotaan/registrasi"
-                        className="group inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-4 py-3 text-sm font-bold text-neutral-50 ring-zinc-500 outline-hidden transition duration-300 hover:bg-orange-500 focus-visible:ring-3 2xl:text-base dark:bg-orange-500 dark:ring-zinc-200 dark:hover:bg-orange-600 dark:focus:outline-hidden"
-                    >
-                        Daftar Menjadi Anggota
-                        <svg
-                            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
+
+                    <div className="mt-8">
+                        <Link
+                            href="/keanggotaan/registrasi"
+                            className="group inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-orange-400 px-4 py-3 text-sm font-bold text-neutral-50 ring-zinc-500 outline-hidden transition duration-300 hover:bg-orange-500 focus-visible:ring-3 2xl:text-base"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M13 7l5 5m0 0l-5 5m5-5H6"
-                            />
-                        </svg>
-                    </Link>
+                            Daftar Menjadi Anggota
+                            <svg
+                                className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                                />
+                            </svg>
+                        </Link>
+                    </div>
                 </div>
             </section>
 

@@ -60,8 +60,12 @@ export function initializeTheme(): void {
     }
 
     if (!window.localStorage.getItem('appearance')) {
-        window.localStorage.setItem('appearance', 'light');
-        setCookie('appearance', 'light');
+        const onPublicHome = window.location.pathname === '/';
+
+        const defaultAppearance: Appearance = onPublicHome ? 'dark' : 'light';
+
+        window.localStorage.setItem('appearance', defaultAppearance);
+        setCookie('appearance', defaultAppearance);
     }
 
     currentAppearance = getStoredAppearance();

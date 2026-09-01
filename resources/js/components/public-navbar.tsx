@@ -122,7 +122,6 @@ function DropdownMenu({
     const isActive =
         item.dropdown?.some((sub) => currentUrl === sub.href) ?? false;
     const ref = useRef<HTMLDivElement>(null);
-    const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const justNavigated = useRef(false);
     const isDesktop = useIsDesktop();
 
@@ -142,16 +141,8 @@ function DropdownMenu({
     }, [isOpen, onClose]);
 
     const handleMouseEnter = useCallback(() => {
-        if (!isDesktop) {
+        if (!isDesktop || justNavigated.current) {
             return;
-        }
-
-        if (justNavigated.current) {
-            return;
-        }
-
-        if (hoverTimeout.current) {
-            clearTimeout(hoverTimeout.current);
         }
 
         onOpen();
@@ -163,7 +154,7 @@ function DropdownMenu({
         }
 
         justNavigated.current = false;
-        hoverTimeout.current = setTimeout(() => onClose(), 100);
+        onClose();
     }, [isDesktop, onClose]);
 
     return (
@@ -281,6 +272,40 @@ export default function PublicNavbar() {
     const isDesktop = useIsDesktop();
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const closeDropdownTimer = useRef<ReturnType<typeof setTimeout> | null>(
+        null,
+    );
+
+    const cancelCloseDropdown = useCallback(() => {
+        if (closeDropdownTimer.current) {
+            clearTimeout(closeDropdownTimer.current);
+            closeDropdownTimer.current = null;
+        }
+    }, []);
+
+    const openDropdownMenu = useCallback(
+        (label: string) => {
+            cancelCloseDropdown();
+            setOpenDropdown(label);
+        },
+        [cancelCloseDropdown],
+    );
+
+    const scheduleCloseDropdown = useCallback(() => {
+        cancelCloseDropdown();
+        closeDropdownTimer.current = setTimeout(() => {
+            setOpenDropdown(null);
+            closeDropdownTimer.current = null;
+        }, 120);
+    }, [cancelCloseDropdown]);
+
+    const toggleDropdownMenu = useCallback(
+        (label: string) => {
+            cancelCloseDropdown();
+            setOpenDropdown((current) => (current === label ? null : label));
+        },
+        [cancelCloseDropdown],
+    );
 
     // Lock body scroll when mobile menu open
     useEffect(() => {
@@ -326,7 +351,7 @@ export default function PublicNavbar() {
         <>
             <header className="sticky inset-x-0 top-4 z-50 flex w-full flex-wrap text-sm md:flex-nowrap md:justify-start">
                 <nav
-                    className="relative mx-2 w-full rounded-[36px] border border-neutral-300/60 bg-neutral-100 px-4 py-3 backdrop-blur-md md:flex md:items-center md:justify-between md:px-6 md:py-0 lg:px-8 xl:mx-auto dark:border-white/10 dark:bg-white/[.075] dark:backdrop-blur-md"
+                    className="relative mx-2 w-full rounded-[36px] border border-neutral-300/60 bg-white/60 px-4 py-3 backdrop-blur-md md:flex md:items-center md:justify-between md:px-6 md:py-0 lg:px-8 xl:mx-auto dark:border-white/10 dark:bg-white/[.075] dark:backdrop-blur-md"
                     aria-label="Global"
                 >
                     <div className="flex items-center justify-between">
@@ -404,16 +429,12 @@ export default function PublicNavbar() {
                                         isOpen={openDropdown === item.label}
                                         currentUrl={currentUrl}
                                         onToggle={() =>
-                                            setOpenDropdown(
-                                                openDropdown === item.label
-                                                    ? null
-                                                    : item.label,
-                                            )
+                                            toggleDropdownMenu(item.label)
                                         }
                                         onOpen={() =>
-                                            setOpenDropdown(item.label)
+                                            openDropdownMenu(item.label)
                                         }
-                                        onClose={() => setOpenDropdown(null)}
+                                        onClose={scheduleCloseDropdown}
                                     />
                                 ) : (
                                     <Link
