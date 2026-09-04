@@ -73,6 +73,17 @@ class MemberRegistration extends Model
 
     public const FIELDS = ['radiodiagnostik', 'radioterapi', 'intervensi_radiologi', 'kedokteran_nuklir'];
 
+    public const MODALITIES = [
+        'cr',
+        'dr',
+        'ct_scan',
+        'mri',
+        'usg',
+        'mamografi',
+        'fluoroskopi',
+        'kedokteran_nuklir',
+    ];
+
     protected $fillable = [
         'member_id',
         'full_name',
@@ -100,6 +111,7 @@ class MemberRegistration extends Model
         's3_institution',
         'diploma_file',
         'field',
+        'modalities',
         'photo',
         'instansi_id',
         'kabupaten_kota_id',
@@ -118,6 +130,7 @@ class MemberRegistration extends Model
             'birth_date' => 'datetime',
             'str_expiry_date' => 'datetime',
             'graduation_year' => 'integer',
+            'modalities' => 'array',
             'submitted_at' => 'datetime',
             'reviewed_at' => 'datetime',
         ];

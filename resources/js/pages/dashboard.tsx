@@ -12,7 +12,7 @@ import {
     UsersRound,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { StatusBadge } from '@/components/dashboard/status-badge';
 import { Badge } from '@/components/ui/badge';
@@ -111,20 +111,22 @@ const membershipLabel = (status?: string | null): string =>
         status ?? ''
     ] ?? '—';
 
-const breakdownBar: Record<string, string> = {
-    submitted: 'bg-sky-500',
-    under_review: 'bg-amber-500',
-    revision: 'bg-violet-500',
-    approved: 'bg-emerald-500',
-    rejected: 'bg-red-500',
+/* Status → chart tones (neutral shadcn palette) */
+const statusColor: Record<string, string> = {
+    submitted: 'var(--chart-2)',
+    under_review: 'var(--chart-1)',
+    revision: 'var(--chart-3)',
+    approved: 'var(--chart-5)',
+    rejected: 'var(--chart-4)',
+    draft: '#9CA3AF',
 };
 
-const breakdownDot: Record<string, string> = {
-    submitted: 'bg-sky-500',
-    under_review: 'bg-amber-500',
-    revision: 'bg-violet-500',
-    approved: 'bg-emerald-500',
-    rejected: 'bg-red-500',
+const statusBarColor: Record<string, string> = {
+    submitted: 'var(--chart-2)',
+    under_review: 'var(--chart-1)',
+    revision: 'var(--chart-3)',
+    approved: 'var(--chart-5)',
+    rejected: 'var(--chart-4)',
 };
 
 function MemberStatusBadge({ status }: { status?: string | null }) {
@@ -221,24 +223,26 @@ function MemberDashboard() {
     ];
 
     return (
-        <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto bg-[#f5f7fb] p-6">
+        <div className="flex h-full flex-1 flex-col gap-6 bg-background p-6">
             <div className="flex items-center gap-4">
-                <div className="flex size-14 items-center justify-center rounded-full bg-[#1e84c4]/10 dark:bg-[#1e84c4]/20">
+                <div className="flex size-14 items-center justify-center rounded-[10px] bg-muted">
                     <AppLogoIcon className="h-10 w-auto mix-blend-multiply dark:mix-blend-screen" />
                 </div>
                 <div>
-                    <h2 className="text-xl font-bold text-[#313b5e]">
+                    <h2 className="text-2xl leading-tight font-bold text-foreground">
                         Selamat Datang, {member?.full_name ?? auth.user.name}
                     </h2>
-                    <p className="text-sm text-[#5d7186]">Beranda Anggota</p>
+                    <p className="text-sm text-muted-foreground">
+                        Beranda Anggota
+                    </p>
                 </div>
             </div>
 
             {member ? (
                 <>
-                    <div className="flex flex-col gap-4 rounded-[0.25rem] border border-neutral-300/60 bg-white p-6 sm:flex-row sm:items-center sm:justify-between dark:border-white/10 dark:bg-white/[.03]">
+                    <div className="flex flex-col gap-4 rounded-[10px] border border-border bg-card p-6 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
-                            <div className="flex size-16 items-center justify-center overflow-hidden rounded-[0.25rem] bg-[#1e84c4]/10 text-lg font-bold text-[#1e84c4] dark:bg-[#1e84c4]/20 dark:text-[#6ec4f0]">
+                            <div className="flex size-16 items-center justify-center overflow-hidden rounded-[10px] bg-muted text-lg font-bold text-primary">
                                 {member.photo ? (
                                     <img
                                         src={`/storage/${member.photo}`}
@@ -251,18 +255,18 @@ function MemberDashboard() {
                             </div>
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <h3 className="text-lg font-bold text-[#313b5e]">
+                                    <h3 className="text-lg font-bold text-foreground">
                                         {member.full_name}
                                     </h3>
                                     <MemberStatusBadge
                                         status={member.membership_status}
                                     />
                                 </div>
-                                <p className="font-mono text-sm text-[#5d7186]">
+                                <p className="mt-0.5 font-mono text-sm text-muted-foreground">
                                     {member.member_number ?? '—'}
                                 </p>
-                                <div className="mt-1 flex items-center gap-1.5 text-xs text-[#5d7186]">
-                                    <BadgeCheck className="size-3.5 text-[#1e84c4]" />
+                                <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                                    <BadgeCheck className="size-3.5 text-primary" />
                                     Terverifikasi:{' '}
                                     {formatDate(member.verified_at)}
                                 </div>
@@ -270,7 +274,7 @@ function MemberDashboard() {
                         </div>
                         <Link
                             href={kartuAnggota()}
-                            className="inline-flex items-center gap-2 rounded-[0.25rem] bg-[#1e84c4] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#1373ad] dark:hover:bg-[#1373ad]"
+                            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-primary/90"
                         >
                             <IdCard className="size-4" />
                             Lihat Kartu Anggota
@@ -278,20 +282,20 @@ function MemberDashboard() {
                         </Link>
                     </div>
 
-                    <div className="rounded-[0.25rem] border border-neutral-300/60 bg-white p-6 dark:border-white/10 dark:bg-white/[.03]">
-                        <h3 className="mb-4 text-lg font-bold text-[#313b5e]">
+                    <div className="rounded-[10px] border border-border bg-card p-6">
+                        <h3 className="mb-4 text-base font-semibold text-foreground">
                             Profil & Data Keanggotaan
                         </h3>
                         <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
                             {rows.map((row) => (
                                 <div
                                     key={row.label}
-                                    className="border-b border-neutral-300/60 pb-2 dark:border-white/10"
+                                    className="border-b border-border pb-2"
                                 >
-                                    <p className="text-xs font-medium text-[#5d7186]">
+                                    <p className="text-xs font-medium text-muted-foreground">
                                         {row.label}
                                     </p>
-                                    <p className="mt-0.5 text-sm font-semibold text-[#313b5e]">
+                                    <p className="mt-0.5 text-sm font-semibold text-foreground">
                                         {row.value}
                                     </p>
                                 </div>
@@ -317,16 +321,16 @@ function MemberDashboard() {
                             <Link
                                 key={action.title}
                                 href={action.href}
-                                className="group flex items-center gap-3 rounded-[0.25rem] border border-neutral-300/60 bg-neutral-100 p-4 transition-all duration-300 hover:border-[#1e84c4]/40 hover:shadow-md hover:shadow-[#1e84c4]/10 dark:border-white/10 dark:bg-white/[.075] dark:hover:border-[#1e84c4]/40"
+                                className="group flex items-center gap-3 rounded-[10px] border border-border bg-card p-4 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
                             >
-                                <div className="flex size-10 items-center justify-center rounded-[0.25rem] bg-[#1e84c4]/10 transition-colors group-hover:bg-[#1e84c4]/20 dark:bg-[#1e84c4]/20">
-                                    <action.icon className="size-5 text-[#1e84c4]" />
+                                <div className="flex size-10 items-center justify-center rounded-lg bg-muted text-primary transition-colors group-hover:bg-muted">
+                                    <action.icon className="size-5" />
                                 </div>
                                 <div>
-                                    <span className="font-semibold text-[#313b5e]">
+                                    <span className="font-semibold text-foreground">
                                         {action.title}
                                     </span>
-                                    <p className="text-xs text-[#5d7186]">
+                                    <p className="text-xs text-muted-foreground">
                                         {action.description}
                                     </p>
                                 </div>
@@ -335,25 +339,25 @@ function MemberDashboard() {
                     </div>
                 </>
             ) : (
-                <div className="rounded-[0.25rem] border border-dashed border-neutral-300/70 bg-white p-8 text-center dark:border-white/10 dark:bg-white/[.03]">
-                    <Users className="mx-auto size-10 text-[#1e84c4]" />
-                    <h3 className="mt-3 text-lg font-bold text-[#313b5e]">
+                <div className="rounded-[10px] border border-dashed border-border bg-card p-8 text-center">
+                    <Users className="mx-auto size-10 text-primary" />
+                    <h3 className="mt-3 text-lg font-bold text-foreground">
                         Data Anggota Belum Tertaut
                     </h3>
-                    <p className="mt-1 text-sm text-[#5d7186]">
+                    <p className="mt-1 text-sm text-muted-foreground">
                         Akun Anda belum terhubung ke data anggota. Cek status
                         registrasi Anda dengan NIR, atau hubungi pengurus.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link
                             href="/keanggotaan/status"
-                            className="inline-flex items-center gap-2 rounded-[0.25rem] bg-[#1e84c4] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#1373ad] dark:hover:bg-[#1373ad]"
+                            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-primary/90"
                         >
                             Status Keanggotaan
                         </Link>
                         <Link
                             href="/keanggotaan/registrasi"
-                            className="inline-flex items-center gap-2 rounded-[0.25rem] border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+                            className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors duration-150 hover:bg-muted"
                         >
                             Registrasi Anggota
                         </Link>
@@ -370,6 +374,21 @@ interface StatCard {
     icon: LucideIcon;
     iconClass: string;
     href?: string;
+}
+
+function CardHeaderWithLink({
+    title,
+    action,
+}: {
+    title: string;
+    action?: ReactNode;
+}) {
+    return (
+        <div className="mb-4 flex items-center justify-between gap-3">
+            <h3 className="text-base font-semibold text-foreground">{title}</h3>
+            {action}
+        </div>
+    );
 }
 
 function AdminDashboard() {
@@ -420,32 +439,28 @@ function AdminDashboard() {
             label: 'Total Anggota',
             value: values.totalAnggota,
             icon: Users,
-            iconClass:
-                'bg-[#1e84c4]/10 text-[#1e84c4] dark:bg-[#1e84c4]/20 dark:text-[#6ec4f0]',
+            iconClass: 'bg-muted text-primary',
             href: canDirektori ? String(direktoriAnggota()) : undefined,
         },
         {
             label: 'Menunggu Verifikasi',
             value: values.pendingVerifikasi,
             icon: ClipboardCheck,
-            iconClass:
-                'bg-amber-500/10 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400',
+            iconClass: 'bg-muted text-foreground',
             href: canVerifikasi ? String(verifikasi()) : undefined,
         },
         {
             label: 'Instansi Aktif',
             value: values.totalInstansi,
             icon: Building2,
-            iconClass:
-                'bg-sky-500/10 text-sky-600 dark:bg-sky-500/20 dark:text-sky-400',
+            iconClass: 'bg-muted text-foreground',
             href: canMasterData ? instansi.index.url() : undefined,
         },
         {
             label: 'Total Pengguna',
             value: values.totalPengguna,
             icon: UserCog,
-            iconClass:
-                'bg-violet-500/10 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400',
+            iconClass: 'bg-muted text-foreground',
             href:
                 canUserManagement || canRoleManagement
                     ? '/dashboard/user-management'
@@ -497,16 +512,33 @@ function AdminDashboard() {
     });
 
     const breakdown = verificationBreakdown ?? [];
+    const breakdownTotal = breakdown.reduce((sum, item) => sum + item.count, 0);
+
+    const donutStyle: CSSProperties | undefined =
+        breakdown.length > 0
+            ? ({
+                  background: `conic-gradient(${breakdown
+                      .map((item, index) => {
+                          const accum = breakdown
+                              .slice(0, index)
+                              .reduce((acc, prev) => acc + prev.percentage, 0);
+                          const color = statusColor[item.status] ?? '#9CA3AF';
+
+                          return `${color} ${accum}% ${accum + item.percentage}%`;
+                      })
+                      .join(', ')})`,
+              } as CSSProperties)
+            : undefined;
 
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto bg-[#f5f7fb] p-6">
-                <div>
-                    <h1 className="text-2xl font-bold text-[#313b5e]">
-                        Selamat Datang, {auth.user.name}
+            <div className="flex h-full flex-1 flex-col gap-6 bg-background p-6">
+                <header className="flex flex-col gap-1">
+                    <h1 className="text-[26px] leading-7 font-bold text-foreground">
+                        Dashboard
                     </h1>
-                    <p className="mt-0.5 text-sm text-[#5d7186]">
+                    <p className="text-sm text-muted-foreground">
                         Ringkasan dan pengelolaan keanggotaan{' '}
                         {new Date().toLocaleDateString('id-ID', {
                             day: 'numeric',
@@ -514,33 +546,39 @@ function AdminDashboard() {
                             year: 'numeric',
                         })}
                     </p>
-                </div>
+                </header>
 
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <section
+                    aria-labelledby="summary-title"
+                    className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+                >
+                    <h2 id="summary-title" className="sr-only">
+                        Ringkasan
+                    </h2>
                     {statCards.map((stat) => (
                         <div
                             key={stat.label}
-                            className="flex flex-col gap-4 rounded-[0.25rem] border border-neutral-300/60 bg-white p-5 transition-all duration-300 hover:shadow-lg hover:shadow-[#1e84c4]/10 dark:border-white/10 dark:bg-white/[.03]"
+                            className="flex min-h-[116px] flex-col justify-between rounded-[10px] border border-border bg-card p-5 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
                         >
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-start justify-between gap-3">
                                 <div>
-                                    <p className="text-sm font-medium text-[#5d7186]">
+                                    <p className="text-sm font-medium text-muted-foreground">
                                         {stat.label}
                                     </p>
-                                    <p className="mt-1 text-3xl font-bold text-[#313b5e] tabular-nums">
+                                    <p className="mt-1 text-[26px] leading-8 font-bold text-foreground tabular-nums">
                                         {stat.value.toLocaleString('id-ID')}
                                     </p>
                                 </div>
                                 <div
-                                    className={`flex size-12 items-center justify-center rounded-[0.25rem] ${stat.iconClass}`}
+                                    className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${stat.iconClass}`}
                                 >
-                                    <stat.icon className="size-6" />
+                                    <stat.icon className="size-[18px]" />
                                 </div>
                             </div>
                             {stat.href && (
                                 <Link
                                     href={stat.href}
-                                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#1e84c4] hover:underline dark:text-[#6ec4f0]"
+                                    className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                                 >
                                     Lihat Lebih Lengkap
                                     <ArrowRight className="size-3.5" />
@@ -548,139 +586,103 @@ function AdminDashboard() {
                             )}
                         </div>
                     ))}
-                </div>
+                </section>
 
-                <div className="grid gap-6 lg:grid-cols-3">
-                    <div className="rounded-[0.25rem] border border-neutral-300/60 bg-white p-6 lg:col-span-2 dark:border-white/10 dark:bg-white/[.03]">
-                        <div className="mb-4 flex items-center justify-between">
-                            <h3 className="text-lg font-bold text-[#313b5e]">
-                                Registrasi Terbaru
-                            </h3>
-                            {canVerifikasi && (
-                                <Link
-                                    href={verifikasi()}
-                                    className="inline-flex items-center gap-1 text-sm font-semibold text-[#1e84c4] hover:underline dark:text-[#6ec4f0]"
-                                >
-                                    Lihat Semua
-                                    <ArrowRight className="size-4" />
-                                </Link>
-                            )}
-                        </div>
+                <section
+                    aria-labelledby="analytics-title"
+                    className="grid gap-4 lg:grid-cols-3"
+                >
+                    <h2 id="analytics-title" className="sr-only">
+                        Analitik
+                    </h2>
 
-                        {recentRegistrations &&
-                        recentRegistrations.length > 0 ? (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left text-sm">
-                                    <thead>
-                                        <tr className="border-b border-neutral-200 text-xs tracking-wide text-neutral-500 uppercase dark:border-neutral-800 dark:text-neutral-400">
-                                            <th className="pr-4 pb-2 font-medium">
-                                                Anggota
-                                            </th>
-                                            <th className="pr-4 pb-2 font-medium">
-                                                Instansi
-                                            </th>
-                                            <th className="pr-4 pb-2 font-medium">
-                                                Kab/Kota
-                                            </th>
-                                            <th className="pr-4 pb-2 font-medium">
-                                                Tanggal
-                                            </th>
-                                            <th className="pb-2 font-medium">
-                                                Status
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {recentRegistrations.map(
-                                            (registration) => (
-                                                <tr
-                                                    key={registration.id}
-                                                    className="border-b border-neutral-100 last:border-0 dark:border-neutral-800"
-                                                >
-                                                    <td className="py-3 pr-4">
-                                                        <Link
-                                                            href={
-                                                                verifikasiRoutes.show(
-                                                                    registration.id,
-                                                                ).url
-                                                            }
-                                                            className="block hover:underline"
-                                                        >
-                                                            <span className="font-semibold text-[#313b5e]">
-                                                                {
-                                                                    registration.full_name
-                                                                }
-                                                            </span>
-                                                            <span className="block font-mono text-xs text-[#5d7186]">
-                                                                {
-                                                                    registration.nir
-                                                                }
-                                                            </span>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="py-3 pr-4 text-[#5d7186]">
-                                                        {registration.instansi ??
-                                                            '—'}
-                                                    </td>
-                                                    <td className="py-3 pr-4 text-[#5d7186]">
-                                                        {registration.kabupaten_kota ??
-                                                            '—'}
-                                                    </td>
-                                                    <td className="py-3 pr-4 text-[#5d7186]">
-                                                        {registration.submitted_at ??
-                                                            '—'}
-                                                    </td>
-                                                    <td className="py-3">
-                                                        <StatusBadge
-                                                            status={
-                                                                registration.status
-                                                            }
-                                                            label={
-                                                                breakdown.find(
-                                                                    (item) =>
-                                                                        item.status ===
-                                                                        registration.status,
-                                                                )?.label ??
-                                                                registration.status
-                                                            }
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            ),
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div className="rounded-[10px] border border-border bg-card p-5 lg:col-span-2">
+                        <CardHeaderWithLink
+                            title="Registrasi per Status"
+                            action={
+                                canVerifikasi ? (
+                                    <Link
+                                        href={verifikasi()}
+                                        className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                                    >
+                                        Lihat Semua
+                                        <ArrowRight className="size-4" />
+                                    </Link>
+                                ) : undefined
+                            }
+                        />
+
+                        {breakdown.length > 0 ? (
+                            <ul className="flex flex-col gap-5">
+                                {breakdown.map((item) => {
+                                    const max = Math.max(
+                                        ...breakdown.map((b) => b.count),
+                                        1,
+                                    );
+                                    const width = Math.max(
+                                        (item.count / max) * 100,
+                                        item.count > 0 ? 6 : 0,
+                                    );
+
+                                    return (
+                                        <li key={item.status}>
+                                            <div className="mb-1.5 flex items-center justify-between text-sm">
+                                                <span className="font-medium text-foreground">
+                                                    {item.label}
+                                                </span>
+                                                <span className="text-muted-foreground tabular-nums">
+                                                    {item.count}{' '}
+                                                    <span className="text-xs">
+                                                        ({item.percentage}%)
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
+                                                <div
+                                                    className="h-full rounded-full"
+                                                    style={{
+                                                        width: `${width}%`,
+                                                        backgroundColor:
+                                                            statusBarColor[
+                                                                item.status
+                                                            ] ??
+                                                            'var(--chart-5)',
+                                                    }}
+                                                />
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
                         ) : (
                             <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                                <Inbox className="size-10 text-neutral-300 dark:text-neutral-600" />
-                                <p className="text-sm text-[#5d7186]">
-                                    Belum ada registrasi masuk.
+                                <Inbox className="size-10 text-muted-foreground/40" />
+                                <p className="text-sm text-muted-foreground">
+                                    Belum ada data verifikasi.
                                 </p>
                             </div>
                         )}
                     </div>
 
-                    <div className="rounded-[0.25rem] border border-neutral-300/60 bg-white p-6 dark:border-white/10 dark:bg-white/[.03]">
-                        <h3 className="mb-4 text-lg font-bold text-[#313b5e]">
+                    <div className="rounded-[10px] border border-border bg-card p-5">
+                        <h3 className="mb-4 text-base font-semibold text-foreground">
                             Status Verifikasi
                         </h3>
 
                         {breakdown.length > 0 ? (
                             <>
-                                <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
-                                    {breakdown.map((item) => (
-                                        <div
-                                            key={item.status}
-                                            className={
-                                                breakdownBar[item.status]
-                                            }
-                                            style={{
-                                                width: `${item.percentage}%`,
-                                            }}
-                                        />
-                                    ))}
-                                </div>
+                                <div
+                                    className="mx-auto size-36 rounded-full"
+                                    style={donutStyle}
+                                    role="img"
+                                    aria-label="Distribusi status verifikasi"
+                                />
+                                <p className="mt-3 text-center text-2xl font-bold text-foreground tabular-nums">
+                                    {breakdownTotal.toLocaleString('id-ID')}
+                                    <span className="ml-1 text-sm font-normal text-muted-foreground">
+                                        total registrasi
+                                    </span>
+                                </p>
 
                                 <ul className="mt-5 space-y-3">
                                     {breakdown.map((item) => (
@@ -688,15 +690,21 @@ function AdminDashboard() {
                                             key={item.status}
                                             className="flex items-center justify-between text-sm"
                                         >
-                                            <span className="flex items-center gap-2 text-[#5d7186]">
+                                            <span className="flex items-center gap-2 text-muted-foreground">
                                                 <span
-                                                    className={`size-2.5 rounded-full ${breakdownDot[item.status]}`}
+                                                    className="size-2.5 rounded-full"
+                                                    style={{
+                                                        backgroundColor:
+                                                            statusColor[
+                                                                item.status
+                                                            ] ?? '#9CA3AF',
+                                                    }}
                                                 />
                                                 {item.label}
                                             </span>
-                                            <span className="font-semibold text-[#313b5e] tabular-nums">
+                                            <span className="font-semibold text-foreground tabular-nums">
                                                 {item.count}
-                                                <span className="ml-1.5 text-xs font-normal text-[#5d7186]">
+                                                <span className="ml-1.5 text-xs font-normal text-muted-foreground">
                                                     {item.percentage}%
                                                 </span>
                                             </span>
@@ -706,18 +714,127 @@ function AdminDashboard() {
                             </>
                         ) : (
                             <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                                <Inbox className="size-10 text-neutral-300 dark:text-neutral-600" />
-                                <p className="text-sm text-[#5d7186]">
+                                <Inbox className="size-10 text-muted-foreground/40" />
+                                <p className="text-sm text-muted-foreground">
                                     Belum ada data verifikasi.
                                 </p>
                             </div>
                         )}
                     </div>
-                </div>
+                </section>
+
+                <section
+                    aria-labelledby="recent-title"
+                    className="rounded-[10px] border border-border bg-card p-5"
+                >
+                    <CardHeaderWithLink
+                        title="Registrasi Terbaru"
+                        action={
+                            canVerifikasi ? (
+                                <Link
+                                    href={verifikasi()}
+                                    className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+                                >
+                                    Lihat Semua
+                                    <ArrowRight className="size-4" />
+                                </Link>
+                            ) : undefined
+                        }
+                    />
+
+                    {recentRegistrations && recentRegistrations.length > 0 ? (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left text-sm">
+                                <thead>
+                                    <tr className="border-b border-border text-xs tracking-wide text-muted-foreground uppercase">
+                                        <th className="pr-4 pb-2 font-medium">
+                                            Anggota
+                                        </th>
+                                        <th className="pr-4 pb-2 font-medium">
+                                            Instansi
+                                        </th>
+                                        <th className="pr-4 pb-2 font-medium">
+                                            Kab/Kota
+                                        </th>
+                                        <th className="pr-4 pb-2 font-medium">
+                                            Tanggal
+                                        </th>
+                                        <th className="pb-2 font-medium">
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {recentRegistrations.map((registration) => (
+                                        <tr
+                                            key={registration.id}
+                                            className="border-b border-border last:border-0"
+                                        >
+                                            <td className="py-3 pr-4">
+                                                <Link
+                                                    href={
+                                                        verifikasiRoutes.show(
+                                                            registration.id,
+                                                        ).url
+                                                    }
+                                                    className="block hover:underline"
+                                                >
+                                                    <span className="font-semibold text-foreground">
+                                                        {registration.full_name}
+                                                    </span>
+                                                    <span className="block font-mono text-xs text-muted-foreground">
+                                                        {registration.nir}
+                                                    </span>
+                                                </Link>
+                                            </td>
+                                            <td className="py-3 pr-4 text-muted-foreground">
+                                                {registration.instansi ?? '—'}
+                                            </td>
+                                            <td className="py-3 pr-4 text-muted-foreground">
+                                                {registration.kabupaten_kota ??
+                                                    '—'}
+                                            </td>
+                                            <td className="py-3 pr-4 text-muted-foreground">
+                                                {registration.submitted_at ??
+                                                    '—'}
+                                            </td>
+                                            <td className="py-3">
+                                                <StatusBadge
+                                                    status={registration.status}
+                                                    label={
+                                                        breakdown.find(
+                                                            (item) =>
+                                                                item.status ===
+                                                                registration.status,
+                                                        )?.label ??
+                                                        registration.status
+                                                    }
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
+                            <Inbox className="size-10 text-muted-foreground/40" />
+                            <p className="text-sm text-muted-foreground">
+                                Belum ada registrasi masuk.
+                            </p>
+                        </div>
+                    )}
+                </section>
 
                 {visibleActions.length > 0 && (
-                    <div className="rounded-[0.25rem] border border-neutral-300/60 bg-white p-6 dark:border-white/10 dark:bg-white/[.03]">
-                        <h3 className="mb-4 text-lg font-bold text-[#313b5e]">
+                    <section
+                        aria-labelledby="quick-title"
+                        className="rounded-[10px] border border-border bg-card p-5"
+                    >
+                        <h3
+                            id="quick-title"
+                            className="mb-4 text-base font-semibold text-foreground"
+                        >
                             Akses Cepat
                         </h3>
                         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -725,23 +842,23 @@ function AdminDashboard() {
                                 <Link
                                     key={action.title}
                                     href={action.href}
-                                    className="group flex items-center gap-3 rounded-[0.25rem] border border-neutral-200 bg-neutral-100 p-4 transition-all duration-300 hover:border-[#1e84c4]/40 hover:shadow-md hover:shadow-[#1e84c4]/10 dark:border-neutral-800 dark:bg-white/[.075] dark:hover:border-[#1e84c4]/40"
+                                    className="group flex items-center gap-3 rounded-[10px] border border-border bg-card p-4 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
                                 >
-                                    <div className="flex size-10 items-center justify-center rounded-[0.25rem] bg-[#1e84c4]/10 transition-colors group-hover:bg-[#1e84c4]/20 dark:bg-[#1e84c4]/20">
-                                        <action.icon className="size-5 text-[#1e84c4]" />
+                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-primary transition-colors group-hover:bg-muted">
+                                        <action.icon className="size-5" />
                                     </div>
-                                    <div>
-                                        <span className="font-semibold text-[#313b5e]">
+                                    <div className="min-w-0">
+                                        <span className="block truncate font-semibold text-foreground">
                                             {action.title}
                                         </span>
-                                        <p className="text-xs text-[#5d7186]">
+                                        <p className="truncate text-xs text-muted-foreground">
                                             {action.description}
                                         </p>
                                     </div>
                                 </Link>
                             ))}
                         </div>
-                    </div>
+                    </section>
                 )}
             </div>
         </>

@@ -73,6 +73,8 @@ class MemberRegistrationController extends Controller
             's3_institution' => ['nullable', 'string', 'max:255'],
             'diploma_file' => ['required', 'file', 'mimes:pdf', 'max:500'],
             'field' => ['required', Rule::in(MemberRegistration::FIELDS)],
+            'modalities' => ['required', 'array', 'min:1'],
+            'modalities.*' => ['distinct', Rule::in(MemberRegistration::MODALITIES)],
             'photo' => ['required', 'image', 'mimes:jpeg,png,gif,webp', 'max:5120'],
         ]);
 
@@ -120,6 +122,7 @@ class MemberRegistrationController extends Controller
             's3_institution' => $validated['s3_institution'] ?? null,
             'diploma_file' => $diplomaFile,
             'field' => $validated['field'],
+            'modalities' => $validated['modalities'],
             'status' => 'submitted',
             'submitted_at' => now(),
         ]);

@@ -42,6 +42,21 @@ interface RegistrasiProps {
     educationColleges: EducationCollegeOption[];
 }
 
+const modalityOptions = [
+    { value: 'cr', label: 'CR', detail: 'Computed Radiography' },
+    { value: 'dr', label: 'DR', detail: 'Digital Radiography' },
+    { value: 'ct_scan', label: 'CT Scan', detail: 'Computed Tomography' },
+    { value: 'mri', label: 'MRI', detail: 'Magnetic Resonance Imaging' },
+    { value: 'usg', label: 'USG', detail: 'Ultrasonography' },
+    { value: 'mamografi', label: 'Mamograf', detail: 'Mammography' },
+    { value: 'fluoroskopi', label: 'Fluoroskopi', detail: 'Fluoroscopy' },
+    {
+        value: 'kedokteran_nuklir',
+        label: 'Kedokteran Nuklir',
+        detail: 'Nuclear Medicine',
+    },
+];
+
 const inputClass =
     'w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200';
 
@@ -140,6 +155,8 @@ export default function Registrasi({
     const [strStatus, setStrStatus] = useState('');
     const [educationChoice, setEducationChoice] = useState('');
     const [educationInstitution, setEducationInstitution] = useState('');
+    const [selectedModalities, setSelectedModalities] = useState<string[]>([]);
+    const [modalityError, setModalityError] = useState('');
 
     const [prevErrors, setPrevErrors] = useState(pageErrors);
 
@@ -206,6 +223,12 @@ export default function Registrasi({
 
         if (target === 2 && kabupatenId !== '' && instansiId === null) {
             setInstansiError('Pilih instansi dari daftar terlebih dahulu.');
+
+            return false;
+        }
+
+        if (target === 2 && selectedModalities.length === 0) {
+            setModalityError('Pilih minimal satu modality yang digunakan.');
 
             return false;
         }
@@ -955,6 +978,95 @@ export default function Registrasi({
                                                 )}
                                             </div>
                                         )}
+
+                                        <div>
+                                            <label className={labelClass}>
+                                                Modality / Jenis Alat yang
+                                                Digunakan
+                                            </label>
+                                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                                {modalityOptions.map(
+                                                    (option) => {
+                                                        const checked =
+                                                            selectedModalities.includes(
+                                                                option.value,
+                                                            );
+
+                                                        return (
+                                                            <label
+                                                                key={
+                                                                    option.value
+                                                                }
+                                                                className={`flex cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 text-sm transition has-[:checked]:border-orange-400 has-[:checked]:bg-orange-50 dark:has-[:checked]:bg-orange-900/30 ${
+                                                                    checked
+                                                                        ? 'border-orange-400 bg-orange-50 dark:bg-orange-900/30'
+                                                                        : 'border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800'
+                                                                }`}
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="modalities[]"
+                                                                    value={
+                                                                        option.value
+                                                                    }
+                                                                    checked={
+                                                                        checked
+                                                                    }
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) => {
+                                                                        setModalityError(
+                                                                            '',
+                                                                        );
+                                                                        setSelectedModalities(
+                                                                            (
+                                                                                current,
+                                                                            ) =>
+                                                                                e
+                                                                                    .target
+                                                                                    .checked
+                                                                                    ? [
+                                                                                          ...current,
+                                                                                          option.value,
+                                                                                      ]
+                                                                                    : current.filter(
+                                                                                          (
+                                                                                              value,
+                                                                                          ) =>
+                                                                                              value !==
+                                                                                              option.value,
+                                                                                      ),
+                                                                        );
+                                                                    }}
+                                                                    className="size-4 shrink-0 rounded border-neutral-300 text-orange-500 focus:ring-orange-500/20 dark:border-neutral-600"
+                                                                />
+                                                                <span className="flex flex-col">
+                                                                    <span className="font-semibold text-neutral-800 dark:text-neutral-200">
+                                                                        {
+                                                                            option.label
+                                                                        }
+                                                                    </span>
+                                                                    {option.detail && (
+                                                                        <span className="text-[11px] text-neutral-400">
+                                                                            {
+                                                                                option.detail
+                                                                            }
+                                                                        </span>
+                                                                    )}
+                                                                </span>
+                                                            </label>
+                                                        );
+                                                    },
+                                                )}
+                                            </div>
+                                            {(modalityError ||
+                                                errors.modalities) && (
+                                                <p className="mt-1 text-xs text-red-500">
+                                                    {modalityError ??
+                                                        errors.modalities}
+                                                </p>
+                                            )}
+                                        </div>
                                     </section>
 
                                     {/* STEP 3 — Data Pendidikan */}

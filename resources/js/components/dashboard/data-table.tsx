@@ -90,6 +90,8 @@ export function DataTable<TData, TValue>({
     const pageSize = table.getState().pagination.pageSize;
     const pageStart = pageSize * pageIndex + 1;
     const pageEnd = Math.min(pageSize * (pageIndex + 1), filteredCount);
+    const visibleLeafColumns = table.getVisibleLeafColumns();
+    const lastColumnId = visibleLeafColumns[visibleLeafColumns.length - 1]?.id;
 
     return (
         <div className="overflow-hidden rounded-2xl border border-neutral-300/60 bg-neutral-100 backdrop-blur-md dark:border-white/10 dark:bg-white/[.075]">
@@ -177,7 +179,7 @@ export function DataTable<TData, TValue>({
                         </p>
                     </div>
                 ) : (
-                    <Table>
+                    <Table className="min-w-max">
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
@@ -186,7 +188,14 @@ export function DataTable<TData, TValue>({
                                             header.column.getCanSort();
 
                                         return (
-                                            <TableHead key={header.id}>
+                                            <TableHead
+                                                key={header.id}
+                                                className={cn(
+                                                    header.id ===
+                                                        lastColumnId &&
+                                                        'sticky right-0 z-10 bg-neutral-100 shadow-[inset_1px_0_0_0_rgb(229_229_229)] dark:bg-neutral-900 dark:shadow-[inset_1px_0_0_0_rgb(64_64_64)]',
+                                                )}
+                                            >
                                                 {header.isPlaceholder ? null : (
                                                     <button
                                                         type="button"
@@ -228,10 +237,17 @@ export function DataTable<TData, TValue>({
                             {table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    className="bg-white/60 transition-colors hover:bg-neutral-200/70 dark:bg-neutral-900/40 dark:hover:bg-neutral-800/60"
+                                    className="group bg-white/60 transition-colors hover:bg-neutral-200/70 dark:bg-neutral-900/40 dark:hover:bg-neutral-800/60"
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell
+                                            key={cell.id}
+                                            className={cn(
+                                                cell.column.id ===
+                                                    lastColumnId &&
+                                                    'sticky right-0 z-10 bg-white shadow-[inset_1px_0_0_0_rgb(229_229_229)] group-hover:bg-neutral-200 dark:bg-neutral-900 dark:shadow-[inset_1px_0_0_0_rgb(64_64_64)] dark:group-hover:bg-neutral-800',
+                                            )}
+                                        >
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext(),

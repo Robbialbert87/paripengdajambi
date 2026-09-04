@@ -6,8 +6,8 @@ export default function AppLogo() {
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-neutral-100 dark:bg-neutral-800">
                 <AppLogoIcon className="h-7 w-auto mix-blend-multiply dark:mix-blend-screen" />
             </div>
-            <div className="ml-1 grid flex-1 text-left">
-                <span className="mb-0.5 truncate text-[15px] leading-tight font-bold text-[#313b5e] dark:text-white">
+            <div className="ml-1 grid flex-1 text-left group-data-[collapsible=icon]:hidden">
+                <span className="mb-0.5 truncate text-[15px] leading-tight font-bold text-foreground dark:text-white">
                     PARI Pengda Jambi
                 </span>
                 <span className="truncate text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">

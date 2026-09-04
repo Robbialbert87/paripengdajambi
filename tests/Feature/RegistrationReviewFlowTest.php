@@ -229,6 +229,7 @@ test('daftar ulang diizinkan setelah status revision', function () {
         'graduation_year' => '2018',
         'diploma_file' => UploadedFile::fake()->create('ijazah.pdf', 50, 'application/pdf'),
         'field' => 'radioterapi',
+        'modalities' => ['mri', 'ct_scan'],
         'photo' => UploadedFile::fake()->image('foto.jpg', 600, 800),
     ])->assertRedirect();
 

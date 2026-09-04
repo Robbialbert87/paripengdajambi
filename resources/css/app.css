@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Inter:wght@100..900&display=swap');
 
 @import 'tailwindcss';
 
@@ -15,6 +15,12 @@
         BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
         'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-inter:
+        'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    --font-manrope:
+        'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -175,14 +181,14 @@
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
     --radius: 0.625rem;
-    --sidebar: oklch(1 0 0);
-    --sidebar-foreground: #8486a7;
-    --sidebar-primary: #1e84c4;
-    --sidebar-primary-foreground: oklch(1 0 0);
-    --sidebar-accent: #f3f1fa;
-    --sidebar-accent-foreground: #3d4756;
-    --sidebar-border: #eaedf1;
-    --sidebar-ring: #b0d3e8;
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
 }
 
 .dark {
@@ -210,14 +216,14 @@
     --chart-3: oklch(0.769 0.188 70.08);
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.17 0.015 240);
-    --sidebar-foreground: #afb9cf;
-    --sidebar-primary: #1e84c4;
-    --sidebar-primary-foreground: oklch(1 0 0);
-    --sidebar-accent: #303943;
-    --sidebar-accent-foreground: oklch(1 0 0);
-    --sidebar-border: #2f3944;
-    --sidebar-ring: #1e84c4;
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
 }
 
 @layer base {
@@ -238,5 +244,57 @@
         @apply bg-background text-foreground;
         font-size: 0.875rem;
         line-height: 1.5;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* shadcn-admin shell (admin dashboard only — scoped, not public pages) */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+    /* Radix scroll locking for sticky headers */
+    body[data-scroll-locked] {
+        overflow: unset !important;
+    }
+
+    /* Prevent focus zoom on mobile devices */
+    @media screen and (max-width: 767px) {
+        input,
+        select,
+        textarea {
+            font-size: 16px !important;
+        }
+    }
+}
+
+/* The admin shell uses Inter/Manrope via the `font-inter` utility on the
+   shell wrapper; the public pages keep Public Sans from --font-sans. */
+
+/* Collapsible content animation (nav submenus) */
+.CollapsibleContent {
+    overflow: hidden;
+}
+.CollapsibleContent[data-state='open'] {
+    animation: slideDown 300ms ease-out;
+}
+.CollapsibleContent[data-state='closed'] {
+    animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--radix-collapsible-content-height);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        height: var(--radix-collapsible-content-height);
+    }
+    to {
+        height: 0;
     }
 }

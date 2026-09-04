@@ -1,6 +1,14 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { IdCard, ImagePlus, Pencil, Trash2, UsersRound, X } from 'lucide-react';
+import {
+    Eye,
+    IdCard,
+    ImagePlus,
+    Pencil,
+    Trash2,
+    UsersRound,
+    X,
+} from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { DataTable } from '@/components/dashboard/data-table';
 import { Badge } from '@/components/ui/badge';
@@ -500,12 +508,125 @@ function FormModal({
     );
 }
 
+function DetailModal({
+    open,
+    onClose,
+    item,
+}: {
+    open: boolean;
+    onClose: () => void;
+    item: MemberItem;
+}) {
+    const initials = item.full_name
+        .split(' ')
+        .slice(0, 2)
+        .map((part) => part.charAt(0))
+        .join('')
+        .toUpperCase();
+
+    const details: Array<{
+        label: string;
+        value: string | null;
+        mono?: boolean;
+    }> = [
+        { label: 'Nomor Anggota', value: item.member_number, mono: true },
+        { label: 'NIR', value: item.nir, mono: true },
+        { label: 'NIK', value: item.nik, mono: true },
+        { label: 'Email', value: item.email },
+        { label: 'Telepon', value: item.phone },
+        { label: 'Wilayah', value: item.kabupaten_kota },
+        { label: 'Instansi', value: item.instansi },
+        { label: 'Hak Akses', value: roleLabel(item.account?.role_slug) },
+    ];
+
+    if (!open) {
+        return null;
+    }
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-neutral-300/60 bg-white shadow-2xl dark:border-white/10 dark:bg-neutral-900">
+                <div className="flex items-center justify-between border-b border-neutral-100 px-6 py-4 dark:border-white/10">
+                    <h3 className="flex items-center gap-2 text-lg font-bold text-neutral-800 dark:text-neutral-200">
+                        <Eye className="size-5 text-indigo-500" />
+                        Preview Anggota
+                    </h3>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="rounded-lg p-1 text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    >
+                        <X className="size-5" />
+                    </button>
+                </div>
+
+                <div className="space-y-5 px-6 py-4">
+                    <div className="flex items-center gap-4">
+                        <div className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-indigo-500/10 text-lg font-bold text-indigo-500 dark:bg-indigo-500/20">
+                            {item.photo ? (
+                                <img
+                                    src={`/storage/${item.photo}`}
+                                    alt={item.full_name}
+                                    className="size-16 object-cover"
+                                />
+                            ) : (
+                                initials
+                            )}
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
+                                {item.full_name}
+                            </h4>
+                            <div className="mt-1 flex flex-wrap items-center gap-2">
+                                <StatusBadge status={item.membership_status} />
+                                <Badge
+                                    className={
+                                        item.directory_visible
+                                            ? 'border-transparent bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400'
+                                            : 'border-transparent bg-neutral-200/70 text-neutral-500 dark:bg-neutral-700/60 dark:text-neutral-400'
+                                    }
+                                >
+                                    Direktori:{' '}
+                                    {item.directory_visible ? 'Ya' : 'Tidak'}
+                                </Badge>
+                            </div>
+                        </div>
+                    </div>
+
+                    <dl className="divide-y divide-neutral-100 rounded-xl border border-neutral-200 dark:divide-white/10 dark:border-neutral-700">
+                        {details.map((detail) => (
+                            <div
+                                key={detail.label}
+                                className="grid grid-cols-[120px_1fr] gap-3 px-4 py-3 text-sm"
+                            >
+                                <dt className="text-neutral-500 dark:text-neutral-400">
+                                    {detail.label}
+                                </dt>
+                                <dd
+                                    className={
+                                        detail.mono
+                                            ? 'font-mono text-neutral-800 dark:text-neutral-200'
+                                            : 'text-neutral-800 dark:text-neutral-200'
+                                    }
+                                >
+                                    {detail.value || '—'}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function DirektoriAnggota({
     members,
     kabupatenKota,
     instansi,
 }: DirektoriAnggotaProps) {
     const [editItem, setEditItem] = useState<MemberItem | null>(null);
+    const [previewItem, setPreviewItem] = useState<MemberItem | null>(null);
 
     const handleDelete = (id: number) => {
         if (
@@ -632,6 +753,14 @@ export default function DirektoriAnggota({
                 <div className="flex items-center justify-end gap-2">
                     <button
                         type="button"
+                        onClick={() => setPreviewItem(row.original)}
+                        className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-indigo-600 transition hover:bg-indigo-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-indigo-400 dark:hover:bg-neutral-700"
+                        title="Preview"
+                    >
+                        <Eye className="size-3.5" />
+                    </button>
+                    <button
+                        type="button"
                         onClick={() => setEditItem(row.original)}
                         className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-600 transition hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
                         title="Edit"
@@ -687,6 +816,15 @@ export default function DirektoriAnggota({
                     emptyState="Belum ada anggota yang disetujui."
                 />
             </div>
+
+            {previewItem && (
+                <DetailModal
+                    key={previewItem.id}
+                    open
+                    onClose={() => setPreviewItem(null)}
+                    item={previewItem}
+                />
+            )}
 
             {editItem && (
                 <FormModal

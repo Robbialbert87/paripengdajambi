@@ -62,10 +62,13 @@ export function initializeTheme(): void {
     if (!window.localStorage.getItem('appearance')) {
         const onPublicHome = window.location.pathname === '/';
 
-        const defaultAppearance: Appearance = onPublicHome ? 'dark' : 'light';
+        // Apply a transient default (home = dark, everywhere else = light)
+        // WITHOUT persisting it, so the home default never leaks into the
+        // rest of the app. Only an explicit user choice is persisted.
+        currentAppearance = onPublicHome ? 'dark' : 'light';
+        applyTheme(currentAppearance);
 
-        window.localStorage.setItem('appearance', defaultAppearance);
-        setCookie('appearance', defaultAppearance);
+        return;
     }
 
     currentAppearance = getStoredAppearance();

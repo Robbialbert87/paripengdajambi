@@ -8,6 +8,7 @@ use App\Http\Controllers\KabupatenKotaController;
 use App\Http\Controllers\MemberAdminController;
 use App\Http\Controllers\MemberRegistrationController;
 use App\Http\Controllers\RegistrationReviewController;
+use App\Http\Controllers\RekapModalityController;
 use App\Http\Controllers\RoleManagementController;
 use App\Http\Controllers\StrukturOrganisasiController;
 use App\Http\Controllers\TteController;
@@ -93,6 +94,8 @@ Route::middleware(['auth', 'verified', 'password.changed'])->group(function () {
             ->names('dashboard.master.kabupaten-kota')
             ->except(['show']);
         Route::resource('instansi', InstansiController::class)->names('dashboard.master.instansi')->except(['show']);
+        Route::get('rekap-modality', [RekapModalityController::class, 'index'])
+            ->name('dashboard.master.modality-rekap');
     });
 
     Route::prefix('dashboard/verifikasi')->middleware('permission:verifikasi-anggota')->group(function () {

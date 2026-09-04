@@ -22,7 +22,7 @@ class HandleAppearance
             $appearance = 'dark';
         }
 
-        View::share('appearance', $appearance ?? 'system');
+        View::share('appearance', $appearance ?? 'light');
 
         return $next($request);
     }

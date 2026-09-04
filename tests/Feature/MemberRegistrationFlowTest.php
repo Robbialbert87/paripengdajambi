@@ -48,6 +48,7 @@ function makeRegistrationPayload(array $overrides = []): array
         'graduation_year' => '2015',
         'diploma_file' => UploadedFile::fake()->create('ijazah.pdf', 50, 'application/pdf'),
         'field' => 'radiodiagnostik',
+        'modalities' => ['dr', 'ct_scan'],
         'photo' => UploadedFile::fake()->image('foto.jpg', 600, 800),
     ], $overrides);
 }
@@ -143,6 +144,7 @@ test('validasi gagal saat field wajib tidak diisi', function () {
             'graduation_year',
             'diploma_file',
             'field',
+            'modalities',
             'photo',
         ]);
 });
